@@ -160,6 +160,7 @@ export default function MapView() {
             <Pin
               key={city.id}
               city={city}
+              zoom={mapTransform.scale}
               onClick={() => setCity(city)}
               onHover={(p) => setHover(p ? { city, x: p.x, y: p.y } : null)}
             />
