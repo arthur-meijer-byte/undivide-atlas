@@ -10,6 +10,8 @@ import DetailPanel from '../components/DetailPanel';
 import CompareModal from '../components/CompareModal';
 import BookingModal from '../components/BookingModal';
 import BookingsButton from '../components/BookingsButton';
+import ThemeToggle from '../components/ThemeToggle';
+import { useApplyTheme } from '../hooks/useTheme';
 
 export const Route = createFileRoute('/')({
   component: Index,

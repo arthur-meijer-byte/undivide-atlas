@@ -124,6 +124,14 @@
 .dark {
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
+
+  /* Map tokens — dark mode */
+  --map-ocean: oklch(0.18 0.03 260);
+  --map-land: oklch(0.28 0.02 260);
+  --map-stroke: oklch(0.38 0.02 260);
+
+  --shadow-float: 0 2px 6px rgba(0,0,0,0.6);
+  --shadow-panel: 0 4px 16px rgba(0,0,0,0.5);
   --card: oklch(0.208 0.042 265.755);
   --card-foreground: oklch(0.984 0.003 247.858);
   --popover: oklch(0.208 0.042 265.755);
