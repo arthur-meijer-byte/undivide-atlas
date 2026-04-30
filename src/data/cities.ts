@@ -766,6 +766,348 @@ export const CITIES: City[] = [
       }),
     ],
   }),
+
+  // ──────────────────────────── ADDITIONAL EUROPEAN MARKETS ────────────────────────────
+
+  C({
+    id: 'paris', name: 'Paris', country: 'France',
+    lat: 48.8566, lng: 2.3522, status: 'growth',
+    dominant_genre: 'Liquid / Jungle / All styles',
+    market: M({
+      population_city_millions: 11.2,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Jungle', 'Neurofunk', 'Dancefloor'],
+      avg_ticket_eur: 22,
+      competing_events_per_year: 60,
+      revenue_potential: '€1M+',
+      yoy_growth: '+18%',
+      scene_notes: 'Forever DnB (Elisa Do Brasil) on Rinse France since 2017 — the reference DnB crew. Concrete legacy + new Essaim club (400 cap, 2024) anchor the scene.',
+    }),
+    clubs: [
+      { name: 'La Machine du Moulin Rouge', capacity: 1000, genre_focus: 'Electronic, DnB nights', ig: 'lamachinedumoulinrouge' },
+      { name: 'Glazart', capacity: 700, genre_focus: 'Bass music, DnB, dub', ig: 'glazartofficial' },
+      { name: 'Essaim', capacity: 400, genre_focus: 'New club from Concrete AD', ig: 'essaimclub' },
+      { name: 'Le Trabendo', capacity: 700, genre_focus: 'Electronic, bass shows', ig: 'letrabendo' },
+    ],
+    promoters: [
+      P({
+        name: 'Forever DnB', type: 'local',
+        active_since: 2010, events_per_year: 12,
+        dominant_genre: 'Liquid / All styles',
+        ig: 'foreverdnb', website: 'rinse.fr',
+        lineup: ['Elisa Do Brasil', 'Marky', 'LTJ Bukem', 'Calibre', 'Lenzman'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Forever DnB x Rinse France', venue: 'La Machine du Moulin Rouge', cap: 1000, sold: 920 },
+          { date: 'May 2024', year: 2024, name: 'Forever DnB Spring', venue: 'Glazart', cap: 700, sold: 680 },
+        ],
+      }),
+      P({
+        name: 'Jungle Syndicate', type: 'independent',
+        active_since: 2015, events_per_year: 6,
+        dominant_genre: 'Jungle',
+        ig: 'junglesyndicate',
+        lineup: ['Aphrodite', 'Congo Natty', 'Serial Killaz'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Jungle Syndicate', venue: 'Glazart', cap: 700, sold: 600 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'lyon', name: 'Lyon', country: 'France',
+    lat: 45.764, lng: 4.8357, status: 'emerging',
+    dominant_genre: 'Bass music / DnB',
+    market: M({
+      population_city_millions: 1.7,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Dancefloor', 'Neurofunk'],
+      avg_ticket_eur: 16,
+      competing_events_per_year: 25,
+      revenue_potential: '€250k',
+      yoy_growth: '+30%',
+      scene_notes: 'Physical Tool collective is the bass-music backbone — launched RETREAT DnB series in 2024. Active scene at Sucre and Le Sucre rooftop.',
+    }),
+    clubs: [
+      { name: 'Le Sucre', capacity: 600, genre_focus: 'Electronic, DnB & bass', ig: 'lesucrelyon' },
+      { name: 'Le Sonic', capacity: 350, genre_focus: 'Underground electronic', ig: 'lesoniclyon' },
+    ],
+    promoters: [
+      P({
+        name: 'Physical Tool', type: 'local',
+        active_since: 2014, events_per_year: 10,
+        dominant_genre: 'Bass music / DnB',
+        ig: 'physicaltool',
+        lineup: ['Mefjus', 'Skantia', 'Bou', 'Tsuki'],
+        events: [
+          { date: 'Feb 2024', year: 2024, name: 'RETREAT #1', venue: 'Le Sucre', cap: 600, sold: 540 },
+          { date: 'Apr 2024', year: 2024, name: 'RETREAT #2', venue: 'Le Sucre', cap: 600, sold: 580 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'marseille', name: 'Marseille', country: 'France',
+    lat: 43.2965, lng: 5.3698, status: 'emerging',
+    dominant_genre: 'Jump Up / Dancefloor',
+    market: M({
+      population_city_millions: 1.6,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Jump Up',
+      secondary_subgenres: ['Dancefloor', 'Liquid'],
+      avg_ticket_eur: 11,
+      competing_events_per_year: 18,
+      revenue_potential: '€180k',
+      yoy_growth: '+25%',
+      scene_notes: 'Menace Rekords runs the recurring DnB Night at Le Molotov. Le Makeda hosts Hyperactivity Music label nights. Friche la Belle de Mai brings bigger international acts.',
+    }),
+    clubs: [
+      { name: 'Le Molotov', capacity: 250, genre_focus: 'DnB & bass nights', ig: 'lemolotov' },
+      { name: 'Le Makeda', capacity: 400, genre_focus: 'DnB label nights', ig: 'lemakeda' },
+      { name: 'Friche la Belle de Mai', capacity: 1500, genre_focus: 'Larger electronic & bass', ig: 'lafrichebellemai' },
+    ],
+    promoters: [
+      P({
+        name: 'Menace Rekords', type: 'independent',
+        active_since: 2018, events_per_year: 8,
+        dominant_genre: 'Jump Up / Dancefloor',
+        ig: 'menacerekords',
+        lineup: ['Bou', 'Tsuki', 'Sl8r', 'Disrupta'],
+        events: [
+          { date: 'Feb 2026', year: 2026, name: 'DnB Night #6', venue: 'Le Molotov', cap: 250, sold: 230 },
+          { date: 'Oct 2024', year: 2024, name: 'DnB Night #4', venue: 'Le Molotov', cap: 250, sold: 240 },
+        ],
+      }),
+      P({
+        name: 'Hyperactivity Music', type: 'independent',
+        active_since: 2015, events_per_year: 6,
+        dominant_genre: 'DnB / Bass',
+        ig: 'hyperactivitymusic',
+        lineup: ['Phatt', 'Brk', 'K-MI'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'Label Night & Phatt B-day', venue: 'Le Makeda', cap: 400, sold: 380 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'lisbon', name: 'Lisbon', country: 'Portugal',
+    lat: 38.7223, lng: -9.1393, status: 'new',
+    dominant_genre: 'Liquid / Minimal',
+    market: M({
+      population_city_millions: 2.9,
+      dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Minimal', 'Neurofunk'],
+      avg_ticket_eur: 18,
+      competing_events_per_year: 15,
+      revenue_potential: '€200k',
+      yoy_growth: '+40%',
+      scene_notes: 'Lux Frágil (cap 1500, DJ Mag Top 100 Clubs 2022) is the cultural anchor — three floors, opened 1998. Scene small but engaged, lots of expat & touring acts.',
+    }),
+    clubs: [
+      { name: 'Lux Frágil', capacity: 1500, genre_focus: 'Electronic flagship — occasional DnB nights', ig: 'luxfragil' },
+      { name: 'Ministerium', capacity: 1200, genre_focus: 'Electronic, occasional bass', ig: 'ministeriumclub' },
+    ],
+    promoters: [
+      P({
+        name: 'Bass Lisboa', type: 'independent',
+        active_since: 2018, events_per_year: 6,
+        dominant_genre: 'DnB / Dubstep',
+        ig: 'basslisboa',
+        lineup: ['S.P.Y', 'DJ Marky', 'Lenzman'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Bass Lisboa', venue: 'Lux Frágil', cap: 1500, sold: 1100 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'cologne', name: 'Köln', country: 'Germany',
+    lat: 50.9375, lng: 6.9603, status: 'growth',
+    dominant_genre: 'Liquid / Neurofunk',
+    market: M({
+      population_city_millions: 1.1,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Neurofunk', 'Jump Up'],
+      avg_ticket_eur: 20,
+      competing_events_per_year: 45,
+      revenue_potential: '€600k',
+      yoy_growth: '+22%',
+      scene_notes: 'Bootshaus hosts Liquicity Cologne (sellout, ~2000 cap). Beats x Bass x Cologne run weekly Mittwochenende DnB nights at LUXOR. Stadtgarten/Jaki Club programs Bass of Cologne series.',
+    }),
+    clubs: [
+      { name: 'Bootshaus', capacity: 2000, genre_focus: 'Liquicity, large DnB shows', ig: 'bootshaus' },
+      { name: 'LUXOR', capacity: 500, genre_focus: 'Beats x Bass x Cologne weekly', ig: 'luxorkoeln' },
+      { name: 'Club Bahnhof Ehrenfeld (CBE)', capacity: 600, genre_focus: 'Electronic, DnB specials', ig: 'cbe_koeln' },
+      { name: 'Stadtgarten / Jaki', capacity: 400, genre_focus: 'Bass of Cologne series', ig: 'stadtgartenkoeln' },
+    ],
+    promoters: [
+      P({
+        name: 'Beats x Bass x Cologne', type: 'local',
+        active_since: 2019, events_per_year: 40,
+        dominant_genre: 'DnB / Techno',
+        ig: 'beatsxbassxcologne',
+        lineup: ['Laeti', 'Enaly', 'local residents + UK guests'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Bass of Cologne', venue: 'LUXOR', cap: 500, sold: 480 },
+          { date: 'Apr 2026', year: 2026, name: 'TEAMPLAYER DnB Special #2', venue: 'CBE', cap: 600, sold: 0 },
+        ],
+      }),
+      P({
+        name: 'Liquicity (touring)', type: 'independent',
+        active_since: 2010, events_per_year: 1,
+        dominant_genre: 'Liquid',
+        ig: 'liquicity', website: 'liquicity.com',
+        lineup: ['Maduk', 'Fox Stevenson', 'Polygon', 'Whisper'],
+        events: [
+          { date: 'Apr 2026', year: 2026, name: 'Liquicity Cologne', venue: 'Bootshaus', cap: 2000, sold: 0 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'milan', name: 'Milan', country: 'Italy',
+    lat: 45.4642, lng: 9.19, status: 'growth',
+    dominant_genre: 'Liquid / Neurofunk',
+    market: M({
+      population_city_millions: 3.2,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Neurofunk', 'Jump Up'],
+      avg_ticket_eur: 18,
+      competing_events_per_year: 30,
+      revenue_potential: '€450k',
+      yoy_growth: '+28%',
+      scene_notes: 'Mother Inc. crew runs THIS IS DNB since 1997 — longest-running DnB night in Italy. Circolo Magnolia & LINEA are home venues. Frequent label takeovers.',
+    }),
+    clubs: [
+      { name: 'Circolo Magnolia', capacity: 2000, genre_focus: 'Outdoor electronic, DnB all-stars', ig: 'circolomagnolia' },
+      { name: 'LINEA', capacity: 700, genre_focus: 'DnB label takeovers', ig: 'lineamilano' },
+    ],
+    promoters: [
+      P({
+        name: 'Mother Inc. / This Is DnB', type: 'local',
+        active_since: 1997, events_per_year: 10,
+        dominant_genre: 'DnB',
+        ig: 'thisisdnb', website: 'motherinc.net',
+        lineup: ['Tode', 'Was A Be', 'Leleprox', 'Tommy Tumble'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'Milano DnB All Stars', venue: 'Circolo Magnolia', cap: 2000, sold: 1850 },
+          { date: 'Nov 2024', year: 2024, name: 'This Is DnB pres. Linea Takeover', venue: 'LINEA', cap: 700, sold: 680 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'rome', name: 'Rome', country: 'Italy',
+    lat: 41.9028, lng: 12.4964, status: 'emerging',
+    dominant_genre: 'Jungle / Liquid',
+    market: M({
+      population_city_millions: 2.8,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Jungle', 'Jump Up'],
+      avg_ticket_eur: 15,
+      competing_events_per_year: 20,
+      revenue_potential: '€220k',
+      yoy_growth: '+20%',
+      scene_notes: 'Rum — History of Drum&Bass series at Hacienda Roma celebrates classic DnB. Smaller scene than Milan but loyal community.',
+    }),
+    clubs: [
+      { name: 'Hacienda Roma', capacity: 600, genre_focus: 'DnB, electronic', ig: 'haciendaroma' },
+      { name: 'Monk', capacity: 700, genre_focus: 'Electronic & bass', ig: 'monkroma' },
+    ],
+    promoters: [
+      P({
+        name: 'Rum — History of DnB', type: 'independent',
+        active_since: 2018, events_per_year: 5,
+        dominant_genre: 'Jungle / DnB',
+        ig: 'rumhistoryofdnb',
+        lineup: ['Italian residents + UK guests'],
+        events: [
+          { date: 'Apr 2025', year: 2025, name: 'Rum — History of DnB', venue: 'Hacienda Roma', cap: 600, sold: 520 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'vienna', name: 'Vienna', country: 'Austria',
+    lat: 48.2082, lng: 16.3738, status: 'undivide',
+    dominant_genre: 'Neurofunk / Liquid',
+    market: M({
+      population_city_millions: 1.95,
+      dnb_scene_strength: 'legendary',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Liquid', 'Halftime', 'Dancefloor'],
+      avg_ticket_eur: 25,
+      competing_events_per_year: 80,
+      revenue_potential: '€1.2M',
+      yoy_growth: '+12%',
+      scene_notes: 'One of the strongest DnB scenes in Europe. Mainframe Recordings, Camo & Krooked, Mefjus all from here. Beat It! at Gasometer pulls 3,500. UKF wrote a feature on why Austria is so exciting for DnB.',
+    }),
+    clubs: [
+      { name: 'Gasometer (Bank Austria Halle)', capacity: 3500, genre_focus: 'Largest DnB events', ig: 'planetfestival' },
+      { name: 'Flex', capacity: 800, genre_focus: 'Iconic electronic & DnB club on the Donaukanal', ig: 'flexvienna' },
+      { name: 'Grelle Forelle', capacity: 600, genre_focus: 'Underground electronic', ig: 'grelleforelle' },
+    ],
+    promoters: [
+      P({
+        name: 'Mainframe Recordings', type: 'local',
+        active_since: 2003, events_per_year: 10,
+        dominant_genre: 'Neurofunk',
+        ig: 'mainframerec', website: 'mainframerecordings.com',
+        lineup: ['Camo & Krooked', 'Mefjus', 'Phace', 'Misanthrop', 'Cease'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Beat It!', venue: 'Gasometer', cap: 3500, sold: 3450 },
+          { date: 'Mar 2024', year: 2024, name: 'Mainframe Night', venue: 'Flex', cap: 800, sold: 780 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'madrid', name: 'Madrid', country: 'Spain',
+    lat: 40.4168, lng: -3.7038, status: 'emerging',
+    dominant_genre: 'Jump Up / Dancefloor',
+    market: M({
+      population_city_millions: 3.3,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Jump Up',
+      secondary_subgenres: ['Dancefloor', 'Neurofunk'],
+      avg_ticket_eur: 16,
+      competing_events_per_year: 22,
+      revenue_potential: '€280k',
+      yoy_growth: '+25%',
+      scene_notes: 'Twist DnB Club is the hub — runs Twist XXL DnB Fest (Sala La Riviera, ~2500 cap) and DnB Addiction series. Growing community, mainly jump up & dancefloor.',
+    }),
+    clubs: [
+      { name: 'Sala La Riviera', capacity: 2500, genre_focus: 'Largest DnB shows in Madrid', ig: 'salalariviera' },
+      { name: 'Sala Etnia', capacity: 800, genre_focus: 'Twist Back to da Club series', ig: 'salaetnia' },
+    ],
+    promoters: [
+      P({
+        name: 'Twist DnB Club', type: 'local',
+        active_since: 2015, events_per_year: 8,
+        dominant_genre: 'Jump Up / Dancefloor',
+        ig: 'twistdnbclub', website: 'twistdnbclub.com',
+        lineup: ['Bou', 'Tsuki', 'Disrupta', 'Sl8r', 'Macky Gee'],
+        events: [
+          { date: 'Apr 2025', year: 2025, name: 'Twist XXL DnB Fest', venue: 'Sala La Riviera', cap: 2500, sold: 2300 },
+          { date: 'Nov 2025', year: 2025, name: 'DnB Addiction', venue: 'Sala La Riviera', cap: 2500, sold: 0 },
+        ],
+      }),
+    ],
+  }),
 ];
 
 export const STATUS_COLORS: Record<CityStatus, string> = {
