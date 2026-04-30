@@ -173,6 +173,7 @@ export default function MapView() {
               lat={b.lat}
               lng={b.lng}
               label={b.city}
+              zoom={mapTransform.scale}
               onClick={() => openBookingModal(undefined, b.id)}
             />
           ))}
