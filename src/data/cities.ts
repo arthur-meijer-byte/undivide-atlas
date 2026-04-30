@@ -1,32 +1,60 @@
+export interface EventEntry {
+  date: string;       // "Sep 2024"
+  year: number;
+  name: string;
+  venue: string;
+  cap: number;
+  sold: number;
+}
+
 export interface Promoter {
   name: string;
   type: 'undivide' | 'local' | 'venue' | 'independent';
-  events: number;
-  since: number;
+  // legacy fields kept so existing components keep compiling
+  since: number;            // = active_since
+  events: number;           // = events_per_year
   ig?: string;
   fb?: string;
   yt?: string;
+  website?: string;
   lineup: string[];
-  events_list: {
-    date: string;
-    year: number;
-    name: string;
-    cap: number;
-    sold: number;
-  }[];
+  events_list: EventEntry[];
+  // new richer fields
+  active_since: number;
+  events_per_year: number;
+  dominant_genre: string;
 }
 
-export interface Market {
-  population: number;
-  dnbFans: string;
-  avgTicket: number;
-  competingEvents: number;
-  potentialRev: string;
-  growth: string;
+export interface Club {
+  name: string;
+  capacity: number;
+  genre_focus: string;
+  ig?: string;
+}
+
+export type SceneStrength = 'legendary' | 'strong' | 'growing' | 'emerging' | 'untapped';
+
+export interface MarketData {
+  population_city_millions: number;
+  dnb_scene_strength: SceneStrength;
+  dominant_subgenre: string;
+  secondary_subgenres: string[];
+  avg_ticket_eur: number;
+  competing_events_per_year: number;
+  revenue_potential: string;
+  yoy_growth: string;
+  scene_notes: string;
+  // legacy mirrors used by existing UI
+  population: number;       // = population_city_millions
+  dnbFans: string;          // shown as fanbase chip
+  avgTicket: number;        // = avg_ticket_eur
+  competingEvents: number;  // = competing_events_per_year
+  potentialRev: string;     // = revenue_potential
+  growth: string;           // = yoy_growth
 }
 
 export type CityStatus = 'undivide' | 'growth' | 'emerging' | 'new';
-export type CityGenre = 'Liquid' | 'Neuro' | 'Jump Up' | 'Dancefloor' | 'All Styles';
+export type CityGenre = string;
 export type MarketSize = 'huge' | 'large' | 'mid' | 'small';
 
 export interface City {
@@ -36,359 +64,708 @@ export interface City {
   lat: number;
   lng: number;
   status: CityStatus;
-  genre: CityGenre;
+  // legacy
+  genre: CityGenre;          // = dominant_genre
   marketSize: MarketSize;
   heroColor: string;
+  // new
+  dominant_genre: string;
+  market: MarketData;
+  clubs: Club[];
   promoters: Promoter[];
-  market: Market;
 }
-
-const ARTISTS = [
-  'Chase & Status', 'Logistics', 'Mefjus', 'Sub Focus', 'Friction', 'Wilkinson',
-  'Hazard', 'Turno', 'Etherwood', 'Hybrid Minds', 'Noisia', 'Andy C', 'Dimension',
-  'Pola & Bryson', 'Bou', 'Kanine', 'Dave Owen', 'High Contrast', 'Calibre',
-  'Camo & Krooked', 'Netsky', 'Fred V', 'IMANU', 'Workforce', 'Bcee'
-];
-
-const pick = (n: number, seed: number): string[] => {
-  const out: string[] = [];
-  for (let i = 0; i < n; i++) out.push(ARTISTS[(seed * 7 + i * 11) % ARTISTS.length]);
-  return Array.from(new Set(out));
-};
-
-const evts = (yrs: number[], baseName: string, capRange: [number, number]): Promoter['events_list'] => {
-  return yrs.map((y, i) => {
-    const cap = capRange[0] + ((i * 137) % (capRange[1] - capRange[0]));
-    const sold = Math.round(cap * (0.62 + (((y * 13 + i * 17) % 35) / 100)));
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return {
-      date: `${months[(i * 7) % 12]} ${1 + ((i * 13) % 28)}`,
-      year: y,
-      name: `${baseName} ${y}`,
-      cap, sold
-    };
-  });
-};
 
 const grad = (a: string, b: string) => `linear-gradient(135deg, ${a}, ${b})`;
 
+// fanbase heuristic from population & strength — purely cosmetic for the chip.
+const fans = (popM: number, s: SceneStrength): string => {
+  const mult = { legendary: 70, strong: 45, growing: 25, emerging: 14, untapped: 6 }[s];
+  const k = Math.round(popM * mult);
+  return `est. ${k}k`;
+};
+
+const sizeFromPop = (popM: number): MarketSize =>
+  popM >= 8 ? 'huge' : popM >= 2.5 ? 'large' : popM >= 0.8 ? 'mid' : 'small';
+
+const heroByStatus: Record<CityStatus, string> = {
+  undivide: grad('#e84118', '#7a0f00'),
+  growth: grad('#fbbc04', '#b07700'),
+  emerging: grad('#34a853', '#0f6b28'),
+  new: grad('#1a73e8', '#0a3d8a'),
+};
+
+// helper to build a promoter with mirrored legacy fields
+function P(p: {
+  name: string; type: Promoter['type']; active_since: number; events_per_year: number;
+  dominant_genre: string; ig?: string; fb?: string; yt?: string; website?: string;
+  lineup: string[]; events: EventEntry[];
+}): Promoter {
+  return {
+    name: p.name, type: p.type,
+    active_since: p.active_since, events_per_year: p.events_per_year,
+    since: p.active_since, events: p.events_per_year,
+    dominant_genre: p.dominant_genre,
+    ig: p.ig, fb: p.fb, yt: p.yt, website: p.website,
+    lineup: p.lineup, events_list: p.events,
+  };
+}
+
+// helper to build market with mirrored legacy fields
+function M(m: Omit<MarketData, 'population' | 'dnbFans' | 'avgTicket' | 'competingEvents' | 'potentialRev' | 'growth'>): MarketData {
+  return {
+    ...m,
+    population: m.population_city_millions,
+    dnbFans: fans(m.population_city_millions, m.dnb_scene_strength),
+    avgTicket: m.avg_ticket_eur,
+    competingEvents: m.competing_events_per_year,
+    potentialRev: m.revenue_potential,
+    growth: m.yoy_growth,
+  };
+}
+
+function C(c: Omit<City, 'genre' | 'marketSize' | 'heroColor'>): City {
+  return {
+    ...c,
+    genre: c.dominant_genre,
+    marketSize: sizeFromPop(c.market.population_city_millions),
+    heroColor: heroByStatus[c.status],
+  };
+}
+
 export const CITIES: City[] = [
-  // ------- UNDIVIDE ACTIVE -------
-  { id:'london', name:'London', country:'United Kingdom', lat:51.5074, lng:-0.1278,
-    status:'undivide', genre:'All Styles', marketSize:'huge',
-    heroColor: grad('#e84118','#7a0f00'),
-    promoters:[
-      { name:'Undivide London', type:'undivide', events:46, since:2015, ig:'undivide.london', fb:'undivideUK', yt:'undivide',
-        lineup: pick(8, 1),
-        events_list: evts([2016,2017,2018,2019,2021,2022,2023,2024],'Undivide x Printworks',[1800,4500]) },
-      { name:'Hospitality', type:'local', events:120, since:2009, ig:'hospitalrecords',
-        lineup: pick(7, 2),
-        events_list: evts([2018,2019,2020,2022,2023,2024],'Hospitality In The Park',[5000,12000]) },
+  // ──────────────────────────── UNDIVIDE ACTIVE ────────────────────────────
+  C({
+    id: 'london', name: 'London', country: 'United Kingdom',
+    lat: 51.51, lng: -0.13, status: 'undivide',
+    dominant_genre: 'Liquid / All styles',
+    market: M({
+      population_city_millions: 9.5,
+      dnb_scene_strength: 'legendary',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Neurofunk', 'Jump Up', 'Dancefloor', 'Jungle'],
+      avg_ticket_eur: 28,
+      competing_events_per_year: 200,
+      revenue_potential: '€2.5M+',
+      yoy_growth: '+6%',
+      scene_notes: 'Birthplace of DnB. Fabric Friday nights (FABRICLIVE) have run DnB since inception. Drumsheds (15,000 cap) opened 2023, ranked #45 DJ Mag Top 100 Clubs 2026.',
+    }),
+    clubs: [
+      { name: 'fabric', capacity: 2500, genre_focus: 'DnB (Fridays) + Techno (Saturdays)', ig: 'fabriclondon' },
+      { name: 'Drumsheds', capacity: 14999, genre_focus: 'All electronic — Room X 10,000 / Room Y 5,000 / Room Z 1,000', ig: 'drumsheds' },
+      { name: 'XOYO', capacity: 800, genre_focus: 'DnB, House, Techno', ig: 'xoyolondon' },
+      { name: 'Village Underground', capacity: 700, genre_focus: 'Electronic, DnB', ig: 'villageunderground' },
+      { name: 'Scala', capacity: 1150, genre_focus: 'DnB events, club nights', ig: 'scalalondondotcom' },
+      { name: 'O2 Academy Brixton', capacity: 4921, genre_focus: 'Large DnB shows (Hospitality, DnB Allstars)', ig: 'o2academybrixton' },
     ],
-    market:{ population:9.5, dnbFans:'est. 480k', avgTicket:42, competingEvents:38, potentialRev:'€2.8M', growth:'+8%' }
-  },
-  { id:'amsterdam', name:'Amsterdam', country:'Netherlands', lat:52.3676, lng:4.9041,
-    status:'undivide', genre:'Liquid', marketSize:'large',
-    heroColor: grad('#e84118','#a8240a'),
-    promoters:[
-      { name:'Undivide NL', type:'undivide', events:32, since:2016, ig:'undivide.nl',
-        lineup: pick(7,3),
-        events_list: evts([2017,2018,2019,2021,2022,2023,2024],'Undivide x Melkweg',[1200,3200]) },
-      { name:'Liquicity', type:'local', events:55, since:2012, ig:'liquicity',
-        lineup: pick(6,4),
-        events_list: evts([2019,2021,2022,2023,2024],'Liquicity Festival',[8000,15000]) },
+    promoters: [
+      P({
+        name: 'Hospital Records / Hospitality', type: 'undivide',
+        active_since: 1996, events_per_year: 15,
+        dominant_genre: 'Liquid',
+        ig: 'hospitalrecords', website: 'hospitalrecords.com',
+        lineup: ['London Elektricity', 'Netsky', 'High Contrast', 'Logistics', 'S.P.Y', 'Etherwood', 'Hybrid Minds', 'Bcee', 'Fred V & Grafix'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Hospitality In The Park', venue: 'Finsbury Park', cap: 10000, sold: 9800 },
+          { date: 'Sep 2023', year: 2023, name: 'Hospitality In The Park', venue: 'Finsbury Park', cap: 10000, sold: 9500 },
+          { date: 'Mar 2024', year: 2024, name: 'Hospitality', venue: 'O2 Academy Brixton', cap: 4921, sold: 4921 },
+          { date: 'Nov 2023', year: 2023, name: 'Hospitality', venue: 'O2 Academy Brixton', cap: 4921, sold: 4700 },
+        ],
+      }),
+      P({
+        name: 'DnB Allstars', type: 'local',
+        active_since: 2000, events_per_year: 20,
+        dominant_genre: 'All styles',
+        ig: 'dnballstars', website: 'dnballstars.com',
+        lineup: ['Andy C', 'Friction', 'Chase & Status', 'Sub Focus', 'DJ Hype', 'Shy FX', 'Goldie'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'DnB Allstars Halloween', venue: 'Drumsheds', cap: 10000, sold: 9500 },
+          { date: 'Feb 2024', year: 2024, name: 'DnB Allstars', venue: 'Drumsheds', cap: 8000, sold: 7800 },
+        ],
+      }),
+      P({
+        name: 'FABRICLIVE', type: 'venue',
+        active_since: 1999, events_per_year: 50,
+        dominant_genre: 'Liquid / Neurofunk / Jungle',
+        ig: 'fabriclondon', website: 'fabriclondon.com',
+        lineup: ['Andy C', 'Goldie', 'Shy FX', 'LTJ Bukem', 'Marky', 'Fabio & Grooverider'],
+        events: [
+          { date: 'Every Fri', year: 2024, name: 'FABRICLIVE', venue: 'fabric', cap: 2500, sold: 2200 },
+        ],
+      }),
     ],
-    market:{ population:1.2, dnbFans:'est. 95k', avgTicket:38, competingEvents:18, potentialRev:'€680k', growth:'+11%' }
-  },
-  { id:'rotterdam', name:'Rotterdam', country:'Netherlands', lat:51.9244, lng:4.4777,
-    status:'undivide', genre:'Neuro', marketSize:'mid',
-    heroColor: grad('#e84118','#8a1a05'),
-    promoters:[
-      { name:'Undivide RTM', type:'undivide', events:18, since:2018,
-        lineup: pick(6,5),
-        events_list: evts([2019,2021,2022,2023,2024],'Undivide x Maassilo',[1500,2800]) },
-    ],
-    market:{ population:0.65, dnbFans:'est. 42k', avgTicket:35, competingEvents:9, potentialRev:'€320k', growth:'+9%' }
-  },
-  { id:'berlin', name:'Berlin', country:'Germany', lat:52.5200, lng:13.4050,
-    status:'undivide', genre:'Neuro', marketSize:'large',
-    heroColor: grad('#e84118','#780f00'),
-    promoters:[
-      { name:'Undivide Berlin', type:'undivide', events:24, since:2017,
-        lineup: pick(7,6),
-        events_list: evts([2018,2019,2021,2022,2023,2024],'Undivide x Watergate',[1400,3000]) },
-      { name:'Mefjus Audio', type:'independent', events:14, since:2015,
-        lineup: pick(5,7),
-        events_list: evts([2017,2018,2019,2022,2023],'Mefjus presents',[800,1800]) },
-    ],
-    market:{ population:3.8, dnbFans:'est. 220k', avgTicket:36, competingEvents:24, potentialRev:'€1.4M', growth:'+10%' }
-  },
-  { id:'sydney', name:'Sydney', country:'Australia', lat:-33.8688, lng:151.2093,
-    status:'undivide', genre:'Jump Up', marketSize:'large',
-    heroColor: grad('#e84118','#7a1808'),
-    promoters:[
-      { name:'Undivide AUS', type:'undivide', events:28, since:2016,
-        lineup: pick(7,8),
-        events_list: evts([2017,2018,2019,2022,2023,2024],'Undivide Sydney',[1800,3600]) },
-    ],
-    market:{ population:5.3, dnbFans:'est. 180k', avgTicket:55, competingEvents:14, potentialRev:'€1.1M', growth:'+13%' }
-  },
-  { id:'manchester', name:'Manchester', country:'United Kingdom', lat:53.4808, lng:-2.2426,
-    status:'undivide', genre:'Dancefloor', marketSize:'mid',
-    heroColor: grad('#e84118','#8c1808'),
-    promoters:[
-      { name:'Undivide MCR', type:'undivide', events:22, since:2017,
-        lineup: pick(6,9),
-        events_list: evts([2018,2019,2022,2023,2024],'Undivide x Warehouse Project',[2200,4000]) },
-    ],
-    market:{ population:2.7, dnbFans:'est. 145k', avgTicket:34, competingEvents:16, potentialRev:'€720k', growth:'+9%' }
-  },
-  { id:'newyork', name:'New York', country:'United States', lat:40.7128, lng:-74.0060,
-    status:'undivide', genre:'All Styles', marketSize:'huge',
-    heroColor: grad('#e84118','#5e0a00'),
-    promoters:[
-      { name:'Undivide USA', type:'undivide', events:14, since:2019,
-        lineup: pick(7,10),
-        events_list: evts([2019,2022,2023,2024],'Undivide x Brooklyn Mirage',[2400,5500]) },
-    ],
-    market:{ population:8.4, dnbFans:'est. 210k', avgTicket:62, competingEvents:11, potentialRev:'€1.6M', growth:'+18%' }
-  },
-  { id:'toronto', name:'Toronto', country:'Canada', lat:43.6532, lng:-79.3832,
-    status:'undivide', genre:'Liquid', marketSize:'mid',
-    heroColor: grad('#e84118','#6e0e02'),
-    promoters:[
-      { name:'Undivide CA', type:'undivide', events:11, since:2020,
-        lineup: pick(6,11),
-        events_list: evts([2021,2022,2023,2024],'Undivide Toronto',[1200,2400]) },
-    ],
-    market:{ population:2.9, dnbFans:'est. 85k', avgTicket:48, competingEvents:7, potentialRev:'€520k', growth:'+15%' }
-  },
-  { id:'melbourne', name:'Melbourne', country:'Australia', lat:-37.8136, lng:144.9631,
-    status:'undivide', genre:'Neuro', marketSize:'large',
-    heroColor: grad('#e84118','#7c1606'),
-    promoters:[
-      { name:'Undivide MEL', type:'undivide', events:24, since:2016,
-        lineup: pick(7,12),
-        events_list: evts([2017,2018,2019,2022,2023,2024],'Undivide Melbourne',[1600,3200]) },
-    ],
-    market:{ population:5.0, dnbFans:'est. 165k', avgTicket:52, competingEvents:12, potentialRev:'€980k', growth:'+12%' }
-  },
-  { id:'prague', name:'Prague', country:'Czech Republic', lat:50.0755, lng:14.4378,
-    status:'undivide', genre:'Neuro', marketSize:'mid',
-    heroColor: grad('#e84118','#6c1004'),
-    promoters:[
-      { name:'Undivide CZ', type:'undivide', events:19, since:2018,
-        lineup: pick(6,13),
-        events_list: evts([2019,2021,2022,2023,2024],'Undivide x Roxy',[1100,2200]) },
-    ],
-    market:{ population:1.3, dnbFans:'est. 88k', avgTicket:24, competingEvents:11, potentialRev:'€340k', growth:'+10%' }
-  },
-  { id:'warsaw', name:'Warsaw', country:'Poland', lat:52.2297, lng:21.0122,
-    status:'undivide', genre:'Jump Up', marketSize:'mid',
-    heroColor: grad('#e84118','#7a1305'),
-    promoters:[
-      { name:'Undivide PL', type:'undivide', events:16, since:2018,
-        lineup: pick(6,14),
-        events_list: evts([2019,2022,2023,2024],'Undivide Warsaw',[1400,2600]) },
-    ],
-    market:{ population:1.8, dnbFans:'est. 75k', avgTicket:22, competingEvents:8, potentialRev:'€280k', growth:'+14%' }
-  },
-  { id:'barcelona', name:'Barcelona', country:'Spain', lat:41.3851, lng:2.1734,
-    status:'undivide', genre:'Liquid', marketSize:'mid',
-    heroColor: grad('#e84118','#6c0d02'),
-    promoters:[
-      { name:'Undivide ES', type:'undivide', events:13, since:2019,
-        lineup: pick(6,15),
-        events_list: evts([2019,2022,2023,2024],'Undivide x Razzmatazz',[1500,2800]) },
-    ],
-    market:{ population:1.6, dnbFans:'est. 62k', avgTicket:32, competingEvents:6, potentialRev:'€340k', growth:'+11%' }
-  },
-  { id:'vienna', name:'Vienna', country:'Austria', lat:48.2082, lng:16.3738,
-    status:'undivide', genre:'Neuro', marketSize:'mid',
-    heroColor: grad('#e84118','#6e0f03'),
-    promoters:[
-      { name:'Undivide AT', type:'undivide', events:15, since:2018,
-        lineup: pick(6,16),
-        events_list: evts([2019,2022,2023,2024],'Undivide Vienna',[1200,2200]) },
-    ],
-    market:{ population:1.9, dnbFans:'est. 70k', avgTicket:30, competingEvents:9, potentialRev:'€310k', growth:'+9%' }
-  },
-  { id:'dubai', name:'Dubai', country:'UAE', lat:25.2048, lng:55.2708,
-    status:'undivide', genre:'Dancefloor', marketSize:'mid',
-    heroColor: grad('#e84118','#5c0c02'),
-    promoters:[
-      { name:'Undivide UAE (partial)', type:'undivide', events:6, since:2022,
-        lineup: pick(5,17),
-        events_list: evts([2022,2023,2024],'Undivide Dubai',[1400,2400]) },
-    ],
-    market:{ population:3.4, dnbFans:'est. 48k', avgTicket:75, competingEvents:5, potentialRev:'€620k', growth:'+22%' }
-  },
-  { id:'capetown', name:'Cape Town', country:'South Africa', lat:-33.9249, lng:18.4241,
-    status:'undivide', genre:'Liquid', marketSize:'small',
-    heroColor: grad('#e84118','#5a0a01'),
-    promoters:[
-      { name:'Undivide ZA (partial)', type:'undivide', events:5, since:2022,
-        lineup: pick(5,18),
-        events_list: evts([2022,2023,2024],'Undivide Cape Town',[800,1600]) },
-    ],
-    market:{ population:4.7, dnbFans:'est. 38k', avgTicket:18, competingEvents:6, potentialRev:'€180k', growth:'+19%' }
-  },
+  }),
 
-  // ------- GROWTH MARKETS -------
-  { id:'la', name:'Los Angeles', country:'United States', lat:34.0522, lng:-118.2437,
-    status:'growth', genre:'Dancefloor', marketSize:'large',
-    heroColor: grad('#fbbc04','#9a6b00'),
-    promoters:[
-      { name:'West Coast Bass', type:'local', events:18, since:2018,
-        lineup: pick(6,19),
-        events_list: evts([2019,2022,2023,2024],'WCB presents',[1500,3000]) },
+  C({
+    id: 'amsterdam', name: 'Amsterdam', country: 'Netherlands',
+    lat: 52.37, lng: 4.90, status: 'undivide',
+    dominant_genre: 'Liquid / All styles',
+    market: M({
+      population_city_millions: 0.87,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Dancefloor', 'Neurofunk'],
+      avg_ticket_eur: 25,
+      competing_events_per_year: 30,
+      revenue_potential: '€450k',
+      yoy_growth: '+12%',
+      scene_notes: 'Liquicity based here — leading global liquid DnB label/brand with 4M+ YouTube subscribers. Now&Wow (cap 3000) hosts Korsakov Kingsnight. Strong festival market via Liquicity Festival (Geestmerambacht, annual sellout).',
+    }),
+    clubs: [
+      { name: 'Now&Wow', capacity: 3000, genre_focus: 'DnB, Electronic', ig: 'nowandwow' },
+      { name: 'Paradiso', capacity: 1500, genre_focus: 'All genres incl. DnB shows', ig: 'paradiso_amsterdam' },
+      { name: 'Melkweg', capacity: 1500, genre_focus: 'All genres', ig: 'melkwegamsterdam' },
+      { name: 'NDSM Wharf', capacity: 5000, genre_focus: 'Large outdoor events', ig: 'ndsmwharf' },
     ],
-    market:{ population:4.0, dnbFans:'est. 110k', avgTicket:55, competingEvents:9, potentialRev:'€820k', growth:'+16%' }
-  },
-  { id:'tokyo', name:'Tokyo', country:'Japan', lat:35.6762, lng:139.6503,
-    status:'growth', genre:'Neuro', marketSize:'large',
-    heroColor: grad('#fbbc04','#8a5a00'),
-    promoters:[
-      { name:'Drum and Bass Sessions JP', type:'local', events:22, since:2014,
-        lineup: pick(6,20),
-        events_list: evts([2018,2019,2022,2023,2024],'DnB Sessions Tokyo',[1200,2400]) },
+    promoters: [
+      P({
+        name: 'Liquicity', type: 'local',
+        active_since: 2010, events_per_year: 12,
+        dominant_genre: 'Liquid',
+        ig: 'liquicity', website: 'liquicity.com', yt: 'Liquicity',
+        lineup: ['Hybrid Minds', 'Maduk', 'Whiney', 'BCee', 'Kasra', 'Metrik', 'Camo & Krooked', 'Andromedik'],
+        events: [
+          { date: 'Jul 2024', year: 2024, name: 'Liquicity Festival', venue: 'Geestmerambacht Oudkarspel', cap: 15000, sold: 15000 },
+          { date: 'Jul 2023', year: 2023, name: 'Liquicity Festival', venue: 'Geestmerambacht Oudkarspel', cap: 12000, sold: 12000 },
+        ],
+      }),
+      P({
+        name: 'Hospitality NL (Undivide)', type: 'undivide',
+        active_since: 2015, events_per_year: 4,
+        dominant_genre: 'Liquid',
+        ig: 'hospitalitydnb',
+        lineup: ['Chase & Status', 'Logistics', 'Bcee', 'Hybrid Minds', 'Fred V & Grafix', 'Camo & Krooked'],
+        events: [
+          { date: 'Jul 2024', year: 2024, name: 'Hospitality In The Park AMS', venue: 'Amstelpark', cap: 3000, sold: 2950 },
+          { date: 'Jul 2023', year: 2023, name: 'Hospitality In The Park AMS', venue: 'Amstelpark', cap: 3000, sold: 2800 },
+        ],
+      }),
+      P({
+        name: 'High Tea', type: 'local',
+        active_since: 2016, events_per_year: 6,
+        dominant_genre: 'Liquid / Melodic',
+        ig: 'highteadnb', website: 'highteadnb.com',
+        lineup: ['T & Sugah', 'Zazu', 'Mozey', 'Dossa & Locuzzed', 'Monrroe', 'NCT', 'Rameses B'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'High Tea Amsterdam', venue: 'Now&Wow', cap: 2000, sold: 1900 },
+        ],
+      }),
     ],
-    market:{ population:13.9, dnbFans:'est. 95k', avgTicket:48, competingEvents:7, potentialRev:'€720k', growth:'+13%' }
-  },
-  { id:'paris', name:'Paris', country:'France', lat:48.8566, lng:2.3522,
-    status:'growth', genre:'Liquid', marketSize:'large',
-    heroColor: grad('#fbbc04','#7e5200'),
-    promoters:[
-      { name:'Cyberfunk', type:'local', events:34, since:2010,
-        lineup: pick(7,21),
-        events_list: evts([2018,2019,2022,2023,2024],'Cyberfunk Paris',[1800,3600]) },
-    ],
-    market:{ population:2.2, dnbFans:'est. 130k', avgTicket:36, competingEvents:14, potentialRev:'€720k', growth:'+12%' }
-  },
-  { id:'saopaulo', name:'São Paulo', country:'Brazil', lat:-23.5505, lng:-46.6333,
-    status:'growth', genre:'Jump Up', marketSize:'large',
-    heroColor: grad('#fbbc04','#7a4f00'),
-    promoters:[
-      { name:'DnB Brazil', type:'local', events:26, since:2013,
-        lineup: pick(6,22),
-        events_list: evts([2018,2019,2022,2023,2024],'DnB Brazil presents',[2000,4500]) },
-    ],
-    market:{ population:12.3, dnbFans:'est. 140k', avgTicket:18, competingEvents:11, potentialRev:'€480k', growth:'+17%' }
-  },
-  { id:'jhb', name:'Johannesburg', country:'South Africa', lat:-26.2041, lng:28.0473,
-    status:'growth', genre:'Dancefloor', marketSize:'mid',
-    heroColor: grad('#fbbc04','#6e4700'),
-    promoters:[
-      { name:'Jozi Bass', type:'local', events:14, since:2017,
-        lineup: pick(5,23),
-        events_list: evts([2019,2022,2023,2024],'Jozi Bass Sessions',[1100,2200]) },
-    ],
-    market:{ population:5.6, dnbFans:'est. 52k', avgTicket:16, competingEvents:5, potentialRev:'€220k', growth:'+18%' }
-  },
-  { id:'singapore', name:'Singapore', country:'Singapore', lat:1.3521, lng:103.8198,
-    status:'growth', genre:'Neuro', marketSize:'mid',
-    heroColor: grad('#fbbc04','#6a4400'),
-    promoters:[
-      { name:'Bass Republic SG', type:'local', events:12, since:2018,
-        lineup: pick(5,24),
-        events_list: evts([2019,2022,2023,2024],'Bass Republic',[900,1800]) },
-    ],
-    market:{ population:5.7, dnbFans:'est. 38k', avgTicket:58, competingEvents:4, potentialRev:'€340k', growth:'+15%' }
-  },
+  }),
 
-  // ------- EMERGING -------
-  { id:'seoul', name:'Seoul', country:'South Korea', lat:37.5665, lng:126.9780,
-    status:'emerging', genre:'Neuro', marketSize:'mid',
-    heroColor: grad('#34a853','#1a5028'),
-    promoters:[
-      { name:'Seoul Bass Collective', type:'independent', events:8, since:2020,
-        lineup: pick(5,25),
-        events_list: evts([2021,2022,2023,2024],'SBC night',[600,1400]) },
+  C({
+    id: 'rotterdam', name: 'Rotterdam', country: 'Netherlands',
+    lat: 51.92, lng: 4.48, status: 'undivide',
+    dominant_genre: 'Neurofunk / All styles',
+    market: M({
+      population_city_millions: 0.65,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Dancefloor', 'Liquid', 'Crossbreed'],
+      avg_ticket_eur: 22,
+      competing_events_per_year: 20,
+      revenue_potential: '€320k',
+      yoy_growth: '+8%',
+      scene_notes: 'Home of Korsakov Weekender — biggest indoor DnB festival in the Netherlands. Maassilo (former grain silo) hosts 5000+ cap events. Eatbrain festival (15-year anniversary 2025) also at Maassilo.',
+    }),
+    clubs: [
+      { name: 'Maassilo', capacity: 5000, genre_focus: 'Large DnB festivals, Korsakov, Eatbrain', ig: 'maassilo' },
+      { name: 'Now&Wow', capacity: 3000, genre_focus: 'Korsakov Kingsnight, DnB club nights', ig: 'nowandwow' },
+      { name: 'Annabel', capacity: 800, genre_focus: 'Club nights', ig: 'annabelrotterdam' },
     ],
-    market:{ population:9.7, dnbFans:'est. 28k', avgTicket:42, competingEvents:3, potentialRev:'€220k', growth:'+24%' }
-  },
-  { id:'mumbai', name:'Mumbai', country:'India', lat:19.0760, lng:72.8777,
-    status:'emerging', genre:'Liquid', marketSize:'large',
-    heroColor: grad('#34a853','#185024'),
-    promoters:[
-      { name:'Sub Continental', type:'local', events:9, since:2019,
-        lineup: pick(5,26),
-        events_list: evts([2021,2022,2023,2024],'Sub Continental',[800,1800]) },
+    promoters: [
+      P({
+        name: 'Korsakov Music NL (Undivide)', type: 'undivide',
+        active_since: 2014, events_per_year: 6,
+        dominant_genre: 'Neurofunk',
+        ig: 'korsakovmusic', website: 'korsakovmusic.com',
+        lineup: ['Mefjus', 'Emperor', 'Phace', 'Unreal', 'Icicle', 'Malux', 'Optiv', 'Billain', 'Hedex', 'Wilkinson', 'Camo & Krooked b2b Mefjus', 'Bou & B Live 247'],
+        events: [
+          { date: 'Mar 2025', year: 2025, name: 'Korsakov Weekender', venue: 'Maassilo', cap: 5000, sold: 5000 },
+          { date: 'Apr 2025', year: 2025, name: 'Korsakov Kingsnight', venue: 'Now&Wow', cap: 3000, sold: 2900 },
+          { date: 'Mar 2024', year: 2024, name: 'Korsakov Weekender', venue: 'Maassilo', cap: 5000, sold: 4800 },
+        ],
+      }),
+      P({
+        name: 'Explicit Events', type: 'local',
+        active_since: 2020, events_per_year: 8,
+        dominant_genre: 'Liquid / Dancefloor / Neurofunk',
+        ig: 'explicit_events_nl', website: 'explicitevents.nl',
+        lineup: ['Local & regional DnB talent', 'Up-and-coming international artists'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Explicit Rotterdam', venue: 'TBC', cap: 400, sold: 380 },
+        ],
+      }),
+      P({
+        name: 'Eatbrain', type: 'local',
+        active_since: 2012, events_per_year: 3,
+        dominant_genre: 'Neurofunk',
+        ig: 'eatbrain', website: 'eatbrain.com',
+        lineup: ['Jade Venom', 'Prolix', 'State of Mind', 'Agressor Bunx', 'Misanthrop', 'Pythius'],
+        events: [
+          { date: 'May 2025', year: 2025, name: 'Eatbrain Indoor Festival 15yr Anniversary', venue: 'Maassilo Rotterdam', cap: 4000, sold: 3800 },
+        ],
+      }),
     ],
-    market:{ population:20.4, dnbFans:'est. 55k', avgTicket:14, competingEvents:4, potentialRev:'€180k', growth:'+28%' }
-  },
-  { id:'brisbane', name:'Brisbane', country:'Australia', lat:-27.4698, lng:153.0251,
-    status:'emerging', genre:'Jump Up', marketSize:'mid',
-    heroColor: grad('#34a853','#1a4e26'),
-    promoters:[
-      { name:'BNE Bass', type:'local', events:10, since:2019,
-        lineup: pick(5,27),
-        events_list: evts([2021,2022,2023,2024],'BNE Bass',[800,1600]) },
-    ],
-    market:{ population:2.5, dnbFans:'est. 42k', avgTicket:48, competingEvents:5, potentialRev:'€280k', growth:'+19%' }
-  },
-  { id:'antwerp', name:'Antwerp', country:'Belgium', lat:51.2194, lng:4.4025,
-    status:'emerging', genre:'Liquid', marketSize:'small',
-    heroColor: grad('#34a853','#1c4f28'),
-    promoters:[
-      { name:'BE Bass', type:'venue', events:7, since:2020,
-        lineup: pick(5,28),
-        events_list: evts([2021,2022,2023,2024],'BE Bass',[600,1200]) },
-    ],
-    market:{ population:0.55, dnbFans:'est. 22k', avgTicket:32, competingEvents:4, potentialRev:'€140k', growth:'+17%' }
-  },
+  }),
 
-  // ------- NEW -------
-  { id:'chicago', name:'Chicago', country:'United States', lat:41.8781, lng:-87.6298,
-    status:'new', genre:'Dancefloor', marketSize:'mid',
-    heroColor: grad('#1a73e8','#0d3a78'),
-    promoters:[
-      { name:'Chicago Bass', type:'independent', events:4, since:2022,
-        lineup: pick(4,29),
-        events_list: evts([2023,2024],'Chicago Bass',[800,1500]) },
+  C({
+    id: 'prague', name: 'Prague', country: 'Czech Republic',
+    lat: 50.08, lng: 14.44, status: 'undivide',
+    dominant_genre: 'All styles — DnB capital of the world',
+    market: M({
+      population_city_millions: 1.35,
+      dnb_scene_strength: 'legendary',
+      dominant_subgenre: 'All styles',
+      secondary_subgenres: ['Neurofunk', 'Liquid', 'Dancefloor', 'Jump Up'],
+      avg_ticket_eur: 18,
+      competing_events_per_year: 60,
+      revenue_potential: '€850k',
+      yoy_growth: '+10%',
+      scene_notes: 'Widely called the DnB capital of the world. Let It Roll — the world\'s largest DnB festival (25,000 daily summer; 8,000 winter at Fortuna Hall) — is based here, run by Beatworx/Suki Zdenek since 2002. Winter 2024 held at O2 Universum.',
+    }),
+    clubs: [
+      { name: 'Fortuna Sports Hall (SH FORTUNA)', capacity: 8000, genre_focus: 'Let It Roll Winter editions', ig: 'letitroll' },
+      { name: 'O2 Universum', capacity: 10000, genre_focus: 'Large shows, Let It Roll Winter 2024', ig: 'o2universum' },
+      { name: 'Fuchs2', capacity: 300, genre_focus: 'Underground club nights', ig: 'fuchs2prague' },
     ],
-    market:{ population:2.7, dnbFans:'est. 32k', avgTicket:50, competingEvents:3, potentialRev:'€180k', growth:'+26%' }
-  },
-  { id:'moscow', name:'Moscow', country:'Russia', lat:55.7558, lng:37.6173,
-    status:'new', genre:'Neuro', marketSize:'large',
-    heroColor: grad('#1a73e8','#0e3a72)'),
-    promoters:[
-      { name:'RU DnB', type:'local', events:5, since:2021,
-        lineup: pick(4,30),
-        events_list: evts([2022,2023,2024],'RU DnB',[1000,2000]) },
+    promoters: [
+      P({
+        name: 'Beatworx / Let It Roll', type: 'local',
+        active_since: 2002, events_per_year: 4,
+        dominant_genre: 'All DnB subgenres',
+        ig: 'letitroll', website: 'letitroll.eu',
+        lineup: ['Andy C', 'Chase & Status', 'Camo & Krooked', 'Wilkinson', 'Mefjus', 'Dimension', 'Netsky', 'Hybrid Minds', 'Friction', 'AMC', 'Bou', 'Sigma', 'Hedex', 'Black Sun Empire', 'Noisia'],
+        events: [
+          { date: 'Aug 2024', year: 2024, name: 'Let It Roll Summer 2024', venue: 'Milovice Airfield Prague', cap: 25000, sold: 23000 },
+          { date: 'Feb 2024', year: 2024, name: 'Let It Roll Winter 2024', venue: 'O2 Universum Prague', cap: 10000, sold: 9500 },
+          { date: 'Feb 2026', year: 2026, name: 'Let It Roll Winter 2026', venue: 'Fortuna Sports Hall Prague', cap: 8000, sold: 8000 },
+        ],
+      }),
+      P({
+        name: 'Korsakov Music CZ (Undivide)', type: 'undivide',
+        active_since: 2015, events_per_year: 4,
+        dominant_genre: 'Neurofunk',
+        ig: 'korsakovmusic',
+        lineup: ['Mefjus', 'Emperor', 'Phace', 'Unreal', 'Icicle', 'Misanthrop'],
+        events: [
+          { date: 'Jan 2024', year: 2024, name: 'Korsakov Showcase Prague', venue: 'TBC', cap: 1200, sold: 1200 },
+        ],
+      }),
     ],
-    market:{ population:12.5, dnbFans:'est. 90k', avgTicket:20, competingEvents:6, potentialRev:'€220k', growth:'+11%' }
-  },
-  { id:'budapest', name:'Budapest', country:'Hungary', lat:47.4979, lng:19.0402,
-    status:'new', genre:'Jump Up', marketSize:'mid',
-    heroColor: grad('#1a73e8','#0d386f'),
-    promoters:[
-      { name:'BP Bass', type:'independent', events:3, since:2022,
-        lineup: pick(4,31),
-        events_list: evts([2023,2024],'BP Bass',[700,1400]) },
+  }),
+
+  C({
+    id: 'budapest', name: 'Budapest', country: 'Hungary',
+    lat: 47.50, lng: 19.04, status: 'growth',
+    dominant_genre: 'Jump Up / Dancefloor / Neurofunk',
+    market: M({
+      population_city_millions: 1.75,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Jump Up',
+      secondary_subgenres: ['Neurofunk', 'Dancefloor', 'Liquid'],
+      avg_ticket_eur: 14,
+      competing_events_per_year: 25,
+      revenue_potential: '€180k',
+      yoy_growth: '+28%',
+      scene_notes: 'Bladerunnaz (est. 1999) is one of Europe\'s longest-running DnB nights. Arzenál (former 110-year-old gun factory) is the city\'s flagship DnB venue. Hedex headlined Burn Energy Tour here Sep 2024. Strong community, younger generation growing fast.',
+    }),
+    clubs: [
+      { name: 'Arzenál', capacity: 1500, genre_focus: 'Bass music, DnB flagship venue', ig: 'arsenal_budapest' },
+      { name: 'Instant-Fogas', capacity: 600, genre_focus: 'Underground electronic, DnB nights', ig: 'instantfogas' },
     ],
-    market:{ population:1.7, dnbFans:'est. 38k', avgTicket:18, competingEvents:5, potentialRev:'€120k', growth:'+15%' }
-  },
-  { id:'beijing', name:'Beijing', country:'China', lat:39.9042, lng:116.4074,
-    status:'new', genre:'All Styles', marketSize:'huge',
-    heroColor: grad('#1a73e8','#0c356a'),
-    promoters:[
-      { name:'BJ Bass Lab', type:'independent', events:3, since:2023,
-        lineup: pick(4,32),
-        events_list: evts([2023,2024],'BJ Bass Lab',[800,1400]) },
+    promoters: [
+      P({
+        name: 'Bladerunnaz', type: 'local',
+        active_since: 1999, events_per_year: 12,
+        dominant_genre: 'Jump Up / Dancefloor',
+        ig: 'bladerunnaz',
+        lineup: ['Hedex', 'Hazard', 'Turno', 'Voltage', 'Hype', 'Bou', 'Pendulum', 'Mefjus', 'Camo & Krooked'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Burn Energy Tour — Hedex', venue: 'Arzenál Budapest', cap: 1500, sold: 1500 },
+          { date: 'Mar 2024', year: 2024, name: 'Bladerunnaz Budapest', venue: 'Arzenál Budapest', cap: 1200, sold: 1180 },
+        ],
+      }),
+      P({
+        name: 'Otherside / Arzenál', type: 'venue',
+        active_since: 2019, events_per_year: 20,
+        dominant_genre: 'Bass music / DnB',
+        ig: 'arsenal_budapest',
+        lineup: ['International and local DnB talent'],
+        events: [
+          { date: '2024', year: 2024, name: 'Otherside Bass Events', venue: 'Arzenál Budapest', cap: 1500, sold: 1350 },
+        ],
+      }),
     ],
-    market:{ population:21.5, dnbFans:'est. 60k', avgTicket:38, competingEvents:2, potentialRev:'€240k', growth:'+32%' }
-  },
-  { id:'mexico', name:'Mexico City', country:'Mexico', lat:19.4326, lng:-99.1332,
-    status:'new', genre:'Dancefloor', marketSize:'large',
-    heroColor: grad('#1a73e8','#0c356a'),
-    promoters:[
-      { name:'CDMX Bass', type:'local', events:4, since:2022,
-        lineup: pick(4,33),
-        events_list: evts([2023,2024],'CDMX Bass',[900,1800]) },
+  }),
+
+  C({
+    id: 'berlin', name: 'Berlin', country: 'Germany',
+    lat: 52.52, lng: 13.40, status: 'undivide',
+    dominant_genre: 'Neurofunk / Techstep',
+    market: M({
+      population_city_millions: 3.8,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Techstep', 'Dancefloor', 'Liquid'],
+      avg_ticket_eur: 22,
+      competing_events_per_year: 40,
+      revenue_potential: '€750k',
+      yoy_growth: '+14%',
+      scene_notes: 'Strong underground techno culture spills into DnB. Mannheim and Bremen also notable German scenes. The Blast operates here via Funkhaus (2000 cap). Trust Berlin (est. 2012) runs Berghain-adjacent nights.',
+    }),
+    clubs: [
+      { name: 'Funkhaus Berlin', capacity: 2000, genre_focus: 'Large DnB and electronic events', ig: 'funkhaus.berlin' },
+      { name: 'Berghain / Säule', capacity: 1500, genre_focus: 'Occasional DnB/bass events', ig: 'berghain_kantine' },
+      { name: 'Tresor', capacity: 800, genre_focus: 'Techno + occasional DnB', ig: 'tresor.berlin' },
     ],
-    market:{ population:9.2, dnbFans:'est. 48k', avgTicket:22, competingEvents:3, potentialRev:'€160k', growth:'+23%' }
-  },
+    promoters: [
+      P({
+        name: 'The Blast Berlin (Undivide)', type: 'undivide',
+        active_since: 2017, events_per_year: 4,
+        dominant_genre: 'Neurofunk',
+        ig: 'theblastdnb',
+        lineup: ['Calyx & TeeBee', 'Mefjus', 'Emperor', 'Current Value', 'Misanthrop', 'Phace', 'Icicle'],
+        events: [
+          { date: 'Feb 2024', year: 2024, name: 'The Blast — Funkhaus Berlin', venue: 'Funkhaus Berlin', cap: 2000, sold: 1900 },
+          { date: 'Feb 2023', year: 2023, name: 'The Blast — Funkhaus Berlin', venue: 'Funkhaus Berlin', cap: 2000, sold: 1750 },
+        ],
+      }),
+      P({
+        name: 'Trust Berlin', type: 'local',
+        active_since: 2012, events_per_year: 10,
+        dominant_genre: 'Neurofunk / Techstep',
+        ig: 'trustberlin',
+        lineup: ['Mefjus', 'Break', 'Insideinfo', 'Telekinesis', 'Neonlight'],
+        events: [
+          { date: 'Jan 2024', year: 2024, name: 'Trust Berlin', venue: 'Funkhaus Berlin', cap: 1500, sold: 1450 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'warsaw', name: 'Warsaw', country: 'Poland',
+    lat: 52.23, lng: 21.01, status: 'undivide',
+    dominant_genre: 'Neurofunk',
+    market: M({
+      population_city_millions: 1.8,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Dancefloor', 'Jump Up'],
+      avg_ticket_eur: 14,
+      competing_events_per_year: 15,
+      revenue_potential: '€160k',
+      yoy_growth: '+18%',
+      scene_notes: 'Mentioned alongside Budapest as a strong emerging European DnB market. Burn Energy Tour 2024 listed Poland as next stop after Budapest. Korsakov active here.',
+    }),
+    clubs: [
+      { name: 'Smolna', capacity: 600, genre_focus: 'Underground electronic, DnB nights', ig: 'smolnawarsaw' },
+      { name: 'Jasna 1', capacity: 800, genre_focus: 'Club events', ig: 'jasna1warsaw' },
+    ],
+    promoters: [
+      P({
+        name: 'Korsakov Music PL (Undivide)', type: 'undivide',
+        active_since: 2016, events_per_year: 4,
+        dominant_genre: 'Neurofunk',
+        ig: 'korsakovmusic',
+        lineup: ['Mefjus', 'Emperor', 'Phace', 'Unreal', 'Icicle'],
+        events: [
+          { date: 'Feb 2024', year: 2024, name: 'Korsakov Warsaw', venue: 'Smolna Warsaw', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Bassline Warsaw', type: 'local',
+        active_since: 2014, events_per_year: 8,
+        dominant_genre: 'Dancefloor / Jump Up',
+        ig: 'basslinewarsaw',
+        lineup: ['Hazard', 'Voltage', 'Turno', 'Hype'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Bassline Warsaw', venue: 'Jasna 1', cap: 500, sold: 490 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'vienna', name: 'Vienna', country: 'Austria',
+    lat: 48.21, lng: 16.37, status: 'undivide',
+    dominant_genre: 'Neurofunk / All styles',
+    market: M({
+      population_city_millions: 1.9,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Liquid', 'Dancefloor'],
+      avg_ticket_eur: 18,
+      competing_events_per_year: 20,
+      revenue_potential: '€200k',
+      yoy_growth: '+7%',
+      scene_notes: 'Consistently rated by international artists as one of Europe\'s best DnB cities. Multiple references to weekly sold-out club nights. Linz (2hr away) also has an active scene (PRSPCT crossbreed ties).',
+    }),
+    clubs: [
+      { name: 'Flex', capacity: 600, genre_focus: 'DnB and electronic club nights', ig: 'flexvienna' },
+      { name: 'Arena Vienna', capacity: 3500, genre_focus: 'Large events', ig: 'arenavienna' },
+    ],
+    promoters: [
+      P({
+        name: 'Korsakov Music AT (Undivide)', type: 'undivide',
+        active_since: 2016, events_per_year: 4,
+        dominant_genre: 'Neurofunk',
+        ig: 'korsakovmusic',
+        lineup: ['Mefjus', 'Emperor', 'Phace', 'Misanthrop'],
+        events: [
+          { date: 'Jan 2024', year: 2024, name: 'Korsakov Vienna', venue: 'Flex Vienna', cap: 500, sold: 490 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'barcelona', name: 'Barcelona', country: 'Spain',
+    lat: 41.39, lng: 2.15, status: 'undivide',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 1.6,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Dancefloor',
+      secondary_subgenres: ['Neurofunk', 'Liquid'],
+      avg_ticket_eur: 20,
+      competing_events_per_year: 12,
+      revenue_potential: '€250k',
+      yoy_growth: '+20%',
+      scene_notes: 'Mentioned in Burn Energy Tour expansion. Growing underground electronic scene with crossover from techno/house crowds into DnB.',
+    }),
+    clubs: [
+      { name: 'Razzmatazz', capacity: 3000, genre_focus: 'Multi-room club, electronic events', ig: 'razzmatazzbcn' },
+      { name: 'Nitsa Club', capacity: 600, genre_focus: 'Underground electronic', ig: 'nitsaclub' },
+    ],
+    promoters: [
+      P({
+        name: 'The Blast Iberia (Undivide)', type: 'undivide',
+        active_since: 2017, events_per_year: 3,
+        dominant_genre: 'Neurofunk',
+        ig: 'theblastdnb',
+        lineup: ['Calyx & TeeBee', 'Mefjus', 'Current Value', 'Icicle'],
+        events: [
+          { date: 'Jun 2024', year: 2024, name: 'The Blast Barcelona', venue: 'Razzmatazz', cap: 1500, sold: 1400 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'manchester', name: 'Manchester', country: 'United Kingdom',
+    lat: 53.48, lng: -2.24, status: 'undivide',
+    dominant_genre: 'Liquid / All styles',
+    market: M({
+      population_city_millions: 0.55,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Jump Up', 'Dancefloor'],
+      avg_ticket_eur: 25,
+      competing_events_per_year: 20,
+      revenue_potential: '€340k',
+      yoy_growth: '+10%',
+      scene_notes: 'Depot Mayfield (Broadwick Live, same team as Drumsheds/Printworks) is Manchester\'s key large venue. Warehouse Project runs here. Strong student city — high DnB fanbase density.',
+    }),
+    clubs: [
+      { name: 'Depot Mayfield', capacity: 10000, genre_focus: 'Large events, Warehouse Project', ig: 'depotmayfield' },
+      { name: 'Band on the Wall', capacity: 500, genre_focus: 'Club nights', ig: 'bandonthewall' },
+      { name: 'Gorilla', capacity: 600, genre_focus: 'Electronic club nights', ig: 'gorillamanc' },
+    ],
+    promoters: [
+      P({
+        name: 'Hospitality North (Undivide)', type: 'undivide',
+        active_since: 2016, events_per_year: 4,
+        dominant_genre: 'Liquid',
+        ig: 'hospitalitydnb',
+        lineup: ['Logistics', 'S.P.Y', 'Etherwood', 'Camo & Krooked', 'Bcee'],
+        events: [
+          { date: 'Feb 2024', year: 2024, name: 'Hospitality Manchester', venue: 'Gorilla', cap: 600, sold: 580 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'sydney', name: 'Sydney', country: 'Australia',
+    lat: -33.87, lng: 151.21, status: 'undivide',
+    dominant_genre: 'Liquid / Dancefloor',
+    market: M({
+      population_city_millions: 5.3,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Dancefloor', 'Jump Up'],
+      avg_ticket_eur: 42,
+      competing_events_per_year: 12,
+      revenue_potential: '€650k',
+      yoy_growth: '+20%',
+      scene_notes: 'DnB Allstars toured Australia/NZ Sep 2024, performing at Hordern Pavilion Sydney. Australian scene growing strongly. Hospitality active here since 2016.',
+    }),
+    clubs: [
+      { name: 'Hordern Pavilion', capacity: 5500, genre_focus: 'Large DnB shows (DnB Allstars, Hospitality)', ig: 'hordern_pavilion' },
+      { name: 'Marquee Sydney', capacity: 2000, genre_focus: 'Club nights', ig: 'marqueeclub' },
+      { name: 'Metro Theatre', capacity: 1700, genre_focus: 'Live shows and DnB events', ig: 'metrotheatre' },
+    ],
+    promoters: [
+      P({
+        name: 'Hospitality Australia (Undivide)', type: 'undivide',
+        active_since: 2016, events_per_year: 3,
+        dominant_genre: 'Liquid',
+        ig: 'hospitalitydnb',
+        lineup: ['Logistics', 'Bcee', 'Camo & Krooked', 'Calibre', 'S.P.Y', 'Etherwood'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Hospitality Sydney', venue: 'Metro Theatre', cap: 1700, sold: 1650 },
+          { date: 'Sep 2024', year: 2024, name: 'DnB Allstars Sydney', venue: 'Hordern Pavilion', cap: 5500, sold: 5000 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'melbourne', name: 'Melbourne', country: 'Australia',
+    lat: -37.81, lng: 144.96, status: 'undivide',
+    dominant_genre: 'Liquid / Neurofunk',
+    market: M({
+      population_city_millions: 5.1,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Neurofunk', 'Dancefloor'],
+      avg_ticket_eur: 38,
+      competing_events_per_year: 10,
+      revenue_potential: '€500k',
+      yoy_growth: '+22%',
+      scene_notes: 'Twisted Audio and Plasma Audio are the key local brands. Plasma Audio (Safire) has connections to Shogun Audio, Noisia Invisible, Dispatch. Broken Beat Assault runs long-standing nights. Seven Nightclub used for seasonal events.',
+    }),
+    clubs: [
+      { name: 'Seven Nightclub', capacity: 1200, genre_focus: 'Electronic, DnB seasonal events', ig: 'sevennightclub' },
+      { name: 'Margaret Court Arena', capacity: 7500, genre_focus: 'Large shows', ig: 'margaretcourtarena' },
+    ],
+    promoters: [
+      P({
+        name: 'Hospitality Melbourne (Undivide)', type: 'undivide',
+        active_since: 2018, events_per_year: 3,
+        dominant_genre: 'Liquid',
+        ig: 'hospitalitydnb',
+        lineup: ['Logistics', 'Etherwood', 'Hybrid Minds', 'Fred V & Grafix'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Hospitality Melbourne', venue: 'Seven Nightclub', cap: 1200, sold: 1150 },
+        ],
+      }),
+      P({
+        name: 'Plasma Audio / Twisted Audio', type: 'local',
+        active_since: 2014, events_per_year: 6,
+        dominant_genre: 'Neurofunk / Liquid',
+        ig: 'plasmaaudio', website: 'plasma-audio.com',
+        lineup: ['Safire', 'Alix Perez', 'Doc Scott', 'DLR', 'Skeptical', 'Icicle'],
+        events: [
+          { date: '2024', year: 2024, name: 'Plasma Audio presents', venue: 'Seven Nightclub', cap: 800, sold: 750 },
+        ],
+      }),
+    ],
+  }),
+
+  // ──────────────────────────── GROWTH MARKETS ────────────────────────────
+  C({
+    id: 'antwerp', name: 'Antwerp', country: 'Belgium',
+    lat: 51.22, lng: 4.40, status: 'growth',
+    dominant_genre: 'All styles — festival market',
+    market: M({
+      population_city_millions: 0.52,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Liquid / Neurofunk',
+      secondary_subgenres: ['Dancefloor', 'Jump Up'],
+      avg_ticket_eur: 55,
+      competing_events_per_year: 5,
+      revenue_potential: '€1.2M (festival)',
+      yoy_growth: '+15%',
+      scene_notes: 'Rampage Open Air (est. 2012, annual sellout, 25,000 cap) is one of Europe\'s top DnB/bass festivals. Held annually in Antwerp. Lineup typically includes Chase & Status, Sub Focus, Noisia, Mefjus, Pendulum.',
+    }),
+    clubs: [
+      { name: 'Rampage Open Air site', capacity: 25000, genre_focus: 'Annual DnB/bass festival', ig: 'rampagefestival' },
+      { name: 'Trix', capacity: 2000, genre_focus: 'Live shows and club nights', ig: 'trix_antwerp' },
+    ],
+    promoters: [
+      P({
+        name: 'Rampage Festival', type: 'local',
+        active_since: 2012, events_per_year: 2,
+        dominant_genre: 'All DnB / Bass music',
+        ig: 'rampagefestival', website: 'rampagefestival.be',
+        lineup: ['Chase & Status', 'Sub Focus', 'Noisia', 'Mefjus', 'Pendulum', 'Andy C', 'Shy FX', 'Friction', 'Hedex', 'Wilkinson'],
+        events: [
+          { date: 'Jun 2024', year: 2024, name: 'Rampage Open Air 2024', venue: 'Antwerp Open Air Site', cap: 25000, sold: 25000 },
+          { date: 'Jun 2023', year: 2023, name: 'Rampage Open Air 2023', venue: 'Antwerp Open Air Site', cap: 22000, sold: 22000 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'tokyo', name: 'Tokyo', country: 'Japan',
+    lat: 35.68, lng: 139.69, status: 'growth',
+    dominant_genre: 'Liquid / Dancefloor',
+    market: M({
+      population_city_millions: 13.9,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Dancefloor', 'Neurofunk'],
+      avg_ticket_eur: 35,
+      competing_events_per_year: 15,
+      revenue_potential: '€900k',
+      yoy_growth: '+35%',
+      scene_notes: 'Safire (Melbourne) played Japan multiple times, confirming international DnB touring interest. UKF Japan active since 2019. Tokyo has active club circuit with strong electronic music culture.',
+    }),
+    clubs: [
+      { name: 'Womb Tokyo', capacity: 800, genre_focus: 'Electronic, regular DnB nights', ig: 'womb_official' },
+      { name: 'Unit Tokyo', capacity: 600, genre_focus: 'Underground electronic, DnB', ig: 'unit_tokyo' },
+      { name: 'Zepp Tokyo', capacity: 2700, genre_focus: 'Larger shows', ig: 'zepptokyo' },
+    ],
+    promoters: [
+      P({
+        name: 'UKF Japan (Undivide)', type: 'undivide',
+        active_since: 2019, events_per_year: 2,
+        dominant_genre: 'Dancefloor',
+        ig: 'ukf',
+        lineup: ['Chase & Status', 'Sub Focus', 'Wilkinson', 'Friction'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'UKF On Air Tokyo', venue: 'Zepp Tokyo', cap: 2700, sold: 2500 },
+        ],
+      }),
+    ],
+  }),
+
+  // ──────────────────────────── NEW TERRITORIES ────────────────────────────
+  C({
+    id: 'saopaulo', name: 'São Paulo', country: 'Brazil',
+    lat: -23.55, lng: -46.63, status: 'new',
+    dominant_genre: 'Dancefloor / Jump Up',
+    market: M({
+      population_city_millions: 12.3,
+      dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Dancefloor',
+      secondary_subgenres: ['Jump Up', 'Liquid'],
+      avg_ticket_eur: 20,
+      competing_events_per_year: 10,
+      revenue_potential: '€400k',
+      yoy_growth: '+45%',
+      scene_notes: 'DJ Marky (Brazilian DnB legend, signed to Hospital Records) is the scene\'s figurehead globally. D-Edge Club São Paulo is one of Latin America\'s top electronic venues. Sambass subgenre originated here.',
+    }),
+    clubs: [
+      { name: 'D-Edge', capacity: 2500, genre_focus: 'Top electronic venue in Latin America, DnB nights', ig: 'dedgeclub' },
+      { name: 'Cine Jóia', capacity: 1500, genre_focus: 'Electronic events', ig: 'cinejoia' },
+    ],
+    promoters: [
+      P({
+        name: 'DJ Marky Productions', type: 'independent',
+        active_since: 2000, events_per_year: 5,
+        dominant_genre: 'Liquid / Dancefloor',
+        ig: 'djmarkyofficial',
+        lineup: ['DJ Marky', 'Logistics', 'S.P.Y', 'Calibre'],
+        events: [
+          { date: '2024', year: 2024, name: 'Marky & Friends', venue: 'D-Edge São Paulo', cap: 1500, sold: 1400 },
+        ],
+      }),
+    ],
+  }),
 ];
 
 export const STATUS_COLORS: Record<CityStatus, string> = {
@@ -403,4 +780,12 @@ export const STATUS_LABEL: Record<CityStatus, string> = {
   growth: 'Growth market',
   emerging: 'Emerging scene',
   new: 'New territory',
+};
+
+export const SCENE_LABEL: Record<SceneStrength, string> = {
+  legendary: 'Legendary',
+  strong: 'Strong',
+  growing: 'Growing',
+  emerging: 'Emerging',
+  untapped: 'Untapped',
 };
