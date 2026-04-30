@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMapState } from '../hooks/useMapState';
-import { STATUS_LABEL, type City } from '../data/cities';
+import { STATUS_LABEL, SCENE_LABEL, type City } from '../data/cities';
 import { useBookings } from '../hooks/useBookings';
 
 const TYPE_BADGE = {
@@ -19,8 +19,7 @@ function ytUrl(h: string) {
 }
 
 function dominantSound(city: City): string {
-  // Simple: city.genre is the headline sound
-  return city.genre;
+  return city.market.dominant_subgenre;
 }
 
 export default function DetailPanel() {
