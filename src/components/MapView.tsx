@@ -46,16 +46,14 @@ function usePinClick(onClick: () => void) {
 interface PinProps { city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; zoom: number; }
 function Pin({ city, onClick, onHover, zoom }: PinProps) {
   const color = STATUS_COLORS[city.status];
-  // Google-Maps-style teardrop, constant screen size regardless of zoom.
-  const baseSize = city.status === 'undivide' ? 1.35 : 1;
-  const s = baseSize / Math.max(zoom, 0.35); // counter-scale so it stays the same on screen
+  // Tiny WhatsApp-style dot — constant screen size regardless of zoom.
+  const baseSize = city.status === 'undivide' ? 1.15 : 1;
+  const s = baseSize / Math.max(zoom, 0.35);
   const handlers = usePinClick(onClick);
 
-  // Teardrop path drawn so its tip sits at (0,0) — anchor exactly on the coordinate.
-  const W = 11 * s;     // half-width of the bulb
-  const H = 30 * s;     // total height tip→top
-  const cy = -H + W;    // center of the bulb circle
-  const dotR = 3.5 * s;
+  const r = 2.6 * s;          // dot radius (small, subtle)
+  const glow = 6 * s;         // outer neon halo
+  const hit = 9 * s;          // invisible touch target
 
   return (
     <Marker coordinates={[city.lng, city.lat]}>
@@ -67,17 +65,12 @@ function Pin({ city, onClick, onHover, zoom }: PinProps) {
         onMouseLeave={() => onHover(null)}
       >
         {/* hit target */}
-        <circle cy={cy} r={W + 6 * s} fill="transparent" />
-        {/* shadow */}
-        <ellipse cx={0} cy={2 * s} rx={W * 0.6} ry={1.6 * s} fill="rgba(0,0,0,0.35)" pointerEvents="none" />
-        {/* teardrop */}
-        <path
-          d={`M 0 0 C ${-W} ${cy + W * 0.4}, ${-W} ${cy - W}, 0 ${cy - W} C ${W} ${cy - W}, ${W} ${cy + W * 0.4}, 0 0 Z`}
-          fill={color}
-          pointerEvents="none"
-        />
-        {/* inner white dot */}
-        <circle cx={0} cy={cy} r={dotR} fill="#fff" pointerEvents="none" />
+        <circle r={hit} fill="transparent" />
+        {/* neon glow halo */}
+        <circle r={glow} fill={color} opacity={0.28} pointerEvents="none" />
+        <circle r={glow * 0.65} fill={color} opacity={0.45} pointerEvents="none" />
+        {/* solid neon dot with thin white ring */}
+        <circle r={r} fill={color} stroke="#fff" strokeWidth={0.6 * s} pointerEvents="none" />
       </g>
     </Marker>
   );
@@ -86,15 +79,16 @@ function Pin({ city, onClick, onHover, zoom }: PinProps) {
 function BookingPin({ lat, lng, onClick, label, zoom }: { lat: number; lng: number; onClick: () => void; label: string; zoom: number }) {
   const handlers = usePinClick(onClick);
   const s = 1 / Math.max(zoom, 0.35);
-  const r = 9 * s;
+  const r = 2.6 * s;
+  const glow = 6 * s;
   return (
     <Marker coordinates={[lng, lat]}>
       <g style={{ cursor: 'pointer' }} {...handlers}>
-        <circle r={r + 6 * s} fill="transparent" />
-        <circle r={r} fill="#111827" pointerEvents="none" />
-        <text textAnchor="middle" y={3.5 * s} fill="#fff" fontSize={11 * s} fontWeight={700} pointerEvents="none">📅</text>
-        <text textAnchor="middle" y={-(r + 4 * s)} fill="#111827" fontSize={9 * s} fontWeight={700}
-          style={{ paintOrder: 'stroke', stroke: '#fff', strokeWidth: 3 * s }} pointerEvents="none">
+        <circle r={9 * s} fill="transparent" />
+        <circle r={glow} fill="#ffffff" opacity={0.25} pointerEvents="none" />
+        <circle r={r} fill="#111827" stroke="#fff" strokeWidth={0.6 * s} pointerEvents="none" />
+        <text textAnchor="middle" y={-(r + 3 * s)} fill="#111827" fontSize={7 * s} fontWeight={700}
+          style={{ paintOrder: 'stroke', stroke: '#fff', strokeWidth: 2 * s }} pointerEvents="none">
           {label}
         </text>
       </g>
