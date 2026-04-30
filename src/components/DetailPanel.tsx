@@ -444,3 +444,30 @@ function Mini({ v, l }: { v: string; l: string }) {
     </div>
   );
 }
+
+function BrandStatusStrip({
+  cityId, promoter, onOpen,
+}: { cityId: string; promoter: string; onOpen: () => void }) {
+  const statuses = usePromoterStore((s) => s.statuses);
+  const tracked = ALL_BRANDS
+    .map((b) => ({ b, s: statuses[`${cityId}::${promoter}::${b}`] }))
+    .filter((x) => x.s && x.s.status !== 'none');
+  if (tracked.length === 0) return null;
+  return (
+    <button
+      onClick={onOpen}
+      className="w-full px-2.5 pb-2 pt-0 flex flex-wrap gap-1 text-left hover:bg-gray-100/60 transition-colors"
+      title="Open Undivide status tracker"
+    >
+      {tracked.map(({ b, s }) => {
+        const m = STATUS_META[s.status];
+        return (
+          <span key={b} className={`text-[10px] px-2 py-0.5 rounded-full font-semibold flex items-center gap-1 ${m.color}`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${m.dot}`} />
+            {BRAND_META[b].label}: {m.label}
+          </span>
+        );
+      })}
+    </button>
+  );
+}
