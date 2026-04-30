@@ -11,6 +11,7 @@ import CompareModal from '../components/CompareModal';
 import BookingModal from '../components/BookingModal';
 import BookingsButton from '../components/BookingsButton';
 import ThemeToggle from '../components/ThemeToggle';
+import AgendaPanel, { AgendaButton } from '../components/AgendaPanel';
 import { useApplyTheme } from '../hooks/useTheme';
 
 export const Route = createFileRoute('/')({
