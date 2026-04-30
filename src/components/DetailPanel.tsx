@@ -74,11 +74,55 @@ export default function DetailPanel() {
       </div>
 
       <div className="flex-1 overflow-y-auto thin-scroll p-4 space-y-4 text-sm">
-        {/* Market quick stats */}
+        {/* Market quick stats — clickable for context */}
         <div className="grid grid-cols-3 gap-2">
-          <Stat v={city.market.dnbFans} l="DnB fans" />
-          <Stat v={`€${city.market.avgTicket}`} l="Avg ticket" />
-          <Stat v={city.market.growth} l="Growth" />
+          <StatPop
+            v={city.market.dnbFans}
+            l="DnB fans"
+            title={`Estimated DnB fanbase — ${city.name}`}
+            body={
+              <>
+                <KV k="Estimate" v={city.market.dnbFans} />
+                <KV k="City population" v={`${city.market.population_city_millions}M`} />
+                <KV k="Scene strength" v={SCENE_LABEL[city.market.dnb_scene_strength]} />
+                <KV k="Dominant sound" v={city.market.dominant_subgenre} />
+                <p className="text-[11px] text-gray-500 mt-2 leading-relaxed">
+                  Heuristic from population × scene strength. Cross-reference with
+                  Resident Advisor for live event counts.
+                </p>
+                <Links city={city} kind="fans" />
+              </>
+            }
+          />
+          <StatPop
+            v={`€${city.market.avgTicket}`}
+            l="Avg ticket"
+            title={`Average ticket — ${city.name}`}
+            body={
+              <>
+                <KV k="Average" v={`€${city.market.avgTicket}`} />
+                <KV k="Competing events / yr" v={city.market.competing_events_per_year} />
+                <KV k="Revenue potential" v={city.market.revenue_potential} />
+                <p className="text-[11px] text-gray-500 mt-2 leading-relaxed">
+                  Benchmark across local DnB nights. Premium / festival pricing
+                  typically sits 30–80% above this average.
+                </p>
+                <Links city={city} kind="tickets" />
+              </>
+            }
+          />
+          <StatPop
+            v={city.market.growth}
+            l="Growth"
+            title={`YoY growth — ${city.name}`}
+            body={
+              <>
+                <KV k="YoY" v={city.market.growth} />
+                <p className="text-[11px] text-gray-700 leading-relaxed mt-2">{city.market.scene_notes}</p>
+                <Links city={city} kind="growth" />
+              </>
+            }
+          />
         </div>
 
         {/* Promoters - dropdowns */}
