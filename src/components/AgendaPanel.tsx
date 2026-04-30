@@ -199,8 +199,11 @@ export default function AgendaPanel() {
                           if (i.source === 'booking' && i.bookingId) {
                             openBooking(undefined, i.bookingId);
                           } else if (i.cityId) {
-                            setCity(i.cityId);
-                            close();
+                            const c = CITIES.find((x) => x.id === i.cityId);
+                            if (c) {
+                              setCity(c);
+                              close();
+                            }
                           }
                         }}
                         className="w-full text-left bg-gray-50 hover:bg-gray-100 rounded-lg p-3 transition-colors"
