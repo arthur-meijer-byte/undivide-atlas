@@ -27,6 +27,9 @@ export default function DetailPanel() {
   const bookings = useBookings((s) => s.bookings);
   const openModal = useBookings((s) => s.openModal);
   const [openPromoter, setOpenPromoter] = useState<string | null>(null);
+  const [showEvents, setShowEvents] = useState(false);
+  const [showPromoters, setShowPromoters] = useState(false);
+  const [contactPromoter, setContactPromoter] = useState<string | null>(null);
 
   if (!currentCity) return null;
   const city = currentCity;
@@ -34,6 +37,10 @@ export default function DetailPanel() {
     (b) => b.city.toLowerCase() === city.name.toLowerCase(),
   );
   const totalEvents = city.promoters.reduce((a, p) => a + p.events, 0);
+  const allEvents = city.promoters
+    .flatMap((p) => p.events_list.map((e) => ({ ...e, promoter: p.name })))
+    .sort((a, b) => b.year - a.year);
+  const contactP = contactPromoter ? city.promoters.find((p) => p.name === contactPromoter) : null;
 
   return (
     <div
