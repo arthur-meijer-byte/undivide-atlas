@@ -769,10 +769,10 @@ export const CITIES: City[] = [
 ];
 
 export const STATUS_COLORS: Record<CityStatus, string> = {
-  undivide: '#e84118',
-  growth: '#fbbc04',
-  emerging: '#34a853',
-  new: '#1a73e8',
+  undivide: '#ff2d6f',   // neon pink
+  growth: '#fff200',     // neon yellow
+  emerging: '#39ff14',   // neon green
+  new: '#00e5ff',        // neon cyan
 };
 
 export const STATUS_LABEL: Record<CityStatus, string> = {
