@@ -331,70 +331,18 @@ export default function DetailPanel() {
         </Modal>
       )}
 
-      {/* Promoter contact modal */}
+      {/* Promoter info + Undivide CRM modal */}
       {contactP && (
-        <Modal title={contactP.name} onClose={() => setContactPromoter(null)}>
-          <div className="space-y-3 text-sm">
-            <div className="flex flex-wrap gap-2">
-              <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${TYPE_BADGE[contactP.type]}`}>{contactP.type}</span>
-              <span className="text-[11px] bg-gray-100 px-2 py-0.5 rounded-full">Since {contactP.since}</span>
-              <span className="text-[11px] bg-gray-100 px-2 py-0.5 rounded-full">{contactP.events} events/yr</span>
-              <span className="text-[11px] bg-gray-100 px-2 py-0.5 rounded-full">🎵 {contactP.dominant_genre}</span>
-            </div>
-
-            <div>
-              <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">Contact & socials</div>
-              <div className="flex flex-wrap gap-2">
-                {contactP.ig && (
-                  <a href={igUrl(contactP.ig)} target="_blank" rel="noreferrer"
-                    className="bg-pink-50 text-pink-700 hover:bg-pink-100 px-2.5 py-1 rounded-full text-xs">
-                    IG @{contactP.ig}
-                  </a>
-                )}
-                {contactP.fb && (
-                  <a href={fbUrl(contactP.fb)} target="_blank" rel="noreferrer"
-                    className="bg-blue-50 text-blue-700 hover:bg-blue-100 px-2.5 py-1 rounded-full text-xs">
-                    FB {contactP.fb}
-                  </a>
-                )}
-                {contactP.yt && (
-                  <a href={ytUrl(contactP.yt)} target="_blank" rel="noreferrer"
-                    className="bg-red-50 text-red-700 hover:bg-red-100 px-2.5 py-1 rounded-full text-xs">
-                    YT {contactP.yt}
-                  </a>
-                )}
-                {contactP.website && (
-                  <a href={contactP.website.startsWith('http') ? contactP.website : `https://${contactP.website}`} target="_blank" rel="noreferrer"
-                    className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-2.5 py-1 rounded-full text-xs">
-                    🌐 Website
-                  </a>
-                )}
-                {!contactP.ig && !contactP.fb && !contactP.yt && !contactP.website && (
-                  <span className="text-xs text-gray-400 italic">No socials on file</span>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">Recent line-ups</div>
-              <div className="flex flex-wrap gap-1">
-                {contactP.lineup.map((a) => (
-                  <span key={a} className="bg-white border border-gray-200 px-2 py-0.5 rounded-full text-[11px]">{a}</span>
-                ))}
-              </div>
-            </div>
-
-            <button
-              onClick={() => {
-                setContactPromoter(null);
-                setOpenPromoter(contactP.name);
-              }}
-              className="w-full bg-[var(--undivide)] text-white text-sm font-semibold py-2 rounded-lg hover:opacity-90"
-            >
-              View full event history →
-            </button>
-          </div>
-        </Modal>
+        <PromoterModal
+          city={city}
+          promoter={contactP}
+          onClose={() => setContactPromoter(null)}
+          onViewHistory={() => {
+            const name = contactP.name;
+            setContactPromoter(null);
+            setOpenPromoter(name);
+          }}
+        />
       )}
     </div>
   );
