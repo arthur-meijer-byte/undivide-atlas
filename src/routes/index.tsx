@@ -34,10 +34,8 @@ function Index() {
       <MapView />
       <SearchBar />
       <FilterChips />
-      <Legend />
       <MapControls />
       <DetailPanel />
-      <Timeline />
       <Tooltip />
       <CompareModal />
       <BookingsButton />
