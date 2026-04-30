@@ -146,20 +146,33 @@ export default function DetailPanel() {
               const totalCap = p.events_list.reduce((a, e) => a + e.cap, 0);
               return (
                 <div key={p.name} className="bg-gray-50 rounded-lg overflow-hidden">
-                  <button
-                    onClick={() => setOpenPromoter(open ? null : p.name)}
-                    className="w-full flex items-center gap-3 p-2.5 hover:bg-gray-100 text-left"
-                  >
-                    <div className="w-9 h-9 rounded-full bg-[var(--undivide)]/15 text-[var(--undivide)] flex items-center justify-center font-bold text-sm">
-                      {p.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-semibold truncate">{p.name}</div>
-                      <div className="text-xs text-gray-500">{p.events} events · since {p.since}</div>
-                    </div>
+                  <div className="w-full flex items-center gap-2 p-2.5 hover:bg-gray-100">
+                    <button
+                      onClick={() => setOpenPromoter(open ? null : p.name)}
+                      className="flex items-center gap-3 flex-1 min-w-0 text-left"
+                    >
+                      <div className="w-9 h-9 rounded-full bg-[var(--undivide)]/15 text-[var(--undivide)] flex items-center justify-center font-bold text-sm shrink-0">
+                        {p.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold truncate">{p.name}</div>
+                        <div className="text-xs text-gray-500">{p.events} events · since {p.since}</div>
+                      </div>
+                    </button>
                     <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${TYPE_BADGE[p.type]}`}>{p.type}</span>
-                    <span className="text-gray-400 ml-1">{open ? '▾' : '▸'}</span>
-                  </button>
+                    <button
+                      onClick={() => setContactPromoter(p.name)}
+                      className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-[var(--undivide)] text-white hover:opacity-90"
+                      title="Edit info & Undivide status"
+                    >
+                      CRM
+                    </button>
+                    <button
+                      onClick={() => setOpenPromoter(open ? null : p.name)}
+                      className="text-gray-400 ml-0.5"
+                    >{open ? '▾' : '▸'}</button>
+                  </div>
+                  <BrandStatusStrip cityId={city.id} promoter={p.name} onOpen={() => setContactPromoter(p.name)} />
 
                   {open && (
                     <div className="p-3 pt-0 space-y-3 text-xs">
