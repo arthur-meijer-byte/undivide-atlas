@@ -75,20 +75,22 @@
   --background: oklch(1 0 0);
   --foreground: oklch(0.2 0.02 260);
 
-  /* Undivide brand */
-  --undivide: oklch(0.62 0.22 28);          /* #e84118 */
+  /* Undivide brand — neon pink/magenta */
+  --undivide: oklch(0.68 0.28 5);            /* neon hot pink #ff2d6f */
   --undivide-foreground: oklch(1 0 0);
-  --status-undivide: oklch(0.62 0.22 28);   /* red */
-  --status-growth: oklch(0.78 0.16 80);     /* amber */
-  --status-emerging: oklch(0.66 0.17 145);  /* green */
-  --status-new: oklch(0.58 0.19 255);       /* blue */
+  --status-undivide: oklch(0.68 0.28 5);     /* neon pink */
+  --status-growth: oklch(0.95 0.22 105);     /* neon yellow */
+  --status-emerging: oklch(0.88 0.30 142);   /* neon green */
+  --status-new: oklch(0.82 0.18 215);        /* neon cyan */
 
-  --map-ocean: oklch(0.92 0.04 240);
-  --map-land: oklch(0.97 0.005 90);
-  --map-stroke: oklch(0.86 0.008 90);
+  /* Soft daytime map */
+  --map-ocean: oklch(0.96 0.02 220);
+  --map-land: oklch(0.985 0.005 90);
+  --map-stroke: oklch(0.92 0.008 90);
 
-  --shadow-float: 0 2px 6px rgba(0,0,0,0.3);
-  --shadow-panel: 0 4px 16px rgba(0,0,0,0.18);
+  --shadow-float: 0 2px 6px rgba(0,0,0,0.18);
+  --shadow-panel: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow-neon: 0 0 12px rgba(255,45,111,0.55);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
