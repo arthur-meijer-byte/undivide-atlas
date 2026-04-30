@@ -247,14 +247,80 @@ export default function DetailPanel() {
   );
 }
 
-function Stat({ v, l }: { v: string; l: string }) {
+function StatPop({ v, l, title, body }: { v: string; l: string; title: string; body: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="bg-gray-50 rounded-lg p-2 text-center">
-      <div className="text-sm font-bold text-[var(--undivide)]">{v}</div>
-      <div className="text-[10px] uppercase tracking-wide text-gray-500">{l}</div>
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        className="bg-gray-50 hover:bg-gray-100 rounded-lg p-2 text-center transition-colors border border-transparent hover:border-[var(--undivide)]/30"
+        title={`More about ${l}`}
+      >
+        <div className="text-sm font-bold text-[var(--undivide)]">{v}</div>
+        <div className="text-[10px] uppercase tracking-wide text-gray-500 flex items-center justify-center gap-1">
+          {l} <span className="opacity-50">ⓘ</span>
+        </div>
+      </button>
+      {open && (
+        <div
+          className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
+          onClick={() => setOpen(false)}
+        >
+          <div
+            className="bg-white rounded-xl shadow-xl max-w-sm w-full p-5 space-y-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="font-bold text-base">{title}</h3>
+              <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-700 text-xl leading-none">×</button>
+            </div>
+            <div className="space-y-1 text-sm">{body}</div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function KV({ k, v }: { k: string; v: string | number }) {
+  return (
+    <div className="flex justify-between text-xs py-1 border-b border-gray-100">
+      <span className="text-gray-500">{k}</span>
+      <span className="font-semibold">{v}</span>
     </div>
   );
 }
+
+function Links({ city, kind }: { city: City; kind: 'fans' | 'tickets' | 'growth' }) {
+  const q = encodeURIComponent(`${city.name} drum and bass`);
+  const links =
+    kind === 'fans'
+      ? [
+          { label: 'Resident Advisor', url: `https://ra.co/clubs/${encodeURIComponent(city.name.toLowerCase())}` },
+          { label: 'Songkick events', url: `https://www.songkick.com/search?query=${q}` },
+          { label: 'Spotify city listeners', url: `https://open.spotify.com/search/${q}` },
+        ]
+      : kind === 'tickets'
+      ? [
+          { label: 'RA tickets', url: `https://ra.co/events/${encodeURIComponent(city.name.toLowerCase())}` },
+          { label: 'Skiddle', url: `https://www.skiddle.com/whats-on/search/?q=${q}` },
+        ]
+      : [
+          { label: 'Google Trends', url: `https://trends.google.com/trends/explore?q=${q}` },
+          { label: 'RA news', url: `https://ra.co/news?q=${q}` },
+        ];
+  return (
+    <div className="flex flex-wrap gap-2 pt-2">
+      {links.map((l) => (
+        <a key={l.label} href={l.url} target="_blank" rel="noreferrer"
+          className="text-[11px] bg-[var(--undivide)]/10 text-[var(--undivide)] hover:bg-[var(--undivide)]/20 px-2.5 py-1 rounded-full font-medium">
+          {l.label} ↗
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function Mini({ v, l }: { v: string; l: string }) {
   return (
     <div className="bg-white rounded p-1.5 text-center border border-gray-200">
