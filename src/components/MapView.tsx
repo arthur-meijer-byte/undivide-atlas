@@ -43,12 +43,19 @@ function usePinClick(onClick: () => void) {
   };
 }
 
-interface PinProps { city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; }
-function Pin({ city, onClick, onHover }: PinProps) {
+interface PinProps { city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; zoom: number; }
+function Pin({ city, onClick, onHover, zoom }: PinProps) {
   const color = STATUS_COLORS[city.status];
-  const sizeMap = { undivide: 14, growth: 11, emerging: 9, new: 7 } as const;
-  const r = sizeMap[city.status];
+  // Google-Maps-style teardrop, constant screen size regardless of zoom.
+  const baseSize = city.status === 'undivide' ? 1.35 : 1;
+  const s = baseSize / Math.max(zoom, 0.35); // counter-scale so it stays the same on screen
   const handlers = usePinClick(onClick);
+
+  // Teardrop path drawn so its tip sits at (0,0) — anchor exactly on the coordinate.
+  const W = 11 * s;     // half-width of the bulb
+  const H = 30 * s;     // total height tip→top
+  const cy = -H + W;    // center of the bulb circle
+  const dotR = 3.5 * s;
 
   return (
     <Marker coordinates={[city.lng, city.lat]}>
@@ -59,40 +66,35 @@ function Pin({ city, onClick, onHover }: PinProps) {
         onMouseMove={(e) => onHover({ x: e.clientX, y: e.clientY })}
         onMouseLeave={() => onHover(null)}
       >
-        {/* invisible larger hit target */}
-        <circle r={r + 8} fill="transparent" />
-        {city.status === 'undivide' && (
-          <circle r={r * 1.6} fill={color} className="pin-pulse" opacity={0.5} pointerEvents="none" />
-        )}
-        {city.status === 'undivide' ? (
-          <>
-            <path
-              d={`M0,-${r * 1.6} C ${r}, -${r * 1.6} ${r}, 0 0, ${r * 0.8} C -${r}, 0 -${r}, -${r * 1.6} 0, -${r * 1.6} Z`}
-              fill={color}
-              stroke="#fff"
-              strokeWidth={1.5}
-              pointerEvents="none"
-            />
-            <circle cy={-r * 0.6} r={r * 0.32} fill="#fff" pointerEvents="none" />
-          </>
-        ) : (
-          <circle r={r} fill={color} stroke="#fff" strokeWidth={1.5} pointerEvents="none" />
-        )}
+        {/* hit target */}
+        <circle cy={cy} r={W + 6 * s} fill="transparent" />
+        {/* shadow */}
+        <ellipse cx={0} cy={2 * s} rx={W * 0.6} ry={1.6 * s} fill="rgba(0,0,0,0.35)" pointerEvents="none" />
+        {/* teardrop */}
+        <path
+          d={`M 0 0 C ${-W} ${cy + W * 0.4}, ${-W} ${cy - W}, 0 ${cy - W} C ${W} ${cy - W}, ${W} ${cy + W * 0.4}, 0 0 Z`}
+          fill={color}
+          pointerEvents="none"
+        />
+        {/* inner white dot */}
+        <circle cx={0} cy={cy} r={dotR} fill="#fff" pointerEvents="none" />
       </g>
     </Marker>
   );
 }
 
-function BookingPin({ lat, lng, onClick, label }: { lat: number; lng: number; onClick: () => void; label: string }) {
+function BookingPin({ lat, lng, onClick, label, zoom }: { lat: number; lng: number; onClick: () => void; label: string; zoom: number }) {
   const handlers = usePinClick(onClick);
+  const s = 1 / Math.max(zoom, 0.35);
+  const r = 9 * s;
   return (
     <Marker coordinates={[lng, lat]}>
       <g style={{ cursor: 'pointer' }} {...handlers}>
-        <circle r={16} fill="transparent" />
-        <circle r={10} fill="#111827" stroke="#fff" strokeWidth={2} pointerEvents="none" />
-        <text textAnchor="middle" y={4} fill="#fff" fontSize={11} fontWeight={700} pointerEvents="none">📅</text>
-        <text textAnchor="middle" y={-14} fill="#111827" fontSize={9} fontWeight={700}
-          style={{ paintOrder: 'stroke', stroke: '#fff', strokeWidth: 3 }} pointerEvents="none">
+        <circle r={r + 6 * s} fill="transparent" />
+        <circle r={r} fill="#111827" pointerEvents="none" />
+        <text textAnchor="middle" y={3.5 * s} fill="#fff" fontSize={11 * s} fontWeight={700} pointerEvents="none">📅</text>
+        <text textAnchor="middle" y={-(r + 4 * s)} fill="#111827" fontSize={9 * s} fontWeight={700}
+          style={{ paintOrder: 'stroke', stroke: '#fff', strokeWidth: 3 * s }} pointerEvents="none">
           {label}
         </text>
       </g>
@@ -160,6 +162,7 @@ export default function MapView() {
             <Pin
               key={city.id}
               city={city}
+              zoom={mapTransform.scale}
               onClick={() => setCity(city)}
               onHover={(p) => setHover(p ? { city, x: p.x, y: p.y } : null)}
             />
@@ -170,6 +173,7 @@ export default function MapView() {
               lat={b.lat}
               lng={b.lng}
               label={b.city}
+              zoom={mapTransform.scale}
               onClick={() => openBookingModal(undefined, b.id)}
             />
           ))}
