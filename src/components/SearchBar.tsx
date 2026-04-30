@@ -99,7 +99,18 @@ export default function SearchBar() {
               ))}
             </div>
           )}
-          {results.cities.length + results.promoters.length + results.artists.length === 0 && (
+          {results.venues.length > 0 && (
+            <div>
+              <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-gray-400">Venues</div>
+              {results.venues.map((v, i) => (
+                <button key={i} onClick={() => pick(v.city.id)}
+                  className="w-full flex justify-between px-3 py-2 hover:bg-gray-50 text-left">
+                  <span>{v.name}</span><span className="text-gray-400">{v.city.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
+          {results.cities.length + results.promoters.length + results.artists.length + results.venues.length === 0 && (
             <div className="px-3 py-4 text-gray-400 text-center">No results</div>
           )}
         </div>
