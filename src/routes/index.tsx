@@ -44,6 +44,7 @@ function Index() {
       <CompareModal />
       <BookingsButton />
       <BookingModal />
+      <AgendaPanel />
     </main>
   );
 }
