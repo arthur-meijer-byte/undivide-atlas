@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useMapState } from '../hooks/useMapState';
 import { STATUS_LABEL, SCENE_LABEL, type City } from '../data/cities';
 import { useBookings } from '../hooks/useBookings';
+import PromoterModal from './PromoterModal';
+import { usePromoterStore, BRAND_META, STATUS_META, ALL_BRANDS } from '../hooks/usePromoterStore';
 
 const TYPE_BADGE = {
   undivide: 'bg-[var(--undivide)] text-white',
@@ -144,20 +146,33 @@ export default function DetailPanel() {
               const totalCap = p.events_list.reduce((a, e) => a + e.cap, 0);
               return (
                 <div key={p.name} className="bg-gray-50 rounded-lg overflow-hidden">
-                  <button
-                    onClick={() => setOpenPromoter(open ? null : p.name)}
-                    className="w-full flex items-center gap-3 p-2.5 hover:bg-gray-100 text-left"
-                  >
-                    <div className="w-9 h-9 rounded-full bg-[var(--undivide)]/15 text-[var(--undivide)] flex items-center justify-center font-bold text-sm">
-                      {p.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-semibold truncate">{p.name}</div>
-                      <div className="text-xs text-gray-500">{p.events} events · since {p.since}</div>
-                    </div>
+                  <div className="w-full flex items-center gap-2 p-2.5 hover:bg-gray-100">
+                    <button
+                      onClick={() => setOpenPromoter(open ? null : p.name)}
+                      className="flex items-center gap-3 flex-1 min-w-0 text-left"
+                    >
+                      <div className="w-9 h-9 rounded-full bg-[var(--undivide)]/15 text-[var(--undivide)] flex items-center justify-center font-bold text-sm shrink-0">
+                        {p.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold truncate">{p.name}</div>
+                        <div className="text-xs text-gray-500">{p.events} events · since {p.since}</div>
+                      </div>
+                    </button>
                     <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${TYPE_BADGE[p.type]}`}>{p.type}</span>
-                    <span className="text-gray-400 ml-1">{open ? '▾' : '▸'}</span>
-                  </button>
+                    <button
+                      onClick={() => setContactPromoter(p.name)}
+                      className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-[var(--undivide)] text-white hover:opacity-90"
+                      title="Edit info & Undivide status"
+                    >
+                      CRM
+                    </button>
+                    <button
+                      onClick={() => setOpenPromoter(open ? null : p.name)}
+                      className="text-gray-400 ml-0.5"
+                    >{open ? '▾' : '▸'}</button>
+                  </div>
+                  <BrandStatusStrip cityId={city.id} promoter={p.name} onOpen={() => setContactPromoter(p.name)} />
 
                   {open && (
                     <div className="p-3 pt-0 space-y-3 text-xs">
@@ -316,70 +331,18 @@ export default function DetailPanel() {
         </Modal>
       )}
 
-      {/* Promoter contact modal */}
+      {/* Promoter info + Undivide CRM modal */}
       {contactP && (
-        <Modal title={contactP.name} onClose={() => setContactPromoter(null)}>
-          <div className="space-y-3 text-sm">
-            <div className="flex flex-wrap gap-2">
-              <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${TYPE_BADGE[contactP.type]}`}>{contactP.type}</span>
-              <span className="text-[11px] bg-gray-100 px-2 py-0.5 rounded-full">Since {contactP.since}</span>
-              <span className="text-[11px] bg-gray-100 px-2 py-0.5 rounded-full">{contactP.events} events/yr</span>
-              <span className="text-[11px] bg-gray-100 px-2 py-0.5 rounded-full">🎵 {contactP.dominant_genre}</span>
-            </div>
-
-            <div>
-              <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">Contact & socials</div>
-              <div className="flex flex-wrap gap-2">
-                {contactP.ig && (
-                  <a href={igUrl(contactP.ig)} target="_blank" rel="noreferrer"
-                    className="bg-pink-50 text-pink-700 hover:bg-pink-100 px-2.5 py-1 rounded-full text-xs">
-                    IG @{contactP.ig}
-                  </a>
-                )}
-                {contactP.fb && (
-                  <a href={fbUrl(contactP.fb)} target="_blank" rel="noreferrer"
-                    className="bg-blue-50 text-blue-700 hover:bg-blue-100 px-2.5 py-1 rounded-full text-xs">
-                    FB {contactP.fb}
-                  </a>
-                )}
-                {contactP.yt && (
-                  <a href={ytUrl(contactP.yt)} target="_blank" rel="noreferrer"
-                    className="bg-red-50 text-red-700 hover:bg-red-100 px-2.5 py-1 rounded-full text-xs">
-                    YT {contactP.yt}
-                  </a>
-                )}
-                {contactP.website && (
-                  <a href={contactP.website.startsWith('http') ? contactP.website : `https://${contactP.website}`} target="_blank" rel="noreferrer"
-                    className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-2.5 py-1 rounded-full text-xs">
-                    🌐 Website
-                  </a>
-                )}
-                {!contactP.ig && !contactP.fb && !contactP.yt && !contactP.website && (
-                  <span className="text-xs text-gray-400 italic">No socials on file</span>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">Recent line-ups</div>
-              <div className="flex flex-wrap gap-1">
-                {contactP.lineup.map((a) => (
-                  <span key={a} className="bg-white border border-gray-200 px-2 py-0.5 rounded-full text-[11px]">{a}</span>
-                ))}
-              </div>
-            </div>
-
-            <button
-              onClick={() => {
-                setContactPromoter(null);
-                setOpenPromoter(contactP.name);
-              }}
-              className="w-full bg-[var(--undivide)] text-white text-sm font-semibold py-2 rounded-lg hover:opacity-90"
-            >
-              View full event history →
-            </button>
-          </div>
-        </Modal>
+        <PromoterModal
+          city={city}
+          promoter={contactP}
+          onClose={() => setContactPromoter(null)}
+          onViewHistory={() => {
+            const name = contactP.name;
+            setContactPromoter(null);
+            setOpenPromoter(name);
+          }}
+        />
       )}
     </div>
   );
@@ -479,5 +442,32 @@ function Mini({ v, l }: { v: string; l: string }) {
       <div className="text-xs font-bold">{v}</div>
       <div className="text-[9px] uppercase text-gray-500">{l}</div>
     </div>
+  );
+}
+
+function BrandStatusStrip({
+  cityId, promoter, onOpen,
+}: { cityId: string; promoter: string; onOpen: () => void }) {
+  const statuses = usePromoterStore((s) => s.statuses);
+  const tracked = ALL_BRANDS
+    .map((b) => ({ b, s: statuses[`${cityId}::${promoter}::${b}`] }))
+    .filter((x) => x.s && x.s.status !== 'none');
+  if (tracked.length === 0) return null;
+  return (
+    <button
+      onClick={onOpen}
+      className="w-full px-2.5 pb-2 pt-0 flex flex-wrap gap-1 text-left hover:bg-gray-100/60 transition-colors"
+      title="Open Undivide status tracker"
+    >
+      {tracked.map(({ b, s }) => {
+        const m = STATUS_META[s.status];
+        return (
+          <span key={b} className={`text-[10px] px-2 py-0.5 rounded-full font-semibold flex items-center gap-1 ${m.color}`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${m.dot}`} />
+            {BRAND_META[b].label}: {m.label}
+          </span>
+        );
+      })}
+    </button>
   );
 }
