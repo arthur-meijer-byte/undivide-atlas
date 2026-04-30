@@ -50,11 +50,15 @@ export default function DetailPanel() {
         </div>
         <div className="text-2xl font-bold mt-2">{city.name}</div>
         <div className="text-sm opacity-90">{city.country}</div>
-        <div className="mt-3 flex gap-2 text-xs">
+        <div className="mt-3 flex flex-wrap gap-2 text-xs">
           <span className="bg-white/20 px-2 py-1 rounded-full">🎵 {dominantSound(city)}</span>
+          <span className="bg-white/25 px-2 py-1 rounded-full font-semibold">⚡ {SCENE_LABEL[city.market.dnb_scene_strength]}</span>
           <span className="bg-white/20 px-2 py-1 rounded-full">📅 {totalEvents} events</span>
           <span className="bg-white/20 px-2 py-1 rounded-full">👥 {city.promoters.length} promoters</span>
         </div>
+        <p className="mt-3 text-[11px] leading-relaxed opacity-90 line-clamp-3">
+          {city.market.scene_notes}
+        </p>
       </div>
 
       <div className="p-3 border-b border-gray-200">
