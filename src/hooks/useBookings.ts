@@ -1,0 +1,61 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+export type Sound = 'Liquid' | 'Neuro' | 'Jump Up' | 'Dancefloor' | 'Minimal' | 'Halftime' | 'All Styles';
+
+export interface Booking {
+  id: string;
+  city: string;
+  country: string;
+  lat: number;
+  lng: number;
+  venue: string;
+  date: string; // YYYY-MM-DD
+  promoter: string;
+  capacity: number;
+  ticketsSold: number;
+  sound: Sound;
+  lineup: string; // comma separated
+  ig?: string;
+  fb?: string;
+  yt?: string;
+  website?: string;
+  notes?: string;
+  createdAt: number;
+}
+
+interface BookingsState {
+  bookings: Booking[];
+  bookingModalOpen: boolean;
+  editingId: string | null;
+  prefill: Partial<Booking> | null;
+  add: (b: Omit<Booking, 'id' | 'createdAt'>) => void;
+  update: (id: string, b: Partial<Booking>) => void;
+  remove: (id: string) => void;
+  openModal: (prefill?: Partial<Booking>, editingId?: string) => void;
+  closeModal: () => void;
+}
+
+export const useBookings = create<BookingsState>()(
+  persist(
+    (set) => ({
+      bookings: [],
+      bookingModalOpen: false,
+      editingId: null,
+      prefill: null,
+      add: (b) =>
+        set((s) => ({
+          bookings: [...s.bookings, { ...b, id: crypto.randomUUID(), createdAt: Date.now() }],
+        })),
+      update: (id, b) =>
+        set((s) => ({
+          bookings: s.bookings.map((x) => (x.id === id ? { ...x, ...b } : x)),
+        })),
+      remove: (id) => set((s) => ({ bookings: s.bookings.filter((x) => x.id !== id) })),
+      openModal: (prefill, editingId) =>
+        set({ bookingModalOpen: true, prefill: prefill ?? null, editingId: editingId ?? null }),
+      closeModal: () => set({ bookingModalOpen: false, prefill: null, editingId: null }),
+    }),
+    { name: 'undivide-bookings' },
+  ),
+);

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup, Graticule } from 'react-simple-maps';
 import { CITIES, STATUS_COLORS, type City } from '../data/cities';
 import { useMapState } from '../hooks/useMapState';
+import { useBookings } from '../hooks/useBookings';
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
@@ -21,40 +22,44 @@ function inYear(city: City, year: number | null): boolean {
   return city.promoters.some((p) => p.events_list.some((e) => e.year === year));
 }
 
-interface PinProps { city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; heatmap: boolean; }
+/** Pin with click-vs-drag detection (d3-zoom inside ZoomableGroup eats click events). */
+function usePinClick(onClick: () => void) {
+  const start = useRef<{ x: number; y: number } | null>(null);
+  return {
+    onPointerDown: (e: React.PointerEvent) => { start.current = { x: e.clientX, y: e.clientY }; },
+    onPointerUp: (e: React.PointerEvent) => {
+      if (!start.current) return;
+      const dx = e.clientX - start.current.x;
+      const dy = e.clientY - start.current.y;
+      start.current = null;
+      if (Math.abs(dx) < 5 && Math.abs(dy) < 5) {
+        e.stopPropagation();
+        onClick();
+      }
+    },
+  };
+}
 
-function Pin({ city, onClick, onHover, heatmap }: PinProps) {
+interface PinProps { city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; }
+function Pin({ city, onClick, onHover }: PinProps) {
   const color = STATUS_COLORS[city.status];
   const sizeMap = { undivide: 14, growth: 11, emerging: 9, new: 7 } as const;
   const r = sizeMap[city.status];
-
-  if (heatmap) {
-    const totalEvents = city.promoters.reduce((a, p) => a + p.events, 0);
-    const blob = Math.min(60, 14 + totalEvents * 0.8);
-    return (
-      <Marker coordinates={[city.lng, city.lat]}>
-        <circle r={blob} fill={color} opacity={0.35} style={{ filter: 'blur(8px)' }} />
-        <circle r={6} fill={color} stroke="#fff" strokeWidth={1.5}
-          style={{ cursor: 'pointer' }}
-          onClick={onClick}
-          onMouseEnter={(e) => onHover({ x: e.clientX, y: e.clientY })}
-          onMouseLeave={() => onHover(null)}
-        />
-      </Marker>
-    );
-  }
+  const handlers = usePinClick(onClick);
 
   return (
     <Marker coordinates={[city.lng, city.lat]}>
       <g
         style={{ cursor: 'pointer' }}
-        onClick={onClick}
+        {...handlers}
         onMouseEnter={(e) => onHover({ x: e.clientX, y: e.clientY })}
         onMouseMove={(e) => onHover({ x: e.clientX, y: e.clientY })}
         onMouseLeave={() => onHover(null)}
       >
+        {/* invisible larger hit target */}
+        <circle r={r + 8} fill="transparent" />
         {city.status === 'undivide' && (
-          <circle r={r * 1.6} fill={color} className="pin-pulse" opacity={0.5} />
+          <circle r={r * 1.6} fill={color} className="pin-pulse" opacity={0.5} pointerEvents="none" />
         )}
         {city.status === 'undivide' ? (
           <>
@@ -63,19 +68,39 @@ function Pin({ city, onClick, onHover, heatmap }: PinProps) {
               fill={color}
               stroke="#fff"
               strokeWidth={1.5}
+              pointerEvents="none"
             />
-            <circle cy={-r * 0.6} r={r * 0.32} fill="#fff" />
+            <circle cy={-r * 0.6} r={r * 0.32} fill="#fff" pointerEvents="none" />
           </>
         ) : (
-          <circle r={r} fill={color} stroke="#fff" strokeWidth={1.5} />
+          <circle r={r} fill={color} stroke="#fff" strokeWidth={1.5} pointerEvents="none" />
         )}
       </g>
     </Marker>
   );
 }
 
+function BookingPin({ lat, lng, onClick, label }: { lat: number; lng: number; onClick: () => void; label: string }) {
+  const handlers = usePinClick(onClick);
+  return (
+    <Marker coordinates={[lng, lat]}>
+      <g style={{ cursor: 'pointer' }} {...handlers}>
+        <circle r={16} fill="transparent" />
+        <circle r={10} fill="#111827" stroke="#fff" strokeWidth={2} pointerEvents="none" />
+        <text textAnchor="middle" y={4} fill="#fff" fontSize={11} fontWeight={700} pointerEvents="none">📅</text>
+        <text textAnchor="middle" y={-14} fill="#111827" fontSize={9} fontWeight={700}
+          style={{ paintOrder: 'stroke', stroke: '#fff', strokeWidth: 3 }} pointerEvents="none">
+          {label}
+        </text>
+      </g>
+    </Marker>
+  );
+}
+
 export default function MapView() {
-  const { activeFilter, selectedYear, heatmapOn, setCity, setHover, mapTransform, setTransform } = useMapState();
+  const { activeFilter, selectedYear, setCity, setHover, mapTransform, setTransform } = useMapState();
+  const openBookingModal = useBookings((s) => s.openModal);
+  const bookings = useBookings((s) => s.bookings);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 1200, h: 800 });
 
@@ -132,9 +157,17 @@ export default function MapView() {
             <Pin
               key={city.id}
               city={city}
-              heatmap={heatmapOn}
               onClick={() => setCity(city)}
               onHover={(p) => setHover(p ? { city, x: p.x, y: p.y } : null)}
+            />
+          ))}
+          {bookings.map((b) => (
+            <BookingPin
+              key={b.id}
+              lat={b.lat}
+              lng={b.lng}
+              label={b.city}
+              onClick={() => openBookingModal(undefined, b.id)}
             />
           ))}
         </ZoomableGroup>
