@@ -83,16 +83,18 @@ function Pin({ city, onClick, onHover, zoom }: PinProps) {
   );
 }
 
-function BookingPin({ lat, lng, onClick, label }: { lat: number; lng: number; onClick: () => void; label: string }) {
+function BookingPin({ lat, lng, onClick, label, zoom }: { lat: number; lng: number; onClick: () => void; label: string; zoom: number }) {
   const handlers = usePinClick(onClick);
+  const s = 1 / Math.max(zoom, 0.35);
+  const r = 9 * s;
   return (
     <Marker coordinates={[lng, lat]}>
       <g style={{ cursor: 'pointer' }} {...handlers}>
-        <circle r={16} fill="transparent" />
-        <circle r={10} fill="#111827" stroke="#fff" strokeWidth={2} pointerEvents="none" />
-        <text textAnchor="middle" y={4} fill="#fff" fontSize={11} fontWeight={700} pointerEvents="none">📅</text>
-        <text textAnchor="middle" y={-14} fill="#111827" fontSize={9} fontWeight={700}
-          style={{ paintOrder: 'stroke', stroke: '#fff', strokeWidth: 3 }} pointerEvents="none">
+        <circle r={r + 6 * s} fill="transparent" />
+        <circle r={r} fill="#111827" pointerEvents="none" />
+        <text textAnchor="middle" y={3.5 * s} fill="#fff" fontSize={11 * s} fontWeight={700} pointerEvents="none">📅</text>
+        <text textAnchor="middle" y={-(r + 4 * s)} fill="#111827" fontSize={9 * s} fontWeight={700}
+          style={{ paintOrder: 'stroke', stroke: '#fff', strokeWidth: 3 * s }} pointerEvents="none">
           {label}
         </text>
       </g>
