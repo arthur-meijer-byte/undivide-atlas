@@ -88,10 +88,10 @@ const sizeFromPop = (popM: number): MarketSize =>
   popM >= 8 ? 'huge' : popM >= 2.5 ? 'large' : popM >= 0.8 ? 'mid' : 'small';
 
 const heroByStatus: Record<CityStatus, string> = {
-  undivide: grad('#e84118', '#7a0f00'),
-  growth: grad('#fbbc04', '#b07700'),
-  emerging: grad('#34a853', '#0f6b28'),
-  new: grad('#1a73e8', '#0a3d8a'),
+  undivide: grad('#ff2d6f', '#7a0030'),     // neon pink/red
+  growth: grad('#fff200', '#b08a00'),       // neon yellow
+  emerging: grad('#39ff14', '#0a6b1a'),     // neon green
+  new: grad('#00e5ff', '#003a7a'),          // neon cyan
 };
 
 // helper to build a promoter with mirrored legacy fields
@@ -769,10 +769,10 @@ export const CITIES: City[] = [
 ];
 
 export const STATUS_COLORS: Record<CityStatus, string> = {
-  undivide: '#e84118',
-  growth: '#fbbc04',
-  emerging: '#34a853',
-  new: '#1a73e8',
+  undivide: '#ff2d6f',   // neon pink
+  growth: '#fff200',     // neon yellow
+  emerging: '#39ff14',   // neon green
+  new: '#00e5ff',        // neon cyan
 };
 
 export const STATUS_LABEL: Record<CityStatus, string> = {

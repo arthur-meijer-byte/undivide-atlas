@@ -2,10 +2,8 @@ import { createFileRoute } from '@tanstack/react-router';
 import MapView from '../components/MapView';
 import SearchBar from '../components/SearchBar';
 import FilterChips from '../components/FilterChips';
-import Legend from '../components/Legend';
 import Tooltip from '../components/Tooltip';
 import MapControls from '../components/MapControls';
-import Timeline from '../components/Timeline';
 import DetailPanel from '../components/DetailPanel';
 import CompareModal from '../components/CompareModal';
 import BookingModal from '../components/BookingModal';
@@ -36,10 +34,8 @@ function Index() {
       <MapView />
       <SearchBar />
       <FilterChips />
-      <Legend />
       <MapControls />
       <DetailPanel />
-      <Timeline />
       <Tooltip />
       <CompareModal />
       <BookingsButton />
