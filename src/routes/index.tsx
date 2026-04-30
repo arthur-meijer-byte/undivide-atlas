@@ -8,13 +8,15 @@ import MapControls from '../components/MapControls';
 import Timeline from '../components/Timeline';
 import DetailPanel from '../components/DetailPanel';
 import CompareModal from '../components/CompareModal';
+import BookingModal from '../components/BookingModal';
+import BookingsButton from '../components/BookingsButton';
 
 export const Route = createFileRoute('/')({
   component: Index,
   head: () => ({
     meta: [
       { title: 'Undivide Territory Intelligence' },
-      { name: 'description', content: 'Internal Google-Maps style territory tool for Undivide Events — drum & bass scene intelligence across global cities.' },
+      { name: 'description', content: 'Internal map of global drum & bass scenes — promoters, line-ups, sounds and booked shows for Undivide Events.' },
     ],
   }),
 });
@@ -32,6 +34,8 @@ function Index() {
       <Timeline />
       <Tooltip />
       <CompareModal />
+      <BookingsButton />
+      <BookingModal />
     </main>
   );
 }
