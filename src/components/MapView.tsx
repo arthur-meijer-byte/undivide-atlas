@@ -6,15 +6,18 @@ import { useBookings } from '../hooks/useBookings';
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
-function genreKey(g: City['genre']): string {
-  return g.toLowerCase().replace(/\s+/g, '');
-}
-
 function matchesFilter(city: City, filter: string): boolean {
   if (filter === 'all') return true;
   if (filter === 'undivide') return city.status === 'undivide';
   if (filter === 'market') return city.status === 'new' || city.status === 'emerging' || city.status === 'growth';
-  return genreKey(city.genre) === filter || (filter === 'jumpup' && city.genre === 'Jump Up');
+  // Match against dominant + secondary subgenres + headline genre string.
+  const hay = [
+    city.dominant_genre,
+    city.market.dominant_subgenre,
+    ...city.market.secondary_subgenres,
+  ].join(' ').toLowerCase().replace(/\s+/g, '');
+  if (filter === 'jumpup') return hay.includes('jumpup');
+  return hay.includes(filter);
 }
 
 function inYear(city: City, year: number | null): boolean {

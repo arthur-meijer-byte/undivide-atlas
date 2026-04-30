@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMapState } from '../hooks/useMapState';
-import { STATUS_LABEL, type City } from '../data/cities';
+import { STATUS_LABEL, SCENE_LABEL, type City } from '../data/cities';
 import { useBookings } from '../hooks/useBookings';
 
 const TYPE_BADGE = {
@@ -19,8 +19,7 @@ function ytUrl(h: string) {
 }
 
 function dominantSound(city: City): string {
-  // Simple: city.genre is the headline sound
-  return city.genre;
+  return city.market.dominant_subgenre;
 }
 
 export default function DetailPanel() {
@@ -51,11 +50,15 @@ export default function DetailPanel() {
         </div>
         <div className="text-2xl font-bold mt-2">{city.name}</div>
         <div className="text-sm opacity-90">{city.country}</div>
-        <div className="mt-3 flex gap-2 text-xs">
+        <div className="mt-3 flex flex-wrap gap-2 text-xs">
           <span className="bg-white/20 px-2 py-1 rounded-full">🎵 {dominantSound(city)}</span>
+          <span className="bg-white/25 px-2 py-1 rounded-full font-semibold">⚡ {SCENE_LABEL[city.market.dnb_scene_strength]}</span>
           <span className="bg-white/20 px-2 py-1 rounded-full">📅 {totalEvents} events</span>
           <span className="bg-white/20 px-2 py-1 rounded-full">👥 {city.promoters.length} promoters</span>
         </div>
+        <p className="mt-3 text-[11px] leading-relaxed opacity-90 line-clamp-3">
+          {city.market.scene_notes}
+        </p>
       </div>
 
       <div className="p-3 border-b border-gray-200">
@@ -153,9 +156,14 @@ export default function DetailPanel() {
                         <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">Previous events</div>
                         <div className="space-y-1">
                           {p.events_list.slice(-5).reverse().map((e, i) => (
-                            <div key={i} className="flex justify-between bg-white px-2 py-1 rounded">
-                              <span className="truncate">{e.name}</span>
-                              <span className="text-gray-500 ml-2">{e.sold}/{e.cap}</span>
+                            <div key={i} className="bg-white px-2 py-1.5 rounded">
+                              <div className="flex justify-between gap-2">
+                                <span className="truncate font-medium">{e.name}</span>
+                                <span className="text-gray-500 shrink-0">{e.sold.toLocaleString()}/{e.cap.toLocaleString()}</span>
+                              </div>
+                              <div className="text-[10px] text-gray-500 truncate">
+                                {e.date} · {e.venue}
+                              </div>
                             </div>
                           ))}
                         </div>

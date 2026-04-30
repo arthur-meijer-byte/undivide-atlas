@@ -27,7 +27,7 @@ export default function Timeline() {
       playing.current = true;
       let y = selectedYear ?? 2015;
       playRef.current = setInterval(() => {
-        y = y >= 2024 ? 2015 : y + 1;
+        y = y >= 2025 ? 2015 : y + 1;
         setYear(y);
       }, 1100);
     }
@@ -45,7 +45,7 @@ export default function Timeline() {
       <input
         type="range"
         min={2014}
-        max={2024}
+        max={2025}
         value={selectedYear ?? 2014}
         onChange={(e) => {
           const v = parseInt(e.target.value);

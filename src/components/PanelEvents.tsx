@@ -15,6 +15,7 @@ export default function PanelEvents({ city }: { city: City }) {
             </div>
             <div className="flex-1 min-w-0">
               <div className="font-semibold truncate text-xs">{e.name}</div>
+              <div className="text-[10px] text-gray-400 truncate">{e.venue}</div>
               <div className="text-[11px] text-gray-500">{e.sold.toLocaleString()} / {e.cap.toLocaleString()}</div>
               <div className="h-1 bg-gray-200 rounded-full mt-1 overflow-hidden">
                 <div className={`h-full ${color}`} style={{ width: `${Math.min(100, pct)}%` }} />
