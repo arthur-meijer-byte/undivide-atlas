@@ -183,6 +183,19 @@ export const CITIES: City[] = [
         ],
       }),
       P({
+        name: 'UKF (Undivide)', type: 'undivide',
+        active_since: 2009, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'ukf', yt: 'UKF', website: 'ukf.com',
+        lineup: ['Sub Focus', 'Wilkinson', 'Dimension', 'Culture Shock', '1991', 'Kanine', 'Tantrum Desire', 'Mefjus'],
+        events: [
+          { date: 'Dec 2024', year: 2024, name: 'UKF15 Anniversary', venue: 'Drumsheds', cap: 10000, sold: 9800 },
+          { date: 'Apr 2024', year: 2024, name: 'UKF On Air London', venue: 'Drumsheds', cap: 8000, sold: 7600 },
+          { date: 'Oct 2023', year: 2023, name: 'UKF On Air London', venue: 'Printworks', cap: 6000, sold: 5900 },
+          { date: 'May 2023', year: 2023, name: 'UKF Halloween', venue: 'Drumsheds', cap: 8000, sold: 7400 },
+        ],
+      }),
+      P({
         name: 'FABRICLIVE', type: 'venue',
         active_since: 1999, events_per_year: 50,
         dominant_genre: 'Liquid / Neurofunk / Jungle',
