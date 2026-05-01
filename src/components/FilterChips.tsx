@@ -2,7 +2,9 @@ import { useMapState, type FilterKey } from '../hooks/useMapState';
 
 const CHIPS: { key: FilterKey; label: string }[] = [
   { key: 'all', label: 'All' },
-  { key: 'undivide', label: 'Undivide only' },
+  { key: 'undivide', label: 'Undivide events' },
+  { key: 'ukf', label: 'UKF' },
+  { key: 'hospitality', label: 'Hospitality events' },
 ];
 
 export default function FilterChips() {
