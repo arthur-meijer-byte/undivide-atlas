@@ -1039,6 +1039,16 @@ export const CITIES: City[] = [
           { date: 'Mar 2024', year: 2024, name: 'Mainframe Night', venue: 'Flex', cap: 800, sold: 780 },
         ],
       }),
+      P({
+        name: 'Korsakov Music AT (Undivide)', type: 'undivide',
+        active_since: 2016, events_per_year: 4,
+        dominant_genre: 'Neurofunk',
+        ig: 'korsakovmusic',
+        lineup: ['Mefjus', 'Emperor', 'Phace', 'Misanthrop'],
+        events: [
+          { date: 'Jan 2024', year: 2024, name: 'Korsakov Vienna', venue: 'Flex Vienna', cap: 500, sold: 490 },
+        ],
+      }),
     ],
   }),
 
