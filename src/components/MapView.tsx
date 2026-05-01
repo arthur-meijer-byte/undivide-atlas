@@ -46,8 +46,16 @@ function usePinClick(onClick: () => void) {
 interface PinProps { city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; zoom: number; }
 function Pin({ city, onClick, onHover, zoom }: PinProps) {
   const color = STATUS_COLORS[city.status];
-  // Tiny WhatsApp-style dot — constant screen size regardless of zoom.
-  const baseSize = city.status === 'undivide' ? 1.15 : 1;
+  // Size by largest venue capacity — bigger crowds = more prominent dot.
+  const maxCap = city.clubs.reduce((m, c) => Math.max(m, c.capacity), 0);
+  // Scale: 200 cap -> 0.85, 1000 -> 1.05, 3000 -> 1.35, 6000+ -> 1.7
+  const capScale = maxCap >= 6000 ? 1.7
+    : maxCap >= 3000 ? 1.35
+    : maxCap >= 1500 ? 1.15
+    : maxCap >= 800 ? 1.0
+    : maxCap >= 200 ? 0.85
+    : 0.75;
+  const baseSize = (city.status === 'undivide' ? 1.15 : 1) * capScale;
   const s = baseSize / Math.max(zoom, 0.35);
   const handlers = usePinClick(onClick);
 
