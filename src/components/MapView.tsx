@@ -162,13 +162,19 @@ export default function MapView() {
           zoom={mapTransform.scale}
           minZoom={0.35}
           maxZoom={20}
-          translateExtent={[[-200, -200], [size.w + 200, size.h + 200]]}
-          onMove={(pos) => setTransform({ scale: pos.zoom, x: pos.coordinates[0], y: pos.coordinates[1] })}
+          onMove={(pos: any) => {
+            // Live update during wheel/drag so pins resize smoothly. d3-zoom already
+            // anchors wheel zoom on the pointer, so this also makes cursor-targeted zoom feel right.
+            setTransform({ scale: pos.zoom, x: mapTransform.x, y: mapTransform.y });
+          }}
+          onMoveEnd={(pos: any) => {
+            const coords = pos.coordinates ?? [mapTransform.x, mapTransform.y];
+            setTransform({ scale: pos.zoom, x: coords[0], y: coords[1] });
+          }}
           filterZoomEvent={(evt: any) => {
-            // Smooth, slower wheel zoom that targets the cursor (d3-zoom centers on pointer by default).
+            // Dampen wheel delta for smoother, slower zoom increments.
             if (evt.type === 'wheel') {
-              // Dampen wheel delta for smoother increments.
-              try { evt.deltaY = evt.deltaY * 0.35; } catch { /* read-only in some browsers — ignore */ }
+              try { evt.deltaY = evt.deltaY * 0.35; } catch { /* read-only — ignore */ }
             }
             return true;
           }}
