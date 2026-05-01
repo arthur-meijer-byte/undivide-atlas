@@ -134,7 +134,97 @@ export default function DetailPanel() {
           />
         </div>
 
-        {/* Promoters - dropdowns */}
+        {/* Top 10 acts in this market — composite score (bookings 50% / streams 30% / socials 20%) */}
+        {city.topActs && city.topActs.length > 0 && (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">
+                Top 10 acts in {city.name}
+              </div>
+              {city.stats?.data_as_of && (
+                <span className="text-[9px] text-gray-400">{city.stats.data_as_of}</span>
+              )}
+            </div>
+            <div className="space-y-1">
+              {city.topActs.map((a, i) => (
+                <div key={a.name} className="bg-gray-50 rounded-md px-2.5 py-1.5">
+                  <div className="flex items-center gap-2 text-xs">
+                    <span className="w-4 text-gray-400 font-mono">{i + 1}</span>
+                    <span className="font-semibold flex-1 truncate">{a.name}</span>
+                    {a.country_origin && (
+                      <span className="text-[9px] uppercase text-gray-400">{a.country_origin}</span>
+                    )}
+                    <span className="text-[var(--undivide)] font-bold tabular-nums">{a.share}%</span>
+                  </div>
+                  <div className="h-1 bg-gray-200 rounded-full mt-1 overflow-hidden">
+                    <div className="h-full bg-[var(--undivide)]" style={{ width: `${Math.min(100, a.share * 4)}%` }} />
+                  </div>
+                  <div className="flex gap-2 mt-1 text-[10px] text-gray-500">
+                    <span>{a.bookings_yr} shows/yr</span>
+                    {a.spotify_monthly !== undefined && (
+                      <span>· {a.spotify_monthly >= 1 ? `${a.spotify_monthly.toFixed(1)}M` : `${Math.round(a.spotify_monthly * 1000)}k`} Spotify</span>
+                    )}
+                    {a.ig_followers !== undefined && (
+                      <span>· {a.ig_followers >= 1000 ? `${(a.ig_followers / 1000).toFixed(0)}k` : a.ig_followers} IG</span>
+                    )}
+                  </div>
+                  {a.notes && <div className="text-[10px] text-gray-400 mt-0.5 italic">{a.notes}</div>}
+                </div>
+              ))}
+            </div>
+            <p className="text-[9px] text-gray-400 mt-1.5 leading-snug">
+              Composite: 50% local booking frequency · 30% Spotify monthly listeners · 20% IG followers.
+              Sources: 1001Tracklists, Spotify, public IG.
+            </p>
+          </div>
+        )}
+
+        {/* Live-ish scene stats: socials, FB groups, RA */}
+        {city.stats && (
+          <div>
+            <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">
+              Scene snapshot
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              {city.stats.spotify_dnb_monthly_listeners && (
+                <div className="bg-green-50 rounded-md px-2 py-1.5">
+                  <div className="text-[9px] uppercase text-green-700/70">Spotify (city DnB)</div>
+                  <div className="font-bold text-green-700">{city.stats.spotify_dnb_monthly_listeners}/mo</div>
+                </div>
+              )}
+              {city.stats.ig_top_promoter_followers !== undefined && (
+                <div className="bg-pink-50 rounded-md px-2 py-1.5">
+                  <div className="text-[9px] uppercase text-pink-700/70">Top promoter IG</div>
+                  <div className="font-bold text-pink-700">{(city.stats.ig_top_promoter_followers / 1000).toFixed(0)}k</div>
+                </div>
+              )}
+              {city.stats.ra_events_last_12mo !== undefined && (
+                <div className="bg-blue-50 rounded-md px-2 py-1.5">
+                  <div className="text-[9px] uppercase text-blue-700/70">RA events / 12mo</div>
+                  <div className="font-bold text-blue-700">{city.stats.ra_events_last_12mo}</div>
+                </div>
+              )}
+              {city.stats.spotify_top_playlist && (
+                <div className="bg-emerald-50 rounded-md px-2 py-1.5">
+                  <div className="text-[9px] uppercase text-emerald-700/70">Top playlist</div>
+                  <div className="font-bold text-emerald-700 truncate">{city.stats.spotify_top_playlist.name}</div>
+                  <div className="text-[10px] text-emerald-600">{(city.stats.spotify_top_playlist.followers / 1000).toFixed(0)}k followers</div>
+                </div>
+              )}
+            </div>
+            {city.stats.fb_groups && city.stats.fb_groups.length > 0 && (
+              <div className="mt-2 space-y-1">
+                <div className="text-[9px] uppercase text-gray-400">Facebook groups</div>
+                {city.stats.fb_groups.map((g) => (
+                  <div key={g.name} className="flex justify-between text-[11px] bg-blue-50/50 rounded px-2 py-1">
+                    <span className="truncate text-blue-900">{g.name}</span>
+                    <span className="font-semibold text-blue-700 tabular-nums">{(g.members / 1000).toFixed(1)}k</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
         <div>
           <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">
             Promoters in {city.name}
