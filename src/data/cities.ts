@@ -57,6 +57,28 @@ export type CityStatus = 'undivide' | 'growth' | 'emerging' | 'new';
 export type CityGenre = string;
 export type MarketSize = 'huge' | 'large' | 'mid' | 'small';
 
+// A top act in a market — composite ranking (bookings 50% / streams 30% / socials 20%)
+export interface TopAct {
+  name: string;
+  share: number;            // composite share %, all top-10 acts in a city sum to ~100
+  bookings_yr: number;      // verified shows headlined in city/region last 12–24 mo
+  spotify_monthly?: number; // global Spotify monthly listeners (in millions if ≥1, k otherwise)
+  ig_followers?: number;    // primary IG account followers
+  country_origin?: string;
+  primary_label?: string;
+  notes?: string;
+}
+
+// Live-ish social/streaming stats for the city scene (verified snapshot)
+export interface CityStats {
+  spotify_dnb_monthly_listeners?: string;  // "12.4M" — total local DnB streaming
+  ig_top_promoter_followers?: number;      // followers of the biggest local DnB IG
+  fb_groups?: { name: string; members: number; url?: string }[];
+  ra_events_last_12mo?: number;            // Resident Advisor DnB events
+  spotify_top_playlist?: { name: string; followers: number; url?: string };
+  data_as_of: string;                      // "2025-Q1"
+}
+
 export interface City {
   id: string;
   name: string;
@@ -73,6 +95,8 @@ export interface City {
   market: MarketData;
   clubs: Club[];
   promoters: Promoter[];
+  topActs?: TopAct[];        // top 10 acts in this market with composite %
+  stats?: CityStats;         // social/streaming snapshot
 }
 
 const grad = (a: string, b: string) => `linear-gradient(135deg, ${a}, ${b})`;
