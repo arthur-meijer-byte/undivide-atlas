@@ -46,25 +46,42 @@ function usePinClick(onClick: () => void) {
 interface PinProps { city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; zoom: number; }
 function Pin({ city, onClick, onHover, zoom }: PinProps) {
   const color = STATUS_COLORS[city.status];
-  // Size by largest venue capacity — bigger crowds = more prominent dot.
+  // Heat intensity from largest venue capacity — Snapchat heatmap style.
   const maxCap = city.clubs.reduce((m, c) => Math.max(m, c.capacity), 0);
-  // Scale: 200 cap -> 0.85, 1000 -> 1.05, 3000 -> 1.35, 6000+ -> 1.7
-  const capScale = maxCap >= 6000 ? 1.7
-    : maxCap >= 3000 ? 1.35
-    : maxCap >= 1500 ? 1.15
+  // Heat tier: bigger crowds = bigger softer blob
+  const heat = maxCap >= 6000 ? 1.8
+    : maxCap >= 3000 ? 1.45
+    : maxCap >= 1500 ? 1.2
     : maxCap >= 800 ? 1.0
-    : maxCap >= 200 ? 0.85
-    : 0.75;
-  const baseSize = (city.status === 'undivide' ? 1.15 : 1) * capScale;
-  const s = baseSize / Math.max(zoom, 0.35);
+    : maxCap >= 200 ? 0.82
+    : 0.7;
+  const undivideBoost = city.status === 'undivide' ? 1.15 : 1;
+  // Blobs stay roughly constant on screen but grow slightly on zoom-out for that cluster feel.
+  const z = Math.max(zoom, 0.35);
+  const s = (heat * undivideBoost) / Math.pow(z, 0.7);
   const handlers = usePinClick(onClick);
 
-  const r = 2.6 * s;          // dot radius (small, subtle)
-  const glow = 6 * s;         // outer neon halo
-  const hit = 9 * s;          // invisible touch target
+  // Unique gradient id per city
+  const gradId = `heat-${city.id}`;
+  const blurId = `blur-${city.id}`;
+
+  const blobR = 18 * s;     // big soft heat blob
+  const coreR = 2.2 * s;    // tiny solid core
+  const hit = Math.max(blobR * 0.6, 10 * s);
 
   return (
     <Marker coordinates={[city.lng, city.lat]}>
+      <defs>
+        <radialGradient id={gradId} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor={color} stopOpacity="0.95" />
+          <stop offset="35%" stopColor={color} stopOpacity="0.55" />
+          <stop offset="70%" stopColor={color} stopOpacity="0.18" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </radialGradient>
+        <filter id={blurId} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation={1.2 * s} />
+        </filter>
+      </defs>
       <g
         style={{ cursor: 'pointer' }}
         {...handlers}
@@ -72,13 +89,12 @@ function Pin({ city, onClick, onHover, zoom }: PinProps) {
         onMouseMove={(e) => onHover({ x: e.clientX, y: e.clientY })}
         onMouseLeave={() => onHover(null)}
       >
-        {/* hit target */}
+        {/* invisible hit target */}
         <circle r={hit} fill="transparent" />
-        {/* neon glow halo */}
-        <circle r={glow} fill={color} opacity={0.28} pointerEvents="none" />
-        <circle r={glow * 0.65} fill={color} opacity={0.45} pointerEvents="none" />
-        {/* solid neon dot with thin white ring */}
-        <circle r={r} fill={color} stroke="#fff" strokeWidth={0.6 * s} pointerEvents="none" />
+        {/* big soft heat blob */}
+        <circle r={blobR} fill={`url(#${gradId})`} filter={`url(#${blurId})`} pointerEvents="none" />
+        {/* tiny bright core */}
+        <circle r={coreR} fill={color} opacity={0.95} pointerEvents="none" />
       </g>
     </Marker>
   );
@@ -86,17 +102,26 @@ function Pin({ city, onClick, onHover, zoom }: PinProps) {
 
 function BookingPin({ lat, lng, onClick, label, zoom }: { lat: number; lng: number; onClick: () => void; label: string; zoom: number }) {
   const handlers = usePinClick(onClick);
-  const s = 1 / Math.max(zoom, 0.35);
-  const r = 2.6 * s;
-  const glow = 6 * s;
+  const z = Math.max(zoom, 0.35);
+  const s = 1 / Math.pow(z, 0.7);
+  const gradId = `heat-booking-${label.replace(/\s+/g, '-')}`;
+  const blobR = 16 * s;
+  const coreR = 2 * s;
   return (
     <Marker coordinates={[lng, lat]}>
+      <defs>
+        <radialGradient id={gradId} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.85" />
+          <stop offset="50%" stopColor="#ffffff" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </radialGradient>
+      </defs>
       <g style={{ cursor: 'pointer' }} {...handlers}>
-        <circle r={9 * s} fill="transparent" />
-        <circle r={glow} fill="#ffffff" opacity={0.25} pointerEvents="none" />
-        <circle r={r} fill="#111827" stroke="#fff" strokeWidth={0.6 * s} pointerEvents="none" />
-        <text textAnchor="middle" y={-(r + 3 * s)} fill="#111827" fontSize={7 * s} fontWeight={700}
-          style={{ paintOrder: 'stroke', stroke: '#fff', strokeWidth: 2 * s }} pointerEvents="none">
+        <circle r={Math.max(blobR * 0.6, 10 * s)} fill="transparent" />
+        <circle r={blobR} fill={`url(#${gradId})`} pointerEvents="none" />
+        <circle r={coreR} fill="#111827" stroke="#fff" strokeWidth={0.6 * s} pointerEvents="none" />
+        <text textAnchor="middle" y={-(coreR + 4 * s)} fill="#111827" fontSize={6 * s} fontWeight={700}
+          style={{ paintOrder: 'stroke', stroke: '#fff', strokeWidth: 1.8 * s }} pointerEvents="none">
           {label}
         </text>
       </g>
