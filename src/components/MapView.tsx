@@ -9,15 +9,13 @@ const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
 function matchesFilter(city: City, filter: string): boolean {
   if (filter === 'all') return true;
   if (filter === 'undivide') return city.status === 'undivide';
-  if (filter === 'market') return city.status === 'new' || city.status === 'emerging' || city.status === 'growth';
-  // Match against dominant + secondary subgenres + headline genre string.
-  const hay = [
-    city.dominant_genre,
-    city.market.dominant_subgenre,
-    ...city.market.secondary_subgenres,
-  ].join(' ').toLowerCase().replace(/\s+/g, '');
-  if (filter === 'jumpup') return hay.includes('jumpup');
-  return hay.includes(filter);
+  if (filter === 'ukf' || filter === 'hospitality') {
+    const re = filter === 'ukf' ? /\bukf\b/i : /hospitalit/i;
+    return city.promoters.some((p) =>
+      re.test(p.name) || p.events_list.some((e) => re.test(e.name)),
+    );
+  }
+  return false;
 }
 
 function inYear(city: City, year: number | null): boolean {

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { City } from '../data/cities';
 
-export type FilterKey = 'all' | 'undivide' | 'market' | 'liquid' | 'neuro' | 'jumpup' | 'dancefloor';
+export type FilterKey = 'all' | 'undivide' | 'ukf' | 'hospitality';
 
 interface MapState {
   activeFilter: FilterKey;
