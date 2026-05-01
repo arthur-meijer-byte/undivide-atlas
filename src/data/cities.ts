@@ -2343,3 +2343,10 @@ export const SCENE_LABEL: Record<SceneStrength, string> = {
   emerging: 'Emerging',
   untapped: 'Untapped',
 };
+
+import { CITY_ENRICHMENT } from './cityStats';
+
+export const CITIES: City[] = CITIES_RAW.map((c) => {
+  const e = CITY_ENRICHMENT[c.id];
+  return e ? { ...c, topActs: e.topActs, stats: e.stats } : c;
+});
