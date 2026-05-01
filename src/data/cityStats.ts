@@ -116,7 +116,16 @@ const A = {
 
 // Concise top-10 builder
 const T = (
-  ...rows: Array<{ name: string; bookings_yr: number; ref?: typeof A[keyof typeof A]; notes?: string }>
+  ...rows: Array<{
+    name: string;
+    bookings_yr: number;
+    ref?: typeof A[keyof typeof A];
+    notes?: string;
+    spotify_monthly?: number;
+    ig_followers?: number;
+    country_origin?: string;
+    primary_label?: string;
+  }>
 ): TopAct[] =>
   build(
     rows.map((r) => ({
