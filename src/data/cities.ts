@@ -487,39 +487,6 @@ export const CITIES: City[] = [
   }),
 
   C({
-    id: 'vienna', name: 'Vienna', country: 'Austria',
-    lat: 48.21, lng: 16.37, status: 'undivide',
-    dominant_genre: 'Neurofunk / All styles',
-    market: M({
-      population_city_millions: 1.9,
-      dnb_scene_strength: 'strong',
-      dominant_subgenre: 'Neurofunk',
-      secondary_subgenres: ['Liquid', 'Dancefloor'],
-      avg_ticket_eur: 18,
-      competing_events_per_year: 20,
-      revenue_potential: '€200k',
-      yoy_growth: '+7%',
-      scene_notes: 'Consistently rated by international artists as one of Europe\'s best DnB cities. Multiple references to weekly sold-out club nights. Linz (2hr away) also has an active scene (PRSPCT crossbreed ties).',
-    }),
-    clubs: [
-      { name: 'Flex', capacity: 600, genre_focus: 'DnB and electronic club nights', ig: 'flexvienna' },
-      { name: 'Arena Vienna', capacity: 3500, genre_focus: 'Large events', ig: 'arenavienna' },
-    ],
-    promoters: [
-      P({
-        name: 'Korsakov Music AT (Undivide)', type: 'undivide',
-        active_since: 2016, events_per_year: 4,
-        dominant_genre: 'Neurofunk',
-        ig: 'korsakovmusic',
-        lineup: ['Mefjus', 'Emperor', 'Phace', 'Misanthrop'],
-        events: [
-          { date: 'Jan 2024', year: 2024, name: 'Korsakov Vienna', venue: 'Flex Vienna', cap: 500, sold: 490 },
-        ],
-      }),
-    ],
-  }),
-
-  C({
     id: 'barcelona', name: 'Barcelona', country: 'Spain',
     lat: 41.39, lng: 2.15, status: 'undivide',
     dominant_genre: 'Neurofunk / Dancefloor',
