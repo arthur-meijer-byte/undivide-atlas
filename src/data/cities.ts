@@ -156,7 +156,7 @@ function C(c: Omit<City, 'genre' | 'marketSize' | 'heroColor'>): City {
   };
 }
 
-export const CITIES: City[] = [
+const CITIES_RAW: City[] = [
   // ──────────────────────────── UNDIVIDE ACTIVE ────────────────────────────
   C({
     id: 'london', name: 'London', country: 'United Kingdom',
