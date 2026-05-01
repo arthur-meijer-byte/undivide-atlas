@@ -73,9 +73,9 @@ function Pin({ city, onClick, onHover, zoom }: PinProps) {
     <Marker coordinates={[city.lng, city.lat]}>
       <defs>
         <radialGradient id={gradId} cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor={color} stopOpacity="0.95" />
-          <stop offset="35%" stopColor={color} stopOpacity="0.55" />
-          <stop offset="70%" stopColor={color} stopOpacity="0.18" />
+          <stop offset="0%" stopColor={color} stopOpacity="0.75" />
+          <stop offset="35%" stopColor={color} stopOpacity="0.4" />
+          <stop offset="70%" stopColor={color} stopOpacity="0.12" />
           <stop offset="100%" stopColor={color} stopOpacity="0" />
         </radialGradient>
         <filter id={blurId} x="-50%" y="-50%" width="200%" height="200%">
