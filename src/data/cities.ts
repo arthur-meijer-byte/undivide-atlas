@@ -598,6 +598,17 @@ export const CITIES: City[] = [
           { date: 'Sep 2024', year: 2024, name: 'DnB Allstars Sydney', venue: 'Hordern Pavilion', cap: 5500, sold: 5000 },
         ],
       }),
+      P({
+        name: 'UKF Australia (Undivide)', type: 'undivide',
+        active_since: 2018, events_per_year: 2,
+        dominant_genre: 'All styles',
+        ig: 'ukf', website: 'ukf.com',
+        lineup: ['Sub Focus', 'Wilkinson', 'Dimension', 'Culture Shock'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'UKF On Air Sydney', venue: 'Hordern Pavilion', cap: 5500, sold: 5100 },
+          { date: 'Oct 2023', year: 2023, name: 'UKF On Air Sydney', venue: 'Metro Theatre', cap: 1700, sold: 1650 },
+        ],
+      }),
     ],
   }),
 
