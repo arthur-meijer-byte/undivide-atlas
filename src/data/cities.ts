@@ -487,39 +487,6 @@ export const CITIES: City[] = [
   }),
 
   C({
-    id: 'vienna', name: 'Vienna', country: 'Austria',
-    lat: 48.21, lng: 16.37, status: 'undivide',
-    dominant_genre: 'Neurofunk / All styles',
-    market: M({
-      population_city_millions: 1.9,
-      dnb_scene_strength: 'strong',
-      dominant_subgenre: 'Neurofunk',
-      secondary_subgenres: ['Liquid', 'Dancefloor'],
-      avg_ticket_eur: 18,
-      competing_events_per_year: 20,
-      revenue_potential: '€200k',
-      yoy_growth: '+7%',
-      scene_notes: 'Consistently rated by international artists as one of Europe\'s best DnB cities. Multiple references to weekly sold-out club nights. Linz (2hr away) also has an active scene (PRSPCT crossbreed ties).',
-    }),
-    clubs: [
-      { name: 'Flex', capacity: 600, genre_focus: 'DnB and electronic club nights', ig: 'flexvienna' },
-      { name: 'Arena Vienna', capacity: 3500, genre_focus: 'Large events', ig: 'arenavienna' },
-    ],
-    promoters: [
-      P({
-        name: 'Korsakov Music AT (Undivide)', type: 'undivide',
-        active_since: 2016, events_per_year: 4,
-        dominant_genre: 'Neurofunk',
-        ig: 'korsakovmusic',
-        lineup: ['Mefjus', 'Emperor', 'Phace', 'Misanthrop'],
-        events: [
-          { date: 'Jan 2024', year: 2024, name: 'Korsakov Vienna', venue: 'Flex Vienna', cap: 500, sold: 490 },
-        ],
-      }),
-    ],
-  }),
-
-  C({
     id: 'barcelona', name: 'Barcelona', country: 'Spain',
     lat: 41.39, lng: 2.15, status: 'undivide',
     dominant_genre: 'Neurofunk / Dancefloor',
@@ -1072,6 +1039,16 @@ export const CITIES: City[] = [
           { date: 'Mar 2024', year: 2024, name: 'Mainframe Night', venue: 'Flex', cap: 800, sold: 780 },
         ],
       }),
+      P({
+        name: 'Korsakov Music AT (Undivide)', type: 'undivide',
+        active_since: 2016, events_per_year: 4,
+        dominant_genre: 'Neurofunk',
+        ig: 'korsakovmusic',
+        lineup: ['Mefjus', 'Emperor', 'Phace', 'Misanthrop'],
+        events: [
+          { date: 'Jan 2024', year: 2024, name: 'Korsakov Vienna', venue: 'Flex Vienna', cap: 500, sold: 490 },
+        ],
+      }),
     ],
   }),
 
@@ -1104,6 +1081,493 @@ export const CITIES: City[] = [
         events: [
           { date: 'Apr 2025', year: 2025, name: 'Twist XXL DnB Fest', venue: 'Sala La Riviera', cap: 2500, sold: 2300 },
           { date: 'Nov 2025', year: 2025, name: 'DnB Addiction', venue: 'Sala La Riviera', cap: 2500, sold: 0 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'bristol', name: 'Bristol', country: 'United Kingdom',
+    lat: 51.4545, lng: -2.5879, status: 'undivide',
+    dominant_genre: 'Jungle / Dancefloor / Neurofunk',
+    market: M({
+      population_city_millions: 0.47,
+      dnb_scene_strength: 'legendary',
+      dominant_subgenre: 'Jungle',
+      secondary_subgenres: ['Dancefloor', 'Neurofunk', 'Liquid'],
+      avg_ticket_eur: 22,
+      competing_events_per_year: 120,
+      revenue_potential: '€900k',
+      yoy_growth: '+9%',
+      scene_notes: 'Spiritual home of UK bass — Roni Size, Reprazent, Krust, DJ Die. Motion + The Marble Factory weekly DnB nights. Run, In:Motion seasons & Shogun Audio shows here.',
+    }),
+    clubs: [
+      { name: 'Motion', capacity: 5000, genre_focus: 'Largest DnB & bass venue in UK outside London', ig: 'motionbristol' },
+      { name: 'The Marble Factory', capacity: 1000, genre_focus: 'DnB, bass, dubstep', ig: 'marblefactorybristol' },
+      { name: 'Lakota', capacity: 1100, genre_focus: 'DnB, jungle, techno', ig: 'lakotabristol' },
+      { name: 'SWX', capacity: 1300, genre_focus: 'Live + DJ DnB shows', ig: 'swxbristol' },
+    ],
+    promoters: [
+      P({
+        name: 'In:Motion', type: 'venue',
+        active_since: 2009, events_per_year: 25,
+        dominant_genre: 'All bass styles',
+        ig: 'motionbristol', website: 'motionbristol.com',
+        lineup: ['Andy C', 'Chase & Status', 'Wilkinson', 'Sub Focus', 'Hybrid Minds', 'Kanine'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'In:Motion DnB', venue: 'Motion', cap: 5000, sold: 4900 },
+          { date: 'Nov 2024', year: 2024, name: 'Hospitality Bristol', venue: 'Motion', cap: 5000, sold: 4800 },
+        ],
+      }),
+      P({
+        name: 'Run', type: 'local',
+        active_since: 2018, events_per_year: 8,
+        dominant_genre: 'Dancefloor',
+        ig: 'run.bristol',
+        lineup: ['Bou', 'Tsuki', 'A.M.C', 'Turno', 'Disrupta'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Run', venue: 'Motion', cap: 5000, sold: 4700 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'leeds', name: 'Leeds', country: 'United Kingdom',
+    lat: 53.8008, lng: -1.5491, status: 'growth',
+    dominant_genre: 'Jump Up / Dancefloor',
+    market: M({
+      population_city_millions: 0.81,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Jump Up',
+      secondary_subgenres: ['Dancefloor', 'Liquid'],
+      avg_ticket_eur: 18,
+      competing_events_per_year: 80,
+      revenue_potential: '€520k',
+      yoy_growth: '+10%',
+      scene_notes: 'Heavy student-driven scene. Beaver Works campus is the bass HQ — Hospitality Leeds and DnB Allstars regularly sell out 2,000+ rooms.',
+    }),
+    clubs: [
+      { name: 'Beaver Works (Mint Warehouse)', capacity: 2300, genre_focus: 'Largest DnB warehouse in the north', ig: 'beaverworksleeds' },
+      { name: 'Stylus (Leeds Uni)', capacity: 2200, genre_focus: 'Hospitality, Andy C tour stops', ig: 'leedsstudentsunion' },
+      { name: 'Wire', capacity: 350, genre_focus: 'Underground DnB', ig: 'wireclubleeds' },
+    ],
+    promoters: [
+      P({
+        name: 'Beaver Works DnB', type: 'venue',
+        active_since: 2014, events_per_year: 20,
+        dominant_genre: 'All bass',
+        ig: 'beaverworksleeds',
+        lineup: ['Andy C', 'Hybrid Minds', 'Bou', 'Sub Focus', 'Wilkinson'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Hospitality Leeds', venue: 'Beaver Works', cap: 2300, sold: 2300 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'glasgow', name: 'Glasgow', country: 'United Kingdom',
+    lat: 55.8642, lng: -4.2518, status: 'growth',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 0.63,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Dancefloor', 'Jump Up'],
+      avg_ticket_eur: 20,
+      competing_events_per_year: 60,
+      revenue_potential: '€380k',
+      yoy_growth: '+8%',
+      scene_notes: 'SWG3 and The Galvanizers regularly host 2,500+ DnB shows. Loyal scene — sells out fast.',
+    }),
+    clubs: [
+      { name: 'SWG3 / Galvanizers', capacity: 2500, genre_focus: 'Large bass shows, Hospitality Glasgow', ig: 'swg3glasgow' },
+      { name: 'The Garage', capacity: 600, genre_focus: 'Mid-size DnB nights', ig: 'thegarageglasgow' },
+      { name: 'Sub Club', capacity: 410, genre_focus: 'Iconic underground (mostly house/techno, DnB takeovers)', ig: 'subclub' },
+    ],
+    promoters: [
+      P({
+        name: 'Pressure / SWG3', type: 'venue',
+        active_since: 2010, events_per_year: 15,
+        dominant_genre: 'All bass',
+        ig: 'swg3glasgow',
+        lineup: ['Andy C', 'Bou', 'Sub Focus', 'Mefjus', 'Kanine'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Hospitality Glasgow', venue: 'SWG3 Galvanizers', cap: 2500, sold: 2450 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'birmingham', name: 'Birmingham', country: 'United Kingdom',
+    lat: 52.4862, lng: -1.8904, status: 'growth',
+    dominant_genre: 'Jump Up / Dancefloor',
+    market: M({
+      population_city_millions: 1.15,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Jump Up',
+      secondary_subgenres: ['Dancefloor', 'Neurofunk'],
+      avg_ticket_eur: 18,
+      competing_events_per_year: 70,
+      revenue_potential: '€460k',
+      yoy_growth: '+9%',
+      scene_notes: 'O2 Institute hosts the biggest DnB tour stops. Lab11 and Mama Roux are core grassroots bass venues.',
+    }),
+    clubs: [
+      { name: 'O2 Institute', capacity: 1500, genre_focus: 'DnB & bass tours', ig: 'o2institutebirmingham' },
+      { name: 'Lab11', capacity: 1500, genre_focus: 'Underground bass warehouse', ig: 'lab11bham' },
+      { name: 'Mama Roux\'s', capacity: 350, genre_focus: 'Intimate DnB nights', ig: 'mamarouxs' },
+    ],
+    promoters: [
+      P({
+        name: 'Lab11', type: 'venue',
+        active_since: 2015, events_per_year: 30,
+        dominant_genre: 'Bass / DnB',
+        ig: 'lab11bham',
+        lineup: ['Bou', 'Hybrid Minds', 'Turno', 'Disrupta', 'A.M.C'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Hospitality Birmingham', venue: 'O2 Institute', cap: 1500, sold: 1500 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'zurich', name: 'Zürich', country: 'Switzerland',
+    lat: 47.3769, lng: 8.5417, status: 'emerging',
+    dominant_genre: 'Neurofunk / Liquid',
+    market: M({
+      population_city_millions: 0.43,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Liquid', 'Dancefloor'],
+      avg_ticket_eur: 35,
+      competing_events_per_year: 25,
+      revenue_potential: '€340k',
+      yoy_growth: '+14%',
+      scene_notes: 'High disposable income, premium ticket pricing. Komplex 457 & X-TRA host the largest DnB nights. Rohstofflager runs intimate sold-out DnB.',
+    }),
+    clubs: [
+      { name: 'Komplex 457', capacity: 2500, genre_focus: 'Large electronic + DnB shows', ig: 'komplex457' },
+      { name: 'X-TRA', capacity: 1500, genre_focus: 'DnB & bass tours', ig: 'xtra_zurich' },
+      { name: 'Rohstofflager', capacity: 600, genre_focus: 'Underground bass', ig: 'rohstofflager' },
+    ],
+    promoters: [
+      P({
+        name: 'Drumcomplex CH', type: 'local',
+        active_since: 2012, events_per_year: 8,
+        dominant_genre: 'Neurofunk / Liquid',
+        ig: 'drumcomplex_ch',
+        lineup: ['Mefjus', 'Camo & Krooked', 'Phace', 'Hybrid Minds'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Drumcomplex', venue: 'X-TRA', cap: 1500, sold: 1450 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'munich', name: 'Munich', country: 'Germany',
+    lat: 48.1351, lng: 11.5820, status: 'emerging',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 1.49,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Dancefloor', 'Liquid'],
+      avg_ticket_eur: 25,
+      competing_events_per_year: 35,
+      revenue_potential: '€420k',
+      yoy_growth: '+13%',
+      scene_notes: 'Tonhalle and Backstage Werk regularly host 2,000+ cap DnB shows. Strong appetite for Hospitality and Rampage tour stops.',
+    }),
+    clubs: [
+      { name: 'Tonhalle München', capacity: 3000, genre_focus: 'Large DnB / electronic tours', ig: 'tonhallemuc' },
+      { name: 'Backstage Werk', capacity: 1500, genre_focus: 'DnB, metal, electronic', ig: 'backstagemunich' },
+      { name: 'Muffatwerk', capacity: 1200, genre_focus: 'Electronic + DnB', ig: 'muffatwerk' },
+    ],
+    promoters: [
+      P({
+        name: 'BLN.FM Bass', type: 'local',
+        active_since: 2014, events_per_year: 6,
+        dominant_genre: 'Neurofunk',
+        ig: 'tonhallemuc',
+        lineup: ['Mefjus', 'Phace', 'Camo & Krooked', 'Bou'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Hospitality Munich', venue: 'Tonhalle', cap: 3000, sold: 2900 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'hamburg', name: 'Hamburg', country: 'Germany',
+    lat: 53.5511, lng: 9.9937, status: 'emerging',
+    dominant_genre: 'Liquid / Neurofunk',
+    market: M({
+      population_city_millions: 1.84,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Neurofunk', 'Dancefloor'],
+      avg_ticket_eur: 22,
+      competing_events_per_year: 40,
+      revenue_potential: '€480k',
+      yoy_growth: '+11%',
+      scene_notes: 'Markthalle and Übel & Gefährlich anchor the scene. Steady rotation of UK headliners. Strong port-city electronic culture.',
+    }),
+    clubs: [
+      { name: 'Markthalle', capacity: 1100, genre_focus: 'DnB, drum tours, hip-hop', ig: 'markthallehh' },
+      { name: 'Übel & Gefährlich', capacity: 850, genre_focus: 'Electronic, DnB nights', ig: 'uebelundgefaehrlich' },
+      { name: 'Mojo Club', capacity: 500, genre_focus: 'Underground DnB nights', ig: 'mojohamburg' },
+    ],
+    promoters: [
+      P({
+        name: 'Bassgeflüster', type: 'local',
+        active_since: 2013, events_per_year: 10,
+        dominant_genre: 'Liquid / Neurofunk',
+        ig: 'bassgefluester',
+        lineup: ['Hybrid Minds', 'BCee', 'Camo & Krooked', 'Mefjus'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Bassgeflüster', venue: 'Markthalle', cap: 1100, sold: 1050 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'frankfurt', name: 'Frankfurt', country: 'Germany',
+    lat: 50.1109, lng: 8.6821, status: 'emerging',
+    dominant_genre: 'Neurofunk / Jump Up',
+    market: M({
+      population_city_millions: 0.77,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Jump Up', 'Liquid'],
+      avg_ticket_eur: 22,
+      competing_events_per_year: 25,
+      revenue_potential: '€280k',
+      yoy_growth: '+10%',
+      scene_notes: 'Batschkapp anchors DnB tours. Strong techno history bleeding into bass nights at Tanzhaus West.',
+    }),
+    clubs: [
+      { name: 'Batschkapp', capacity: 1500, genre_focus: 'DnB & bass tours', ig: 'batschkapp' },
+      { name: 'Tanzhaus West', capacity: 800, genre_focus: 'Electronic + DnB takeovers', ig: 'tanzhauswest' },
+    ],
+    promoters: [
+      P({
+        name: 'Frankfurt Bass Society', type: 'local',
+        active_since: 2016, events_per_year: 6,
+        dominant_genre: 'Neurofunk',
+        ig: 'batschkapp',
+        lineup: ['Mefjus', 'Phace', 'Camo & Krooked'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Bass Society', venue: 'Batschkapp', cap: 1500, sold: 1300 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'copenhagen', name: 'Copenhagen', country: 'Denmark',
+    lat: 55.6761, lng: 12.5683, status: 'emerging',
+    dominant_genre: 'Liquid / Neurofunk',
+    market: M({
+      population_city_millions: 0.66,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Neurofunk', 'Dancefloor'],
+      avg_ticket_eur: 28,
+      competing_events_per_year: 25,
+      revenue_potential: '€320k',
+      yoy_growth: '+15%',
+      scene_notes: 'Pumpehuset and Vega are the main DnB destinations. High purchasing power, strong appetite for Hospitality tours.',
+    }),
+    clubs: [
+      { name: 'Pumpehuset', capacity: 600, genre_focus: 'DnB, bass, electronic', ig: 'pumpehuset' },
+      { name: 'Vega', capacity: 1550, genre_focus: 'Large DnB tours', ig: 'vegacph' },
+      { name: 'Rust', capacity: 600, genre_focus: 'Underground bass', ig: 'rustcph' },
+    ],
+    promoters: [
+      P({
+        name: 'Copenhagen Bass', type: 'local',
+        active_since: 2015, events_per_year: 8,
+        dominant_genre: 'Liquid',
+        ig: 'pumpehuset',
+        lineup: ['Hybrid Minds', 'BCee', 'Mozey', 'Whiney'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Hospitality CPH', venue: 'Vega', cap: 1550, sold: 1500 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'stockholm', name: 'Stockholm', country: 'Sweden',
+    lat: 59.3293, lng: 18.0686, status: 'emerging',
+    dominant_genre: 'Neurofunk / Liquid',
+    market: M({
+      population_city_millions: 0.98,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Liquid', 'Dancefloor'],
+      avg_ticket_eur: 30,
+      competing_events_per_year: 22,
+      revenue_potential: '€340k',
+      yoy_growth: '+12%',
+      scene_notes: 'Fryshuset and Slaktkyrkan host the biggest tours. Loyal Nordic DnB crowd, premium ticket pricing.',
+    }),
+    clubs: [
+      { name: 'Fryshuset Arenan', capacity: 2500, genre_focus: 'Large DnB tours', ig: 'fryshuset' },
+      { name: 'Slaktkyrkan', capacity: 1200, genre_focus: 'Electronic + DnB warehouse', ig: 'slaktkyrkan' },
+      { name: 'Nalen', capacity: 700, genre_focus: 'Mid-size DnB', ig: 'nalenstockholm' },
+    ],
+    promoters: [
+      P({
+        name: 'Bass Republic SE', type: 'local',
+        active_since: 2014, events_per_year: 7,
+        dominant_genre: 'Neurofunk / Liquid',
+        ig: 'slaktkyrkan',
+        lineup: ['Mefjus', 'Hybrid Minds', 'Camo & Krooked', 'BCee'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Hospitality Stockholm', venue: 'Slaktkyrkan', cap: 1200, sold: 1100 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'auckland', name: 'Auckland', country: 'New Zealand',
+    lat: -36.8485, lng: 174.7633, status: 'emerging',
+    dominant_genre: 'Liquid / Dancefloor',
+    market: M({
+      population_city_millions: 1.66,
+      dnb_scene_strength: 'strong',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Dancefloor', 'Neurofunk'],
+      avg_ticket_eur: 30,
+      competing_events_per_year: 60,
+      revenue_potential: '€620k',
+      yoy_growth: '+11%',
+      scene_notes: 'NZ punches massively above its weight in DnB — Shapeshifter, Truth, State of Mind all from here. Powerstation and Trusts Arena host huge shows.',
+    }),
+    clubs: [
+      { name: 'Powerstation', capacity: 1100, genre_focus: 'DnB & bass live shows', ig: 'powerstationnz' },
+      { name: 'The Studio', capacity: 800, genre_focus: 'DnB nights, bass tours', ig: 'thestudioauckland' },
+      { name: 'Trusts Arena', capacity: 4500, genre_focus: 'Largest DnB events (Hospitality, Rampage)', ig: 'trustsarena' },
+    ],
+    promoters: [
+      P({
+        name: 'A:LIVE', type: 'local',
+        active_since: 2012, events_per_year: 12,
+        dominant_genre: 'All bass',
+        ig: 'aliveevents',
+        lineup: ['Sub Focus', 'Wilkinson', 'Hybrid Minds', 'Andy C', 'Netsky'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'A:LIVE', venue: 'Trusts Arena', cap: 4500, sold: 4400 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'toronto', name: 'Toronto', country: 'Canada',
+    lat: 43.6532, lng: -79.3832, status: 'emerging',
+    dominant_genre: 'Liquid / Dancefloor',
+    market: M({
+      population_city_millions: 2.93,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Dancefloor', 'Neurofunk'],
+      avg_ticket_eur: 26,
+      competing_events_per_year: 45,
+      revenue_potential: '€560k',
+      yoy_growth: '+14%',
+      scene_notes: 'Rebel and CODA are the bass anchors. Hybrid Minds, Sub Focus all sell 2,500+. Diverse subgenre coverage.',
+    }),
+    clubs: [
+      { name: 'Rebel', capacity: 2400, genre_focus: 'Large DnB tours', ig: 'rebeltoronto' },
+      { name: 'CODA', capacity: 600, genre_focus: 'Underground electronic + DnB', ig: 'codatoronto' },
+      { name: 'History', capacity: 2500, genre_focus: 'Live bass / DnB tours', ig: 'historytoronto' },
+    ],
+    promoters: [
+      P({
+        name: 'Embrace Presents', type: 'local',
+        active_since: 2010, events_per_year: 20,
+        dominant_genre: 'All bass',
+        ig: 'embracepresents',
+        lineup: ['Hybrid Minds', 'Sub Focus', 'Andy C', 'Netsky', 'Wilkinson'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Hybrid Minds Toronto', venue: 'Rebel', cap: 2400, sold: 2300 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'losangeles', name: 'Los Angeles', country: 'United States',
+    lat: 34.0522, lng: -118.2437, status: 'emerging',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 3.9,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk',
+      secondary_subgenres: ['Dancefloor', 'Liquid'],
+      avg_ticket_eur: 35,
+      competing_events_per_year: 80,
+      revenue_potential: '€1.1M',
+      yoy_growth: '+18%',
+      scene_notes: 'Respect DnB at Exchange LA every Thursday is legendary — longest-running DnB night in the US. Academy LA hosts biggest tours.',
+    }),
+    clubs: [
+      { name: 'Exchange LA', capacity: 1500, genre_focus: 'Respect DnB weekly', ig: 'exchangela' },
+      { name: 'Academy LA', capacity: 2000, genre_focus: 'DnB, bass tours', ig: 'academylaofficial' },
+      { name: 'Sound Nightclub', capacity: 700, genre_focus: 'Electronic + DnB', ig: 'soundnightclub' },
+    ],
+    promoters: [
+      P({
+        name: 'Respect DnB', type: 'local',
+        active_since: 2002, events_per_year: 50,
+        dominant_genre: 'All DnB',
+        ig: 'respectdnb', website: 'respectdnb.com',
+        lineup: ['Andy C', 'Sub Focus', 'Mefjus', 'Bou', 'Dieselboy'],
+        events: [
+          { date: 'Every Thu', year: 2024, name: 'Respect', venue: 'Exchange LA', cap: 1500, sold: 1300 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'newyork', name: 'New York', country: 'United States',
+    lat: 40.7128, lng: -74.0060, status: 'emerging',
+    dominant_genre: 'Liquid / Jungle',
+    market: M({
+      population_city_millions: 8.4,
+      dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid',
+      secondary_subgenres: ['Jungle', 'Neurofunk'],
+      avg_ticket_eur: 35,
+      competing_events_per_year: 70,
+      revenue_potential: '€1.3M',
+      yoy_growth: '+16%',
+      scene_notes: 'Jungle revival epicenter in the US. Brooklyn Mirage, Knockdown Center and Avant Gardner host massive tours.',
+    }),
+    clubs: [
+      { name: 'Brooklyn Mirage', capacity: 6000, genre_focus: 'Large DnB & bass tours', ig: 'brooklynmirage' },
+      { name: 'Knockdown Center', capacity: 3200, genre_focus: 'Bass warehouse', ig: 'knockdowncenter' },
+      { name: 'Avant Gardner', capacity: 6000, genre_focus: 'Large electronic + DnB', ig: 'avantgardner_bk' },
+    ],
+    promoters: [
+      P({
+        name: 'Teksupport', type: 'local',
+        active_since: 2017, events_per_year: 25,
+        dominant_genre: 'All bass',
+        ig: 'teksupport',
+        lineup: ['Sub Focus', 'Andy C', 'Hybrid Minds', 'Chase & Status'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Sub Focus NYC', venue: 'Brooklyn Mirage', cap: 6000, sold: 5800 },
         ],
       }),
     ],
