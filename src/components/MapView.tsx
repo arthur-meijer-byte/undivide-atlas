@@ -161,8 +161,23 @@ export default function MapView() {
           center={[0, 20]}
           zoom={mapTransform.scale}
           minZoom={0.35}
-          maxZoom={10}
-          onMoveEnd={(pos) => setTransform({ scale: pos.zoom, x: pos.coordinates[0], y: pos.coordinates[1] })}
+          maxZoom={20}
+          onMove={(pos: any) => {
+            // Live update during wheel/drag so pins resize smoothly. d3-zoom already
+            // anchors wheel zoom on the pointer, so this also makes cursor-targeted zoom feel right.
+            setTransform({ scale: pos.zoom, x: mapTransform.x, y: mapTransform.y });
+          }}
+          onMoveEnd={(pos: any) => {
+            const coords = pos.coordinates ?? [mapTransform.x, mapTransform.y];
+            setTransform({ scale: pos.zoom, x: coords[0], y: coords[1] });
+          }}
+          filterZoomEvent={(evt: any) => {
+            // Dampen wheel delta for smoother, slower zoom increments.
+            if (evt.type === 'wheel') {
+              try { evt.deltaY = evt.deltaY * 0.35; } catch { /* read-only — ignore */ }
+            }
+            return true;
+          }}
         >
           <Graticule stroke="rgba(0,0,0,0.05)" strokeWidth={0.5} />
           <Geographies geography={GEO_URL}>
