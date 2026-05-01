@@ -183,6 +183,19 @@ export const CITIES: City[] = [
         ],
       }),
       P({
+        name: 'UKF (Undivide)', type: 'undivide',
+        active_since: 2009, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'ukf', yt: 'UKF', website: 'ukf.com',
+        lineup: ['Sub Focus', 'Wilkinson', 'Dimension', 'Culture Shock', '1991', 'Kanine', 'Tantrum Desire', 'Mefjus'],
+        events: [
+          { date: 'Dec 2024', year: 2024, name: 'UKF15 Anniversary', venue: 'Drumsheds', cap: 10000, sold: 9800 },
+          { date: 'Apr 2024', year: 2024, name: 'UKF On Air London', venue: 'Drumsheds', cap: 8000, sold: 7600 },
+          { date: 'Oct 2023', year: 2023, name: 'UKF On Air London', venue: 'Printworks', cap: 6000, sold: 5900 },
+          { date: 'May 2023', year: 2023, name: 'UKF Halloween', venue: 'Drumsheds', cap: 8000, sold: 7400 },
+        ],
+      }),
+      P({
         name: 'FABRICLIVE', type: 'venue',
         active_since: 1999, events_per_year: 50,
         dominant_genre: 'Liquid / Neurofunk / Jungle',
@@ -583,6 +596,17 @@ export const CITIES: City[] = [
         events: [
           { date: 'Mar 2024', year: 2024, name: 'Hospitality Sydney', venue: 'Metro Theatre', cap: 1700, sold: 1650 },
           { date: 'Sep 2024', year: 2024, name: 'DnB Allstars Sydney', venue: 'Hordern Pavilion', cap: 5500, sold: 5000 },
+        ],
+      }),
+      P({
+        name: 'UKF Australia (Undivide)', type: 'undivide',
+        active_since: 2018, events_per_year: 2,
+        dominant_genre: 'All styles',
+        ig: 'ukf', website: 'ukf.com',
+        lineup: ['Sub Focus', 'Wilkinson', 'Dimension', 'Culture Shock'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'UKF On Air Sydney', venue: 'Hordern Pavilion', cap: 5500, sold: 5100 },
+          { date: 'Oct 2023', year: 2023, name: 'UKF On Air Sydney', venue: 'Metro Theatre', cap: 1700, sold: 1650 },
         ],
       }),
     ],
@@ -1468,6 +1492,16 @@ export const CITIES: City[] = [
           { date: 'Mar 2024', year: 2024, name: 'A:LIVE', venue: 'Trusts Arena', cap: 4500, sold: 4400 },
         ],
       }),
+      P({
+        name: 'UKF NZ (Undivide)', type: 'undivide',
+        active_since: 2019, events_per_year: 1,
+        dominant_genre: 'All styles',
+        ig: 'ukf', website: 'ukf.com',
+        lineup: ['Sub Focus', 'Wilkinson', 'Dimension'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'UKF On Air Auckland', venue: 'Powerstation', cap: 1100, sold: 1080 },
+        ],
+      }),
     ],
   }),
 
@@ -1536,6 +1570,17 @@ export const CITIES: City[] = [
           { date: 'Every Thu', year: 2024, name: 'Respect', venue: 'Exchange LA', cap: 1500, sold: 1300 },
         ],
       }),
+      P({
+        name: 'UKF USA (Undivide)', type: 'undivide',
+        active_since: 2017, events_per_year: 3,
+        dominant_genre: 'All styles',
+        ig: 'ukf', website: 'ukf.com',
+        lineup: ['Sub Focus', 'Wilkinson', 'Dimension', 'Culture Shock'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'UKF On Air LA', venue: 'Academy LA', cap: 2000, sold: 1900 },
+          { date: 'May 2023', year: 2023, name: 'UKF On Air LA', venue: 'Exchange LA', cap: 1500, sold: 1450 },
+        ],
+      }),
     ],
   }),
 
@@ -1568,6 +1613,17 @@ export const CITIES: City[] = [
         lineup: ['Sub Focus', 'Andy C', 'Hybrid Minds', 'Chase & Status'],
         events: [
           { date: 'Sep 2024', year: 2024, name: 'Sub Focus NYC', venue: 'Brooklyn Mirage', cap: 6000, sold: 5800 },
+        ],
+      }),
+      P({
+        name: 'UKF NYC (Undivide)', type: 'undivide',
+        active_since: 2018, events_per_year: 2,
+        dominant_genre: 'All styles',
+        ig: 'ukf', website: 'ukf.com',
+        lineup: ['Sub Focus', 'Wilkinson', 'Dimension', 'Chase & Status'],
+        events: [
+          { date: 'Aug 2024', year: 2024, name: 'UKF On Air NYC', venue: 'Brooklyn Mirage', cap: 6000, sold: 5700 },
+          { date: 'Sep 2023', year: 2023, name: 'UKF On Air NYC', venue: 'Knockdown Center', cap: 3200, sold: 3100 },
         ],
       }),
     ],

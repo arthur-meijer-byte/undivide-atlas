@@ -71,7 +71,6 @@ export default function BookingModal() {
           <Field label="City *"><input className={inp} value={form.city} onChange={(e) => set('city', e.target.value)} /></Field>
           <Field label="Country *"><input className={inp} value={form.country} onChange={(e) => set('country', e.target.value)} /></Field>
           <Field label="Latitude"><input type="number" step="0.0001" className={inp} value={form.lat} onChange={(e) => set('lat', e.target.value as unknown as number)} /></Field>
-          <Field label="Longitude"><input type="number" step="0.0001" className={inp} value={form.lng} onChange={(e) => set('lng', e.target.value as unknown as number)} /></Field>
           <Field label="Venue *"><input className={inp} value={form.venue} onChange={(e) => set('venue', e.target.value)} /></Field>
           <Field label="Date *"><input type="date" className={inp} value={form.date} onChange={(e) => set('date', e.target.value)} /></Field>
           <Field label="Promoter"><input className={inp} value={form.promoter} onChange={(e) => set('promoter', e.target.value)} /></Field>
