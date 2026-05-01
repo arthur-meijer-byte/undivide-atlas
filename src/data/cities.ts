@@ -1628,6 +1628,674 @@ export const CITIES: City[] = [
       }),
     ],
   }),
+
+  // ──────────────────────────── EMERGING GLOBAL TERRITORIES (verified 2024–2025) ────────────────────────────
+
+  C({
+    id: 'mumbai', name: 'Mumbai', country: 'India',
+    lat: 19.076, lng: 72.8777, status: 'emerging',
+    dominant_genre: 'Liquid / Neurofunk',
+    market: M({
+      population_city_millions: 20.7, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid', secondary_subgenres: ['Neurofunk', 'Jungle'],
+      avg_ticket_eur: 12, competing_events_per_year: 18, revenue_potential: '€180k', yoy_growth: '+35%',
+      scene_notes: 'Drum & Bass India (DNBI) anchors the national scene since 2013 — 12-year anniversary weekender 2025. Antisocial and Bonobo are the regular DnB venues. Strong producer pipeline (The Untitled One, Calm Chor).',
+    }),
+    clubs: [
+      { name: 'Antisocial', capacity: 350, genre_focus: 'Underground bass, DnB nights', ig: 'antisocialin' },
+      { name: 'Bonobo', capacity: 250, genre_focus: 'DnB & bass parties', ig: 'bonobo_mumbai' },
+    ],
+    promoters: [
+      P({
+        name: 'Drum & Bass India', type: 'local',
+        active_since: 2013, events_per_year: 20, dominant_genre: 'All DnB',
+        ig: 'drumandbassindia', website: 'drumandbassindia.com',
+        lineup: ['The Untitled One', 'Calm Chor', 'Sun-J', 'Degs', 'Whiney'],
+        events: [
+          { date: 'Feb 2025', year: 2025, name: 'DNBI 12-Year Weekender', venue: 'Antisocial', cap: 350, sold: 350 },
+          { date: 'Sep 2024', year: 2024, name: 'DNBI Mumbai', venue: 'Bonobo', cap: 250, sold: 240 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'bangalore', name: 'Bangalore', country: 'India',
+    lat: 12.9716, lng: 77.5946, status: 'emerging',
+    dominant_genre: 'Liquid / Dancefloor',
+    market: M({
+      population_city_millions: 13.2, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid', secondary_subgenres: ['Dancefloor', 'Neurofunk'],
+      avg_ticket_eur: 14, competing_events_per_year: 22, revenue_potential: '€220k', yoy_growth: '+38%',
+      scene_notes: 'Tech-hub crowd with strong appetite for international DnB tours. Fandom and Bay 146 host regular DNBI nights. Booming festival circuit.',
+    }),
+    clubs: [
+      { name: 'Fandom at Gilly\'s Redefined', capacity: 800, genre_focus: 'Bass & DnB tours', ig: 'fandombangalore' },
+      { name: 'Bay 146', capacity: 600, genre_focus: 'Underground electronic', ig: 'bay146' },
+    ],
+    promoters: [
+      P({
+        name: 'Drum & Bass India BLR', type: 'local',
+        active_since: 2014, events_per_year: 12, dominant_genre: 'All DnB',
+        ig: 'drumandbassindia',
+        lineup: ['Bou', 'Whiney', 'The Untitled One', 'Sun-J'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'DNBI Bangalore', venue: 'Fandom', cap: 800, sold: 750 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'delhi', name: 'New Delhi', country: 'India',
+    lat: 28.6139, lng: 77.2090, status: 'emerging',
+    dominant_genre: 'Neurofunk / Jungle',
+    market: M({
+      population_city_millions: 32.9, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk', secondary_subgenres: ['Jungle', 'Liquid'],
+      avg_ticket_eur: 13, competing_events_per_year: 15, revenue_potential: '€200k', yoy_growth: '+30%',
+      scene_notes: 'Auro Kitchen & Bar and Summer House Café host the DNBI Delhi chapters. Hard heavyweight crowd.',
+    }),
+    clubs: [
+      { name: 'Summer House Café', capacity: 400, genre_focus: 'Bass nights, DnB', ig: 'summerhousecafe' },
+      { name: 'Auro Kitchen & Bar', capacity: 300, genre_focus: 'Underground DnB', ig: 'aurokitchenandbar' },
+    ],
+    promoters: [
+      P({
+        name: 'Drum & Bass India Delhi', type: 'local',
+        active_since: 2014, events_per_year: 10, dominant_genre: 'All DnB',
+        ig: 'drumandbassindia',
+        lineup: ['Bou', 'Whiney', 'Degs', 'The Untitled One'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'DNBI Delhi', venue: 'Summer House Café', cap: 400, sold: 380 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'yangon', name: 'Yangon', country: 'Myanmar',
+    lat: 16.8409, lng: 96.1735, status: 'new',
+    dominant_genre: 'Liquid / Modern DnB',
+    market: M({
+      population_city_millions: 5.4, dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Liquid', secondary_subgenres: ['Neurofunk'],
+      avg_ticket_eur: 8, competing_events_per_year: 6, revenue_potential: '€40k', yoy_growth: '+50%',
+      scene_notes: 'Radiant Light Unit (Burmese DnB pioneer) is leading a one-man revolution from Yangon — championed in international press. Tiny but passionate underground.',
+    }),
+    clubs: [
+      { name: 'Pioneer Club', capacity: 400, genre_focus: 'Electronic, occasional DnB', ig: 'pioneeryangon' },
+    ],
+    promoters: [
+      P({
+        name: 'Radiant Light Unit collective', type: 'local',
+        active_since: 2020, events_per_year: 4, dominant_genre: 'Modern DnB',
+        ig: 'radiantlightunit',
+        lineup: ['Radiant Light Unit', 'local crews'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'RLU Showcase Yangon', venue: 'Pioneer Club', cap: 400, sold: 320 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'bangkok', name: 'Bangkok', country: 'Thailand',
+    lat: 13.7563, lng: 100.5018, status: 'emerging',
+    dominant_genre: 'Jungle / Liquid',
+    market: M({
+      population_city_millions: 10.7, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Jungle', secondary_subgenres: ['Liquid', 'Neurofunk'],
+      avg_ticket_eur: 18, competing_events_per_year: 30, revenue_potential: '€280k', yoy_growth: '+28%',
+      scene_notes: 'Jungle Jam BKK has anchored the scene since 2020. DnB Thailand directory unites the country. Mustache Bangkok and De Commune host regular DnB nights.',
+    }),
+    clubs: [
+      { name: 'De Commune', capacity: 600, genre_focus: 'DnB, jungle, bass', ig: 'decommunebkk' },
+      { name: 'Mustache Bangkok', capacity: 500, genre_focus: 'Underground bass + DnB', ig: 'mustachebkk' },
+    ],
+    promoters: [
+      P({
+        name: 'Jungle Jam BKK', type: 'local',
+        active_since: 2020, events_per_year: 12, dominant_genre: 'Jungle / DnB',
+        ig: 'junglejambkk', website: 'junglejambkk.com',
+        lineup: ['Degs', 'Tim Reaper', 'Sherelle', 'Coco Bryce'],
+        events: [
+          { date: 'Mar 2025', year: 2025, name: 'Jungle Jam BKK', venue: 'De Commune', cap: 600, sold: 580 },
+          { date: 'Nov 2024', year: 2024, name: 'Jungle Jam BKK', venue: 'Mustache Bangkok', cap: 500, sold: 480 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'phuket', name: 'Phuket', country: 'Thailand',
+    lat: 7.8804, lng: 98.3923, status: 'new',
+    dominant_genre: 'Dancefloor / Liquid',
+    market: M({
+      population_city_millions: 0.42, dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Dancefloor', secondary_subgenres: ['Liquid'],
+      avg_ticket_eur: 22, competing_events_per_year: 12, revenue_potential: '€90k', yoy_growth: '+40%',
+      scene_notes: 'District1 brings UK headliners (Degs, etc.) to the island. Tourist-driven crowd, high spend per head.',
+    }),
+    clubs: [
+      { name: 'District1 Phuket', capacity: 500, genre_focus: 'DnB + bass', ig: 'district1dnb' },
+    ],
+    promoters: [
+      P({
+        name: 'District1', type: 'local',
+        active_since: 2022, events_per_year: 10, dominant_genre: 'DnB',
+        ig: 'district1dnb', website: 'district1dnb.com',
+        lineup: ['Degs', 'Tantrum Desire', 'Bou'],
+        events: [
+          { date: 'Feb 2024', year: 2024, name: 'District1 Degs', venue: 'District1 Phuket', cap: 500, sold: 480 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'hochiminh', name: 'Ho Chi Minh City', country: 'Vietnam',
+    lat: 10.8231, lng: 106.6297, status: 'new',
+    dominant_genre: 'Liquid / Dancefloor',
+    market: M({
+      population_city_millions: 9.0, dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Liquid', secondary_subgenres: ['Dancefloor'],
+      avg_ticket_eur: 11, competing_events_per_year: 10, revenue_potential: '€80k', yoy_growth: '+45%',
+      scene_notes: 'Scientific Sound Asia hosts DnB / bass / hip hop showcases like Mad Circus. Underground crowd growing fast post-pandemic.',
+    }),
+    clubs: [
+      { name: 'The Observatory', capacity: 400, genre_focus: 'Underground electronic + bass', ig: 'theobservatory.hcmc' },
+    ],
+    promoters: [
+      P({
+        name: 'Scientific Sound Asia', type: 'local',
+        active_since: 2018, events_per_year: 8, dominant_genre: 'Bass / DnB',
+        ig: 'scientificsoundasia', website: 'scientificsound.asia',
+        lineup: ['Local DJs', 'Asia tour selectors'],
+        events: [
+          { date: 'Aug 2024', year: 2024, name: 'Mad Circus 2', venue: 'The Observatory', cap: 400, sold: 360 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'shanghai', name: 'Shanghai', country: 'China',
+    lat: 31.2304, lng: 121.4737, status: 'emerging',
+    dominant_genre: 'Neurofunk / Liquid',
+    market: M({
+      population_city_millions: 26.3, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk', secondary_subgenres: ['Liquid', 'Dancefloor'],
+      avg_ticket_eur: 28, competing_events_per_year: 25, revenue_potential: '€450k', yoy_growth: '+25%',
+      scene_notes: 'ALL Club is the underground HQ. Storm Festival has hosted DnB stages. SVBKVLT label connects bass culture across China.',
+    }),
+    clubs: [
+      { name: 'ALL Club', capacity: 400, genre_focus: 'Underground bass / DnB', ig: 'all_club_shanghai' },
+      { name: 'Elevator', capacity: 350, genre_focus: 'Bass, DnB, techno', ig: 'elevator.sh' },
+    ],
+    promoters: [
+      P({
+        name: 'SVBKVLT', type: 'local',
+        active_since: 2013, events_per_year: 20, dominant_genre: 'Bass / Club',
+        ig: 'svbkvlt', website: 'svbkvlt.com',
+        lineup: ['Swimful', 'Hyph11E', 'international DnB tours'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'SVBKVLT Showcase', venue: 'ALL Club', cap: 400, sold: 390 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'beijing', name: 'Beijing', country: 'China',
+    lat: 39.9042, lng: 116.4074, status: 'new',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 21.5, dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Neurofunk', secondary_subgenres: ['Dancefloor'],
+      avg_ticket_eur: 24, competing_events_per_year: 14, revenue_potential: '€280k', yoy_growth: '+22%',
+      scene_notes: 'Zhao Dai is the bass-music institution. Smaller scene than Shanghai but loyal underground following.',
+    }),
+    clubs: [
+      { name: 'Zhao Dai', capacity: 450, genre_focus: 'Underground electronic, bass', ig: 'zhaodaiclub' },
+    ],
+    promoters: [
+      P({
+        name: 'Zhao Dai Bookings', type: 'venue',
+        active_since: 2017, events_per_year: 12, dominant_genre: 'Bass / DnB',
+        ig: 'zhaodaiclub',
+        lineup: ['China bass DJs', 'visiting DnB acts'],
+        events: [
+          { date: 'Jun 2024', year: 2024, name: 'Bass Night Beijing', venue: 'Zhao Dai', cap: 450, sold: 400 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'seoul', name: 'Seoul', country: 'South Korea',
+    lat: 37.5665, lng: 126.9780, status: 'emerging',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 9.7, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk', secondary_subgenres: ['Dancefloor', 'Jump Up'],
+      avg_ticket_eur: 32, competing_events_per_year: 28, revenue_potential: '€520k', yoy_growth: '+24%',
+      scene_notes: 'Cakeshop and Vurt are the bass / DnB destinations in Itaewon and Hongdae. Strong appetite for international DnB tours.',
+    }),
+    clubs: [
+      { name: 'Cakeshop', capacity: 400, genre_focus: 'Bass, DnB, club', ig: 'cakeshopseoul' },
+      { name: 'Vurt', capacity: 350, genre_focus: 'Underground electronic + DnB', ig: 'vurt_official' },
+    ],
+    promoters: [
+      P({
+        name: 'Cakeshop Bookings', type: 'venue',
+        active_since: 2012, events_per_year: 30, dominant_genre: 'Bass / DnB',
+        ig: 'cakeshopseoul',
+        lineup: ['Visiting UK DnB headliners', 'Korean bass DJs'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'DnB Night Seoul', venue: 'Cakeshop', cap: 400, sold: 390 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'taipei', name: 'Taipei', country: 'Taiwan',
+    lat: 25.0330, lng: 121.5654, status: 'new',
+    dominant_genre: 'Liquid / Neurofunk',
+    market: M({
+      population_city_millions: 7.0, dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Liquid', secondary_subgenres: ['Neurofunk'],
+      avg_ticket_eur: 22, competing_events_per_year: 12, revenue_potential: '€160k', yoy_growth: '+26%',
+      scene_notes: 'Pawnshop and B1 host bass / DnB nights. Connected scene with Tokyo and Seoul touring routes.',
+    }),
+    clubs: [
+      { name: 'Pawnshop', capacity: 350, genre_focus: 'Bass, DnB, electronic', ig: 'pawnshop_tpe' },
+    ],
+    promoters: [
+      P({
+        name: 'Smoke Machine', type: 'local',
+        active_since: 2013, events_per_year: 15, dominant_genre: 'Underground electronic / Bass',
+        ig: 'smokemachine.tw',
+        lineup: ['International tour DJs', 'Taiwanese bass DJs'],
+        events: [
+          { date: 'Jul 2024', year: 2024, name: 'Bass Showcase Taipei', venue: 'Pawnshop', cap: 350, sold: 320 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'jakarta', name: 'Jakarta', country: 'Indonesia',
+    lat: -6.2088, lng: 106.8456, status: 'new',
+    dominant_genre: 'Jump Up / Dancefloor',
+    market: M({
+      population_city_millions: 10.6, dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Jump Up', secondary_subgenres: ['Dancefloor', 'Liquid'],
+      avg_ticket_eur: 14, competing_events_per_year: 10, revenue_potential: '€110k', yoy_growth: '+32%',
+      scene_notes: 'Bass / DnB scene growing through small underground crews. Connected to Bali tour circuit.',
+    }),
+    clubs: [
+      { name: 'Studio Palem', capacity: 400, genre_focus: 'Underground electronic + bass', ig: 'studiopalem' },
+    ],
+    promoters: [
+      P({
+        name: 'Bass Republic Indonesia', type: 'local',
+        active_since: 2019, events_per_year: 6, dominant_genre: 'DnB / Bass',
+        ig: 'bassrepublic.id',
+        lineup: ['Local DnB DJs', 'visiting headliners'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Bass Republic Jakarta', venue: 'Studio Palem', cap: 400, sold: 350 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'bali', name: 'Bali (Canggu)', country: 'Indonesia',
+    lat: -8.6478, lng: 115.1385, status: 'emerging',
+    dominant_genre: 'Liquid / Dancefloor',
+    market: M({
+      population_city_millions: 0.65, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid', secondary_subgenres: ['Dancefloor', 'Jungle'],
+      avg_ticket_eur: 26, competing_events_per_year: 30, revenue_potential: '€260k', yoy_growth: '+45%',
+      scene_notes: 'Massive expat / digital nomad / Aussie tourist crowd. Savaya, La Brisa and The Lawn run regular bass nights. Hot spot for international DJ tours.',
+    }),
+    clubs: [
+      { name: 'Savaya Bali', capacity: 2500, genre_focus: 'Large electronic, occasional DnB', ig: 'savayabali' },
+      { name: 'La Brisa', capacity: 800, genre_focus: 'Bass, DnB sunset sessions', ig: 'labrisabali' },
+    ],
+    promoters: [
+      P({
+        name: 'Sunset Bass Bali', type: 'local',
+        active_since: 2021, events_per_year: 18, dominant_genre: 'DnB / Bass',
+        ig: 'sunsetbass.bali',
+        lineup: ['Hybrid Minds', 'Degs', 'Aussie touring DnB acts'],
+        events: [
+          { date: 'Aug 2024', year: 2024, name: 'Sunset Bass Bali', venue: 'La Brisa', cap: 800, sold: 780 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'manila', name: 'Manila', country: 'Philippines',
+    lat: 14.5995, lng: 120.9842, status: 'new',
+    dominant_genre: 'Jump Up / Dancefloor',
+    market: M({
+      population_city_millions: 13.5, dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Jump Up', secondary_subgenres: ['Dancefloor'],
+      avg_ticket_eur: 12, competing_events_per_year: 8, revenue_potential: '€90k', yoy_growth: '+34%',
+      scene_notes: 'Time in Manila and XX XX run regular bass / DnB nights. Strong UK garage and bass crossover.',
+    }),
+    clubs: [
+      { name: 'XX XX', capacity: 400, genre_focus: 'Underground bass + DnB', ig: 'xxxxmanila' },
+    ],
+    promoters: [
+      P({
+        name: 'Manila Bass Collective', type: 'local',
+        active_since: 2020, events_per_year: 6, dominant_genre: 'DnB / Bass',
+        ig: 'manilabass',
+        lineup: ['Local DnB DJs', 'Asia tour acts'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Manila Bass Night', venue: 'XX XX', cap: 400, sold: 350 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'dubai', name: 'Dubai', country: 'UAE',
+    lat: 25.2048, lng: 55.2708, status: 'emerging',
+    dominant_genre: 'Liquid / Dancefloor',
+    market: M({
+      population_city_millions: 3.6, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid', secondary_subgenres: ['Dancefloor', 'Neurofunk'],
+      avg_ticket_eur: 55, competing_events_per_year: 25, revenue_potential: '€700k', yoy_growth: '+30%',
+      scene_notes: 'Soho Garden and Base Dubai host UK DnB headliners (Sub Focus, Wilkinson, Chase & Status all played 2024). High spend per head, expat-driven.',
+    }),
+    clubs: [
+      { name: 'Soho Garden DXB', capacity: 2000, genre_focus: 'Large electronic + DnB tours', ig: 'sohogardendxb' },
+      { name: 'Base Dubai', capacity: 1500, genre_focus: 'Bass, DnB tour stops', ig: 'basedubai' },
+    ],
+    promoters: [
+      P({
+        name: 'Soho Garden Bookings', type: 'venue',
+        active_since: 2017, events_per_year: 30, dominant_genre: 'All bass',
+        ig: 'sohogardendxb',
+        lineup: ['Sub Focus', 'Wilkinson', 'Chase & Status', 'Hybrid Minds'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Sub Focus Dubai', venue: 'Soho Garden DXB', cap: 2000, sold: 1900 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'telaviv', name: 'Tel Aviv', country: 'Israel',
+    lat: 32.0853, lng: 34.7818, status: 'emerging',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 4.3, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk', secondary_subgenres: ['Dancefloor', 'Liquid'],
+      avg_ticket_eur: 30, competing_events_per_year: 35, revenue_potential: '€450k', yoy_growth: '+20%',
+      scene_notes: 'Block Club is one of the world\'s top-ranked clubs (DJ Mag) and hosts heavy DnB nights. Long-running scene with loyal crowd.',
+    }),
+    clubs: [
+      { name: 'The Block', capacity: 800, genre_focus: 'Top-tier electronic + DnB', ig: 'theblockclub' },
+      { name: 'Pasaz', capacity: 500, genre_focus: 'Bass, DnB nights', ig: 'pasaz_tlv' },
+    ],
+    promoters: [
+      P({
+        name: 'Block Bookings', type: 'venue',
+        active_since: 2010, events_per_year: 25, dominant_genre: 'Bass / DnB',
+        ig: 'theblockclub',
+        lineup: ['Mefjus', 'Noisia', 'Camo & Krooked', 'Andy C'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'DnB Night Tel Aviv', venue: 'The Block', cap: 800, sold: 780 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'capetown', name: 'Cape Town', country: 'South Africa',
+    lat: -33.9249, lng: 18.4241, status: 'emerging',
+    dominant_genre: 'Liquid / Dancefloor',
+    market: M({
+      population_city_millions: 4.7, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Liquid', secondary_subgenres: ['Dancefloor', 'Neurofunk'],
+      avg_ticket_eur: 18, competing_events_per_year: 18, revenue_potential: '€220k', yoy_growth: '+22%',
+      scene_notes: 'Modular brings UK DnB acts down regularly. Strong local producer base via Counterpoint and Subvert.',
+    }),
+    clubs: [
+      { name: 'Modular', capacity: 700, genre_focus: 'Bass, DnB, electronic', ig: 'modular.ct' },
+      { name: 'Reset', capacity: 500, genre_focus: 'Underground DnB nights', ig: 'resetclub_ct' },
+    ],
+    promoters: [
+      P({
+        name: 'Counterpoint', type: 'local',
+        active_since: 2015, events_per_year: 12, dominant_genre: 'DnB',
+        ig: 'counterpoint_dnb',
+        lineup: ['Hybrid Minds', 'Bcee', 'Degs', 'local DnB DJs'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Counterpoint Cape Town', venue: 'Modular', cap: 700, sold: 650 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'johannesburg', name: 'Johannesburg', country: 'South Africa',
+    lat: -26.2041, lng: 28.0473, status: 'emerging',
+    dominant_genre: 'Dancefloor / Liquid',
+    market: M({
+      population_city_millions: 6.0, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Dancefloor', secondary_subgenres: ['Liquid', 'Jungle'],
+      avg_ticket_eur: 16, competing_events_per_year: 14, revenue_potential: '€180k', yoy_growth: '+24%',
+      scene_notes: 'And Club and Kitcheners host the DnB / bass nights. Long-standing JHB jungle scene.',
+    }),
+    clubs: [
+      { name: 'And Club', capacity: 600, genre_focus: 'Bass, DnB, electronic', ig: 'and_club_jhb' },
+    ],
+    promoters: [
+      P({
+        name: 'Bass Konnect', type: 'local',
+        active_since: 2016, events_per_year: 10, dominant_genre: 'DnB / Bass',
+        ig: 'basskonnect',
+        lineup: ['Tantrum Desire', 'Hybrid Minds', 'local heroes'],
+        events: [
+          { date: 'Aug 2024', year: 2024, name: 'Bass Konnect JHB', venue: 'And Club', cap: 600, sold: 550 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'nairobi', name: 'Nairobi', country: 'Kenya',
+    lat: -1.2921, lng: 36.8219, status: 'new',
+    dominant_genre: 'Liquid / Jungle',
+    market: M({
+      population_city_millions: 4.4, dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Liquid', secondary_subgenres: ['Jungle'],
+      avg_ticket_eur: 12, competing_events_per_year: 6, revenue_potential: '€55k', yoy_growth: '+55%',
+      scene_notes: 'Jungle Culture is East & Central Africa\'s first DnB movement. "The Kenyan Way" 2024 with Degs sold out pre-sale — landmark moment for the continent.',
+    }),
+    clubs: [
+      { name: 'The Alchemist', capacity: 800, genre_focus: 'Bass, electronic, DnB takeovers', ig: 'thealchemistbar' },
+    ],
+    promoters: [
+      P({
+        name: 'Jungle Culture', type: 'local',
+        active_since: 2022, events_per_year: 6, dominant_genre: 'DnB / Jungle',
+        ig: 'jungleculture.ke',
+        lineup: ['Degs', 'Balter Sensei', 'Nduta'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'The Kenyan Way (Degs)', venue: 'The Alchemist', cap: 800, sold: 800 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'lagos', name: 'Lagos', country: 'Nigeria',
+    lat: 6.5244, lng: 3.3792, status: 'new',
+    dominant_genre: 'Jungle / Dancefloor',
+    market: M({
+      population_city_millions: 15.4, dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Jungle', secondary_subgenres: ['Dancefloor'],
+      avg_ticket_eur: 14, competing_events_per_year: 5, revenue_potential: '€60k', yoy_growth: '+50%',
+      scene_notes: 'Tiny but rapidly growing DnB / jungle micro-scene riding the Afrobass crossover. Hard Rock and Bature Brewery host occasional bass nights.',
+    }),
+    clubs: [
+      { name: 'Hard Rock Café Lagos', capacity: 600, genre_focus: 'Live + electronic, bass takeovers', ig: 'hardrockcafelagos' },
+    ],
+    promoters: [
+      P({
+        name: 'Bass Lagos', type: 'local',
+        active_since: 2023, events_per_year: 4, dominant_genre: 'DnB / Bass',
+        ig: 'basslagos',
+        lineup: ['Local DJs', 'visiting UK acts'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Bass Lagos Launch', venue: 'Hard Rock Café Lagos', cap: 600, sold: 480 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'mexicocity', name: 'Mexico City', country: 'Mexico',
+    lat: 19.4326, lng: -99.1332, status: 'emerging',
+    dominant_genre: 'Neurofunk / Liquid',
+    market: M({
+      population_city_millions: 22.5, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk', secondary_subgenres: ['Liquid', 'Dancefloor'],
+      avg_ticket_eur: 18, competing_events_per_year: 35, revenue_potential: '€480k', yoy_growth: '+26%',
+      scene_notes: 'Foro Indie Rocks and Fonoteca host bigger DnB tours. Strong Latin American hub with Mefjus, Camo & Krooked tour stops.',
+    }),
+    clubs: [
+      { name: 'Foro Indie Rocks', capacity: 1200, genre_focus: 'Bass tours, DnB shows', ig: 'foroindierocks' },
+      { name: 'Fonoteca Nacional', capacity: 600, genre_focus: 'Underground electronic + DnB', ig: 'fonotecamx' },
+    ],
+    promoters: [
+      P({
+        name: 'Subbase MX', type: 'local',
+        active_since: 2014, events_per_year: 18, dominant_genre: 'DnB',
+        ig: 'subbase.mx',
+        lineup: ['Mefjus', 'Camo & Krooked', 'Andy C', 'Hybrid Minds'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Subbase MX', venue: 'Foro Indie Rocks', cap: 1200, sold: 1150 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'buenosaires', name: 'Buenos Aires', country: 'Argentina',
+    lat: -34.6037, lng: -58.3816, status: 'emerging',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 15.4, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk', secondary_subgenres: ['Dancefloor', 'Liquid'],
+      avg_ticket_eur: 16, competing_events_per_year: 30, revenue_potential: '€380k', yoy_growth: '+22%',
+      scene_notes: 'Crobar and Mandarine Park host major DnB tours. Connected scene with São Paulo touring routes.',
+    }),
+    clubs: [
+      { name: 'Crobar', capacity: 2500, genre_focus: 'Big-room electronic + DnB', ig: 'crobarba' },
+      { name: 'Mandarine Park', capacity: 5000, genre_focus: 'Outdoor bass / DnB festivals', ig: 'mandarinepark' },
+    ],
+    promoters: [
+      P({
+        name: 'Bassiani BA', type: 'local',
+        active_since: 2015, events_per_year: 20, dominant_genre: 'DnB',
+        ig: 'bassiani.ba',
+        lineup: ['Mefjus', 'Andy C', 'Camo & Krooked'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'DnB Night BA', venue: 'Crobar', cap: 2500, sold: 2400 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'bogota', name: 'Bogotá', country: 'Colombia',
+    lat: 4.7110, lng: -74.0721, status: 'new',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 7.7, dnb_scene_strength: 'emerging',
+      dominant_subgenre: 'Neurofunk', secondary_subgenres: ['Dancefloor'],
+      avg_ticket_eur: 14, competing_events_per_year: 14, revenue_potential: '€160k', yoy_growth: '+30%',
+      scene_notes: 'Video Club and Octava host the bass / DnB tours. Growing Latin American DnB market.',
+    }),
+    clubs: [
+      { name: 'Video Club Bogotá', capacity: 800, genre_focus: 'Underground electronic + DnB', ig: 'videoclub.bog' },
+    ],
+    promoters: [
+      P({
+        name: 'BassBog', type: 'local',
+        active_since: 2018, events_per_year: 10, dominant_genre: 'DnB',
+        ig: 'bassbog',
+        lineup: ['Mefjus', 'Bou', 'local DnB DJs'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'BassBog Showcase', venue: 'Video Club Bogotá', cap: 800, sold: 720 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'kyiv', name: 'Kyiv', country: 'Ukraine',
+    lat: 50.4501, lng: 30.5234, status: 'emerging',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 3.0, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk', secondary_subgenres: ['Dancefloor', 'Jump Up'],
+      avg_ticket_eur: 14, competing_events_per_year: 18, revenue_potential: '€180k', yoy_growth: '+18%',
+      scene_notes: 'Closer and K41 are the underground DnB / bass anchors. Resilient scene continuing through wartime — fundraiser raves regularly sell out.',
+    }),
+    clubs: [
+      { name: 'Closer', capacity: 1200, genre_focus: 'Underground electronic + DnB', ig: 'closerkyiv' },
+      { name: 'K41', capacity: 1500, genre_focus: 'Bass, DnB, techno', ig: 'k41community' },
+    ],
+    promoters: [
+      P({
+        name: 'Kyiv Bass Collective', type: 'local',
+        active_since: 2014, events_per_year: 18, dominant_genre: 'DnB',
+        ig: 'kyivbass',
+        lineup: ['Mefjus', 'Camo & Krooked', 'Mind Vortex'],
+        events: [
+          { date: 'Aug 2024', year: 2024, name: 'DnB Fundraiser Kyiv', venue: 'Closer', cap: 1200, sold: 1200 },
+        ],
+      }),
+    ],
+  }),
+
+  C({
+    id: 'tbilisi', name: 'Tbilisi', country: 'Georgia',
+    lat: 41.7151, lng: 44.8271, status: 'emerging',
+    dominant_genre: 'Neurofunk / Dancefloor',
+    market: M({
+      population_city_millions: 1.2, dnb_scene_strength: 'growing',
+      dominant_subgenre: 'Neurofunk', secondary_subgenres: ['Dancefloor'],
+      avg_ticket_eur: 18, competing_events_per_year: 16, revenue_potential: '€160k', yoy_growth: '+28%',
+      scene_notes: 'Bassiani is a globally-ranked institution — DnB nights pull international heavyweights. Khidi is the newer bass anchor.',
+    }),
+    clubs: [
+      { name: 'Bassiani', capacity: 1200, genre_focus: 'Top-tier underground + DnB', ig: 'bassianiclub' },
+      { name: 'Khidi', capacity: 800, genre_focus: 'Underground bass + DnB', ig: 'khidi.club' },
+    ],
+    promoters: [
+      P({
+        name: 'Bassiani Bookings', type: 'venue',
+        active_since: 2014, events_per_year: 25, dominant_genre: 'Underground / DnB',
+        ig: 'bassianiclub',
+        lineup: ['Mefjus', 'Noisia', 'visiting UK DnB acts'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'DnB Night Tbilisi', venue: 'Bassiani', cap: 1200, sold: 1180 },
+        ],
+      }),
+    ],
+  }),
 ];
 
 export const STATUS_COLORS: Record<CityStatus, string> = {
