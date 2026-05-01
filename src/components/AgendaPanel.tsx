@@ -21,6 +21,7 @@ const BRANDS = [
   { id: 'undivide', label: 'Undivide', match: (s: string) => /undivide/i.test(s), color: 'bg-[var(--undivide)]' },
   { id: 'korsakov', label: 'Korsakov', match: (s: string) => /korsakov/i.test(s), color: 'bg-rose-600' },
   { id: 'hospitality', label: 'Hospitality', match: (s: string) => /hospitalit/i.test(s), color: 'bg-orange-500' },
+  { id: 'ukf', label: 'UKF', match: (s: string) => /\bukf\b/i.test(s), color: 'bg-yellow-500' },
   { id: 'virus', label: 'Virus Recordings', match: (s: string) => /virus/i.test(s), color: 'bg-fuchsia-600' },
   { id: 'shogun', label: 'Shogun Audio', match: (s: string) => /shogun/i.test(s), color: 'bg-amber-600' },
   { id: 'blast', label: 'The Blast', match: (s: string) => /the\s*blast|blast/i.test(s), color: 'bg-red-700' },
