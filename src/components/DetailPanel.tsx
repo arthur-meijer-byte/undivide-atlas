@@ -84,25 +84,7 @@ export default function DetailPanel() {
 
       <div className="flex-1 overflow-y-auto thin-scroll p-4 space-y-4 text-sm">
         {/* Market quick stats — clickable for context */}
-        <div className="grid grid-cols-3 gap-2">
-          <StatPop
-            v={city.market.dnbFans}
-            l="DnB fans"
-            title={`Estimated DnB fanbase — ${city.name}`}
-            body={
-              <>
-                <KV k="Estimate" v={city.market.dnbFans} />
-                <KV k="City population" v={`${city.market.population_city_millions}M`} />
-                <KV k="Scene strength" v={SCENE_LABEL[city.market.dnb_scene_strength]} />
-                <KV k="Dominant sound" v={city.market.dominant_subgenre} />
-                <p className="text-[11px] text-gray-500 mt-2 leading-relaxed">
-                  Heuristic from population × scene strength. Cross-reference with
-                  Resident Advisor for live event counts.
-                </p>
-                <Links city={city} kind="fans" />
-              </>
-            }
-          />
+        <div className="grid grid-cols-2 gap-2">
           <StatPop
             v={`€${city.market.avgTicket}`}
             l="Avg ticket"
@@ -150,7 +132,7 @@ export default function DetailPanel() {
                 <div key={a.name} className="bg-gray-50 rounded-md px-2.5 py-1.5">
                   <div className="flex items-center gap-2 text-xs">
                     <span className="w-4 text-gray-400 font-mono">{i + 1}</span>
-                    <span className="font-semibold flex-1 truncate">{a.name}</span>
+                    <span className="font-semibold flex-1 break-words">{a.name}</span>
                     {a.country_origin && (
                       <span className="text-[9px] uppercase text-gray-400">{a.country_origin}</span>
                     )}
