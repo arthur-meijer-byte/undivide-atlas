@@ -94,7 +94,7 @@ function Pin({ city, onClick, onHover, zoom }: PinProps) {
         {/* big soft heat blob */}
         <circle r={blobR} fill={`url(#${gradId})`} filter={`url(#${blurId})`} pointerEvents="none" />
         {/* tiny bright core */}
-        <circle r={coreR} fill={color} opacity={0.95} pointerEvents="none" />
+        <circle r={coreR} fill={color} opacity={0.78} pointerEvents="none" />
       </g>
     </Marker>
   );
