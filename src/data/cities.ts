@@ -229,6 +229,37 @@ const CITIES_RAW: City[] = [
           { date: 'Every Fri', year: 2024, name: 'FABRICLIVE', venue: 'fabric', cap: 2500, sold: 2200 },
         ],
       }),
+      P({
+        name: 'Rupture', type: 'local',
+        active_since: 2006, events_per_year: 8,
+        dominant_genre: 'Jungle / 170',
+        ig: 'rupture_london', fb: 'ruptureldn', website: 'ruptureldn.com',
+        lineup: ['Mantra', 'Double O', 'Equinox', 'Tim Reaper', 'Sully', 'Coco Bryce'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Rupture x Corsica Studios', venue: 'Corsica Studios', cap: 400, sold: 400 },
+          { date: 'Mar 2024', year: 2024, name: 'Rupture 18yr', venue: 'Corsica Studios', cap: 400, sold: 400 },
+        ],
+      }),
+      P({
+        name: 'SOUR', type: 'local',
+        active_since: 2017, events_per_year: 10,
+        dominant_genre: 'Liquid / Soulful',
+        ig: 'sour.uk', website: 'sour.uk',
+        lineup: ['LSB', 'DRS', 'Lenzman', 'FD', 'Tyler Daley', 'Sam Binga'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'SOUR Saturdays', venue: 'XOYO', cap: 800, sold: 780 },
+        ],
+      }),
+      P({
+        name: 'Innovation in the Dam / Sun', type: 'local',
+        active_since: 1998, events_per_year: 6,
+        dominant_genre: 'All styles',
+        ig: 'innovationdnb', fb: 'InnovationDNB', website: 'innovationdnb.co.uk',
+        lineup: ['Andy C', 'DJ Hype', 'Hazard', 'Sub Zero', 'Annix', 'Macky Gee', 'Bou'],
+        events: [
+          { date: 'Aug 2024', year: 2024, name: 'Innovation in the Sun', venue: 'Tisno Croatia', cap: 4000, sold: 3900 },
+        ],
+      }),
     ],
   }),
 
@@ -284,6 +315,36 @@ const CITIES_RAW: City[] = [
         lineup: ['T & Sugah', 'Zazu', 'Mozey', 'Dossa & Locuzzed', 'Monrroe', 'NCT', 'Rameses B'],
         events: [
           { date: 'Mar 2024', year: 2024, name: 'High Tea Amsterdam', venue: 'Now&Wow', cap: 2000, sold: 1900 },
+        ],
+      }),
+      P({
+        name: 'Rampage Amsterdam', type: 'local',
+        active_since: 2018, events_per_year: 2,
+        dominant_genre: 'All styles',
+        ig: 'rampagefestival', website: 'rampagefestival.be',
+        lineup: ['Sub Focus', 'Wilkinson', 'Mefjus', 'Hedex', 'Annix'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Rampage ADE', venue: 'AFAS Live', cap: 6000, sold: 5800 },
+        ],
+      }),
+      P({
+        name: 'Loose', type: 'local',
+        active_since: 2014, events_per_year: 10,
+        dominant_genre: 'Dancefloor / Jump Up',
+        ig: 'loose.events',
+        lineup: ['Hedex', 'Bou', 'A.M.C', 'Macky Gee', 'Kanine'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'Loose Kingsnight', venue: 'Thuishaven', cap: 3500, sold: 3500 },
+        ],
+      }),
+      P({
+        name: 'Get Hype Amsterdam', type: 'local',
+        active_since: 2015, events_per_year: 8,
+        dominant_genre: 'Jump Up / Dancefloor',
+        ig: 'gethype.amsterdam',
+        lineup: ['DJ Hype', 'Hazard', 'Original Sin', 'Sub Zero', 'Voltage'],
+        events: [
+          { date: 'Feb 2024', year: 2024, name: 'Get Hype', venue: 'Q-Factory', cap: 900, sold: 900 },
         ],
       }),
     ],
@@ -342,6 +403,26 @@ const CITIES_RAW: City[] = [
           { date: 'May 2025', year: 2025, name: 'Eatbrain Indoor Festival 15yr Anniversary', venue: 'Maassilo Rotterdam', cap: 4000, sold: 3800 },
         ],
       }),
+      P({
+        name: 'Bass Events', type: 'local',
+        active_since: 2008, events_per_year: 6,
+        dominant_genre: 'All styles',
+        ig: 'bassevents', website: 'bass-events.be',
+        lineup: ['Noisia', 'Black Sun Empire', 'Mefjus', 'Phace', 'Camo & Krooked'],
+        events: [
+          { date: 'Dec 2024', year: 2024, name: 'Bass Events Year End', venue: 'Maassilo', cap: 4000, sold: 3900 },
+        ],
+      }),
+      P({
+        name: 'Innercore', type: 'local',
+        active_since: 2019, events_per_year: 4,
+        dominant_genre: 'Crossbreed / Hardcore-DnB',
+        ig: 'innercoreofficial',
+        lineup: ['The Outside Agency', 'Limewax', 'Switch Technique', 'Forbidden Society'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Innercore', venue: 'Maassilo', cap: 3000, sold: 2800 },
+        ],
+      }),
     ],
   }),
 
@@ -388,6 +469,36 @@ const CITIES_RAW: City[] = [
           { date: 'Jan 2024', year: 2024, name: 'Korsakov Showcase Prague', venue: 'TBC', cap: 1200, sold: 1200 },
         ],
       }),
+      P({
+        name: 'Cross Club', type: 'venue',
+        active_since: 2002, events_per_year: 200,
+        dominant_genre: 'All styles',
+        ig: 'crossclubprague', website: 'crossclub.cz',
+        lineup: ['Various local & international DnB weekly'],
+        events: [
+          { date: 'Weekly', year: 2024, name: 'Cross Club DnB nights', venue: 'Cross Club', cap: 600, sold: 550 },
+        ],
+      }),
+      P({
+        name: 'Storm Club', type: 'venue',
+        active_since: 2012, events_per_year: 80,
+        dominant_genre: 'DnB / Bass',
+        ig: 'stormclubprague',
+        lineup: ['Mefjus', 'Bou', 'Annix', 'Tantrum Desire', 'Czech locals'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Storm Club Anniversary', venue: 'Storm Club', cap: 500, sold: 500 },
+        ],
+      }),
+      P({
+        name: 'Bassrunners', type: 'local',
+        active_since: 2010, events_per_year: 12,
+        dominant_genre: 'Dancefloor / Jump Up',
+        ig: 'bassrunnerscz', fb: 'bassrunners',
+        lineup: ['Hedex', 'A.M.C', 'Macky Gee', 'Voltage', 'Czech jump-up DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'Bassrunners', venue: 'Roxy Prague', cap: 900, sold: 850 },
+        ],
+      }),
     ],
   }),
 
@@ -430,6 +541,26 @@ const CITIES_RAW: City[] = [
         lineup: ['International and local DnB talent'],
         events: [
           { date: '2024', year: 2024, name: 'Otherside Bass Events', venue: 'Arzenál Budapest', cap: 1500, sold: 1350 },
+        ],
+      }),
+      P({
+        name: 'Bass Wars', type: 'local',
+        active_since: 2011, events_per_year: 8,
+        dominant_genre: 'Jump Up / Dancefloor',
+        ig: 'basswarshu', fb: 'basswars',
+        lineup: ['Hedex', 'Voltage', 'Bou', 'Annix', 'Hungarian locals'],
+        events: [
+          { date: 'Feb 2024', year: 2024, name: 'Bass Wars', venue: 'Akvárium Klub', cap: 1300, sold: 1250 },
+        ],
+      }),
+      P({
+        name: 'Neurology', type: 'local',
+        active_since: 2013, events_per_year: 6,
+        dominant_genre: 'Neurofunk',
+        ig: 'neurology.hu',
+        lineup: ['Mefjus', 'Phace', 'Misanthrop', 'Black Sun Empire', 'Billain'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Neurology', venue: 'Dürer Kert', cap: 1500, sold: 1400 },
         ],
       }),
     ],
@@ -477,6 +608,36 @@ const CITIES_RAW: City[] = [
           { date: 'Jan 2024', year: 2024, name: 'Trust Berlin', venue: 'Funkhaus Berlin', cap: 1500, sold: 1450 },
         ],
       }),
+      P({
+        name: 'Soulvent / Soul In Motion', type: 'local',
+        active_since: 2013, events_per_year: 8,
+        dominant_genre: 'Liquid / Soulful',
+        ig: 'soulvent', website: 'soulventrecords.com',
+        lineup: ['LSB', 'DRS', 'Bcee', 'Hybrid Minds', 'Dawn Wall'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Soul In Motion Berlin', venue: 'Birgit & Bier', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Mainframe Berlin', type: 'local',
+        active_since: 2008, events_per_year: 10,
+        dominant_genre: 'Neurofunk',
+        ig: 'mainframerec',
+        lineup: ['Phace', 'Misanthrop', 'Mefjus', 'Hybris', 'Cause4Concern'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Mainframe Berlin', venue: '://about blank', cap: 900, sold: 850 },
+        ],
+      }),
+      P({
+        name: 'Sub:Stance', type: 'local',
+        active_since: 2017, events_per_year: 12,
+        dominant_genre: 'Deep / Halftime',
+        ig: 'substance.berlin',
+        lineup: ['Ivy Lab', 'Alix Perez', 'Monty', 'Halogenix', 'Skeptical'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Sub:Stance', venue: 'Renate', cap: 500, sold: 500 },
+        ],
+      }),
     ],
   }),
 
@@ -520,6 +681,26 @@ const CITIES_RAW: City[] = [
           { date: 'Mar 2024', year: 2024, name: 'Bassline Warsaw', venue: 'Jasna 1', cap: 500, sold: 490 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Sessions PL', type: 'local',
+        active_since: 2010, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnbsessionspl', fb: 'DrumAndBassPolska',
+        lineup: ['Mefjus', 'Hybrid Minds', 'Camo & Krooked', 'Hedex', 'Polish locals'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB Sessions', venue: 'Hybrydy', cap: 900, sold: 880 },
+        ],
+      }),
+      P({
+        name: 'Audio Republic', type: 'local',
+        active_since: 2015, events_per_year: 6,
+        dominant_genre: 'Neurofunk / Dancefloor',
+        ig: 'audiorepublic.pl',
+        lineup: ['Mefjus', 'Phace', 'Bou', 'Voltage'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Audio Republic', venue: 'Smolna', cap: 700, sold: 680 },
+        ],
+      }),
     ],
   }),
 
@@ -551,6 +732,36 @@ const CITIES_RAW: City[] = [
         lineup: ['Calyx & TeeBee', 'Mefjus', 'Current Value', 'Icicle'],
         events: [
           { date: 'Jun 2024', year: 2024, name: 'The Blast Barcelona', venue: 'Razzmatazz', cap: 1500, sold: 1400 },
+        ],
+      }),
+      P({
+        name: 'Bizarre Sounds', type: 'local',
+        active_since: 2009, events_per_year: 8,
+        dominant_genre: 'Liquid / Neuro',
+        ig: 'bizarresounds', fb: 'bizarresounds',
+        lineup: ['Hybrid Minds', 'Camo & Krooked', 'Mefjus', 'Spanish locals'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'Bizarre Sounds', venue: 'Razzmatazz', cap: 2000, sold: 1900 },
+        ],
+      }),
+      P({
+        name: 'Liquid Sessions BCN', type: 'local',
+        active_since: 2014, events_per_year: 10,
+        dominant_genre: 'Liquid',
+        ig: 'liquidsessionsbcn',
+        lineup: ['Bcee', 'LSB', 'Hybrid Minds', 'Etherwood'],
+        events: [
+          { date: 'Jun 2024', year: 2024, name: 'Liquid Sessions', venue: 'Sala Apolo', cap: 1000, sold: 950 },
+        ],
+      }),
+      P({
+        name: 'Bassdrive Barcelona', type: 'local',
+        active_since: 2018, events_per_year: 8,
+        dominant_genre: 'Dancefloor / Jump Up',
+        ig: 'bassdrive.bcn',
+        lineup: ['Hedex', 'Bou', 'A.M.C', 'Annix'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Bassdrive', venue: 'Razzmatazz 2', cap: 900, sold: 850 },
         ],
       }),
     ],
@@ -585,6 +796,36 @@ const CITIES_RAW: City[] = [
         lineup: ['Logistics', 'S.P.Y', 'Etherwood', 'Camo & Krooked', 'Bcee'],
         events: [
           { date: 'Feb 2024', year: 2024, name: 'Hospitality Manchester', venue: 'Gorilla', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'The Warehouse Project', type: 'venue',
+        active_since: 2006, events_per_year: 40,
+        dominant_genre: 'All electronic incl. DnB',
+        ig: 'thewarehouseproject', website: 'thewarehouseproject.com',
+        lineup: ['Andy C', 'Chase & Status', 'Sub Focus', 'DnB Allstars takeovers'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'WHP DnB Allstars', venue: 'Depot Mayfield', cap: 10000, sold: 10000 },
+        ],
+      }),
+      P({
+        name: 'Soundclash', type: 'local',
+        active_since: 2010, events_per_year: 12,
+        dominant_genre: 'Jump Up / Dancefloor',
+        ig: 'soundclashmcr',
+        lineup: ['Hedex', 'A.M.C', 'Macky Gee', 'Voltage'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Soundclash', venue: 'Manchester Academy', cap: 2300, sold: 2200 },
+        ],
+      }),
+      P({
+        name: 'Fold Manchester', type: 'local',
+        active_since: 2019, events_per_year: 8,
+        dominant_genre: 'Liquid / Deep',
+        ig: 'fold.mcr',
+        lineup: ['Lenzman', 'LSB', 'Calibre', 'DRS'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Fold', venue: 'Hidden', cap: 600, sold: 580 },
         ],
       }),
     ],
@@ -633,6 +874,26 @@ const CITIES_RAW: City[] = [
           { date: 'Oct 2023', year: 2023, name: 'UKF On Air Sydney', venue: 'Metro Theatre', cap: 1700, sold: 1650 },
         ],
       }),
+      P({
+        name: 'Cult Sydney', type: 'local',
+        active_since: 2014, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'cult.au',
+        lineup: ['Andy C', 'Chase & Status', 'Sub Focus', 'Wilkinson'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'Cult', venue: 'Hordern Pavilion', cap: 5500, sold: 5300 },
+        ],
+      }),
+      P({
+        name: 'Bassic', type: 'local',
+        active_since: 2009, events_per_year: 15,
+        dominant_genre: 'Dancefloor / Liquid',
+        ig: 'bassicmusic', website: 'bassic.com.au',
+        lineup: ['Andy C', 'Friction', 'Sub Focus', 'AU locals'],
+        events: [
+          { date: 'Aug 2024', year: 2024, name: 'Bassic', venue: 'Manning Bar', cap: 1200, sold: 1100 },
+        ],
+      }),
     ],
   }),
 
@@ -676,6 +937,26 @@ const CITIES_RAW: City[] = [
           { date: '2024', year: 2024, name: 'Plasma Audio presents', venue: 'Seven Nightclub', cap: 800, sold: 750 },
         ],
       }),
+      P({
+        name: 'Pilerats / Pile Music', type: 'local',
+        active_since: 2010, events_per_year: 12,
+        dominant_genre: 'All bass / DnB',
+        ig: 'pilerats',
+        lineup: ['Sub Focus', 'Hybrid Minds', 'Dimension'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Pilerats Melbourne', venue: '170 Russell', cap: 1500, sold: 1400 },
+        ],
+      }),
+      P({
+        name: 'Pleazure', type: 'local',
+        active_since: 2017, events_per_year: 8,
+        dominant_genre: 'Liquid / Melodic',
+        ig: 'pleazure.mel',
+        lineup: ['Hybrid Minds', 'Etherwood', 'AU liquid acts'],
+        events: [
+          { date: 'Jun 2024', year: 2024, name: 'Pleazure', venue: 'Northcote Theatre', cap: 900, sold: 880 },
+        ],
+      }),
     ],
   }),
 
@@ -709,6 +990,26 @@ const CITIES_RAW: City[] = [
         events: [
           { date: 'Jun 2024', year: 2024, name: 'Rampage Open Air 2024', venue: 'Antwerp Open Air Site', cap: 25000, sold: 25000 },
           { date: 'Jun 2023', year: 2023, name: 'Rampage Open Air 2023', venue: 'Antwerp Open Air Site', cap: 22000, sold: 22000 },
+        ],
+      }),
+      P({
+        name: 'Bass Events Belgium', type: 'local',
+        active_since: 2008, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'bassevents', website: 'bass-events.be',
+        lineup: ['Noisia', 'Black Sun Empire', 'Camo & Krooked'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Bass Events', venue: 'Trix', cap: 2000, sold: 1900 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Belgium', type: 'local',
+        active_since: 2012, events_per_year: 8,
+        dominant_genre: 'All styles',
+        fb: 'DrumAndBassBelgium',
+        lineup: ['Belgian DnB selection'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB Belgium', venue: 'Trix', cap: 1500, sold: 1400 },
         ],
       }),
     ],
@@ -745,6 +1046,26 @@ const CITIES_RAW: City[] = [
           { date: 'Apr 2024', year: 2024, name: 'UKF On Air Tokyo', venue: 'Zepp Tokyo', cap: 2700, sold: 2500 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Sessions Tokyo', type: 'local',
+        active_since: 2008, events_per_year: 12,
+        dominant_genre: 'Liquid / Dancefloor',
+        ig: 'dnbsessionstokyo',
+        lineup: ['JP locals', 'Makoto', 'DJ Sappo', 'Hybrid Minds (touring)'],
+        events: [
+          { date: 'Jun 2024', year: 2024, name: 'DnB Sessions', venue: 'Womb', cap: 1200, sold: 1100 },
+        ],
+      }),
+      P({
+        name: 'Garden of Bass', type: 'local',
+        active_since: 2015, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'gardenofbass.jp',
+        lineup: ['Mefjus (touring)', 'Camo & Krooked (touring)', 'JP DnB DJs'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Garden of Bass', venue: 'Contact Tokyo', cap: 900, sold: 850 },
+        ],
+      }),
     ],
   }),
 
@@ -777,6 +1098,26 @@ const CITIES_RAW: City[] = [
         lineup: ['DJ Marky', 'Logistics', 'S.P.Y', 'Calibre'],
         events: [
           { date: '2024', year: 2024, name: 'Marky & Friends', venue: 'D-Edge São Paulo', cap: 1500, sold: 1400 },
+        ],
+      }),
+      P({
+        name: 'Sambass', type: 'local',
+        active_since: 2003, events_per_year: 10,
+        dominant_genre: 'Liquid / Sambass',
+        ig: 'sambassbrasil', fb: 'sambass',
+        lineup: ['DJ Marky', 'XRS', 'Patife', 'BR DnB DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'Sambass', venue: 'Audio Club', cap: 2000, sold: 1900 },
+        ],
+      }),
+      P({
+        name: 'InnerCity DnB', type: 'local',
+        active_since: 2014, events_per_year: 8,
+        dominant_genre: 'Dancefloor / Neuro',
+        ig: 'innercitydnb',
+        lineup: ['Brazilian DnB roster', 'Mefjus (tour)', 'Camo & Krooked (tour)'],
+        events: [
+          { date: 'Aug 2024', year: 2024, name: 'InnerCity', venue: 'Cine Joia', cap: 1200, sold: 1100 },
         ],
       }),
     ],
@@ -827,6 +1168,36 @@ const CITIES_RAW: City[] = [
           { date: 'Sep 2024', year: 2024, name: 'Jungle Syndicate', venue: 'Glazart', cap: 700, sold: 600 },
         ],
       }),
+      P({
+        name: 'Cocoricoz', type: 'local',
+        active_since: 2010, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'cocoricoz', fb: 'cocoricoz',
+        lineup: ['Hybrid Minds', 'Mefjus', 'French DnB DJs'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Cocoricoz', venue: 'Petit Bain', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Diversion', type: 'local',
+        active_since: 2013, events_per_year: 8,
+        dominant_genre: 'Liquid / Soulful',
+        ig: 'diversion.paris',
+        lineup: ['LSB', 'Bcee', 'Lenzman', 'FR liquid DJs'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'Diversion', venue: 'La Machine du Moulin Rouge', cap: 900, sold: 850 },
+        ],
+      }),
+      P({
+        name: 'Outsiders Paris', type: 'local',
+        active_since: 2018, events_per_year: 6,
+        dominant_genre: 'Neurofunk / Deep',
+        ig: 'outsiders.paris',
+        lineup: ['Phace', 'Misanthrop', 'Black Sun Empire', 'FR neuro acts'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Outsiders', venue: 'Glazart', cap: 700, sold: 680 },
+        ],
+      }),
     ],
   }),
 
@@ -859,6 +1230,26 @@ const CITIES_RAW: City[] = [
         events: [
           { date: 'Feb 2024', year: 2024, name: 'RETREAT #1', venue: 'Le Sucre', cap: 600, sold: 540 },
           { date: 'Apr 2024', year: 2024, name: 'RETREAT #2', venue: 'Le Sucre', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Lyon', type: 'local',
+        active_since: 2011, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.lyon', fb: 'DrumAndBassLyon',
+        lineup: ['French DnB selection', 'Hybrid Minds (tour)'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Lyon', venue: 'Le Sucre', cap: 900, sold: 850 },
+        ],
+      }),
+      P({
+        name: 'Bass Vibrations', type: 'local',
+        active_since: 2015, events_per_year: 6,
+        dominant_genre: 'Dancefloor / Neuro',
+        ig: 'bassvibrations.fr',
+        lineup: ['Mefjus (tour)', 'Bou (tour)', 'FR DnB DJs'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Bass Vibrations', venue: 'Le Transbordeur', cap: 1500, sold: 1400 },
         ],
       }),
     ],
@@ -906,6 +1297,26 @@ const CITIES_RAW: City[] = [
           { date: 'May 2024', year: 2024, name: 'Label Night & Phatt B-day', venue: 'Le Makeda', cap: 400, sold: 380 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Marseille', type: 'local',
+        active_since: 2013, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.marseille', fb: 'DrumAndBassMarseille',
+        lineup: ['Menace Rekords roster', 'FR DnB DJs'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB Marseille', venue: 'Le Cabaret Aléatoire', cap: 800, sold: 780 },
+        ],
+      }),
+      P({
+        name: 'South Bass', type: 'local',
+        active_since: 2016, events_per_year: 6,
+        dominant_genre: 'Dancefloor / Jump Up',
+        ig: 'southbass.mrs',
+        lineup: ['FR jump up DJs'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'South Bass', venue: 'Le Molotov', cap: 400, sold: 380 },
+        ],
+      }),
     ],
   }),
 
@@ -937,6 +1348,26 @@ const CITIES_RAW: City[] = [
         lineup: ['S.P.Y', 'DJ Marky', 'Lenzman'],
         events: [
           { date: 'Oct 2024', year: 2024, name: 'Bass Lisboa', venue: 'Lux Frágil', cap: 1500, sold: 1100 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Portugal', type: 'local',
+        active_since: 2012, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.portugal', fb: 'DrumAndBassPortugal',
+        lineup: ['PT DnB DJs', 'Hybrid Minds (tour)', 'Mefjus (tour)'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Portugal', venue: 'Lux Frágil', cap: 900, sold: 880 },
+        ],
+      }),
+      P({
+        name: 'Lovebites', type: 'local',
+        active_since: 2017, events_per_year: 8,
+        dominant_genre: 'Liquid / Melodic',
+        ig: 'lovebites.lx',
+        lineup: ['LSB', 'Bcee', 'Hybrid Minds'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Lovebites', venue: 'Ministerium', cap: 600, sold: 580 },
         ],
       }),
     ],
@@ -985,6 +1416,26 @@ const CITIES_RAW: City[] = [
           { date: 'Apr 2026', year: 2026, name: 'Liquicity Cologne', venue: 'Bootshaus', cap: 2000, sold: 0 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Köln', type: 'local',
+        active_since: 2010, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.koeln', fb: 'DrumAndBassKoeln',
+        lineup: ['DE DnB selection', 'Camo & Krooked (tour)'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB Köln', venue: 'Bootshaus', cap: 1500, sold: 1400 },
+        ],
+      }),
+      P({
+        name: 'Bootshaus DnB', type: 'venue',
+        active_since: 2010, events_per_year: 20,
+        dominant_genre: 'All styles',
+        ig: 'bootshaus_official', website: 'bootshaus.tv',
+        lineup: ['Andy C', 'Sub Focus', 'Camo & Krooked', 'Mefjus'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Bootshaus DnB Night', venue: 'Bootshaus', cap: 1500, sold: 1500 },
+        ],
+      }),
     ],
   }),
 
@@ -1019,6 +1470,26 @@ const CITIES_RAW: City[] = [
           { date: 'Nov 2024', year: 2024, name: 'This Is DnB pres. Linea Takeover', venue: 'LINEA', cap: 700, sold: 680 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Italia', type: 'local',
+        active_since: 2009, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.italia', fb: 'DrumAndBassItalia',
+        lineup: ['IT DnB roster', 'Camo & Krooked (tour)'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB Italia', venue: 'Magazzini Generali', cap: 1500, sold: 1400 },
+        ],
+      }),
+      P({
+        name: 'Drumcode Bass MI', type: 'local',
+        active_since: 2015, events_per_year: 8,
+        dominant_genre: 'Dancefloor / Neuro',
+        ig: 'drumcodebass.mi',
+        lineup: ['Mefjus (tour)', 'Phace (tour)', 'IT DnB acts'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Drumcode Bass', venue: 'Fabrique', cap: 3000, sold: 2800 },
+        ],
+      }),
     ],
   }),
 
@@ -1050,6 +1521,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Italian residents + UK guests'],
         events: [
           { date: 'Apr 2025', year: 2025, name: 'Rum — History of DnB', venue: 'Hacienda Roma', cap: 600, sold: 520 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Roma', type: 'local',
+        active_since: 2011, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.roma', fb: 'DrumAndBassRoma',
+        lineup: ['IT DnB DJs', 'Hybrid Minds (tour)'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Roma', venue: 'Monk Club', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Acid Drop', type: 'local',
+        active_since: 2014, events_per_year: 6,
+        dominant_genre: 'Neurofunk / Deep',
+        ig: 'aciddrop.rm',
+        lineup: ['Mefjus', 'Phace', 'IT neuro DJs'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Acid Drop', venue: 'Spazio Novecento', cap: 900, sold: 850 },
         ],
       }),
     ],
@@ -1097,6 +1588,26 @@ const CITIES_RAW: City[] = [
           { date: 'Jan 2024', year: 2024, name: 'Korsakov Vienna', venue: 'Flex Vienna', cap: 500, sold: 490 },
         ],
       }),
+      P({
+        name: 'Beat It', type: 'local',
+        active_since: 2008, events_per_year: 12,
+        dominant_genre: 'All styles',
+        ig: 'beatitvienna',
+        lineup: ['Camo & Krooked', 'Mefjus', 'AT DnB DJs'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Beat It', venue: 'Grelle Forelle', cap: 900, sold: 880 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Austria', type: 'local',
+        active_since: 2010, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.austria', fb: 'DrumAndBassAustria',
+        lineup: ['AT DnB selection', 'Mainframe roster'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'DnB Austria', venue: 'Pratersauna', cap: 800, sold: 780 },
+        ],
+      }),
     ],
   }),
 
@@ -1129,6 +1640,26 @@ const CITIES_RAW: City[] = [
         events: [
           { date: 'Apr 2025', year: 2025, name: 'Twist XXL DnB Fest', venue: 'Sala La Riviera', cap: 2500, sold: 2300 },
           { date: 'Nov 2025', year: 2025, name: 'DnB Addiction', venue: 'Sala La Riviera', cap: 2500, sold: 0 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass España', type: 'local',
+        active_since: 2012, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.espana', fb: 'DrumAndBassEspana',
+        lineup: ['ES DnB DJs', 'Hybrid Minds (tour)'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB España', venue: 'Sala But', cap: 1100, sold: 1050 },
+        ],
+      }),
+      P({
+        name: 'Bassic Madrid', type: 'local',
+        active_since: 2016, events_per_year: 8,
+        dominant_genre: 'Dancefloor / Jump Up',
+        ig: 'bassic.mad',
+        lineup: ['Hedex', 'Bou', 'A.M.C', 'ES jump up'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Bassic Madrid', venue: 'Sala Mon', cap: 900, sold: 850 },
         ],
       }),
     ],
@@ -1177,6 +1708,36 @@ const CITIES_RAW: City[] = [
           { date: 'Sep 2024', year: 2024, name: 'Run', venue: 'Motion', cap: 5000, sold: 4700 },
         ],
       }),
+      P({
+        name: 'Hospitality Bristol', type: 'local',
+        active_since: 2010, events_per_year: 4,
+        dominant_genre: 'Liquid',
+        ig: 'hospitalrecords',
+        lineup: ['London Elektricity', 'Logistics', 'Hybrid Minds', 'S.P.Y'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Hospitality Bristol', venue: 'Motion', cap: 2500, sold: 2400 },
+        ],
+      }),
+      P({
+        name: 'Sequences', type: 'local',
+        active_since: 2015, events_per_year: 10,
+        dominant_genre: 'Deep / Halftime',
+        ig: 'sequences.bristol',
+        lineup: ['Ivy Lab', 'Halogenix', 'Skeptical', 'Alix Perez'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Sequences', venue: 'The Island', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Banditry', type: 'local',
+        active_since: 2017, events_per_year: 8,
+        dominant_genre: 'Jungle / 170',
+        ig: 'banditry.bristol',
+        lineup: ['Tim Reaper', 'Sully', 'Mantra', 'Coco Bryce'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Banditry', venue: 'Strange Brew', cap: 400, sold: 400 },
+        ],
+      }),
     ],
   }),
 
@@ -1209,6 +1770,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Andy C', 'Hybrid Minds', 'Bou', 'Sub Focus', 'Wilkinson'],
         events: [
           { date: 'Nov 2024', year: 2024, name: 'Hospitality Leeds', venue: 'Beaver Works', cap: 2300, sold: 2300 },
+        ],
+      }),
+      P({
+        name: 'Subdub', type: 'local',
+        active_since: 2003, events_per_year: 10,
+        dominant_genre: 'Bass / DnB',
+        ig: 'subdubleeds', website: 'subdub.co.uk',
+        lineup: ['DnB & dubstep crossover line-ups'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'Subdub', venue: 'West Indian Centre', cap: 900, sold: 880 },
+        ],
+      }),
+      P({
+        name: 'Mint Warehouse DnB', type: 'venue',
+        active_since: 2010, events_per_year: 20,
+        dominant_genre: 'All styles',
+        ig: 'mintwarehouse',
+        lineup: ['DnB Allstars', 'Hospitality', 'UKF takeovers'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB Allstars Leeds', venue: 'Mint Warehouse', cap: 1500, sold: 1400 },
         ],
       }),
     ],
@@ -1245,6 +1826,26 @@ const CITIES_RAW: City[] = [
           { date: 'Oct 2024', year: 2024, name: 'Hospitality Glasgow', venue: 'SWG3 Galvanizers', cap: 2500, sold: 2450 },
         ],
       }),
+      P({
+        name: 'Pure Filth', type: 'local',
+        active_since: 2008, events_per_year: 12,
+        dominant_genre: 'Jump Up / Dancefloor',
+        ig: 'purefilthglasgow',
+        lineup: ['Hedex', 'Bou', 'A.M.C', 'Macky Gee', 'Annix'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Pure Filth', venue: 'SWG3', cap: 1250, sold: 1200 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Scotland', type: 'local',
+        active_since: 2011, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.scotland', fb: 'DrumAndBassScotland',
+        lineup: ['Scottish DnB selection'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'DnB Scotland', venue: 'SWG3', cap: 900, sold: 850 },
+        ],
+      }),
     ],
   }),
 
@@ -1277,6 +1878,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Bou', 'Hybrid Minds', 'Turno', 'Disrupta', 'A.M.C'],
         events: [
           { date: 'Nov 2024', year: 2024, name: 'Hospitality Birmingham', venue: 'O2 Institute', cap: 1500, sold: 1500 },
+        ],
+      }),
+      P({
+        name: 'Rumble In The Jungle', type: 'local',
+        active_since: 2009, events_per_year: 8,
+        dominant_genre: 'Jungle / DnB',
+        ig: 'rumbleinthejungle.uk',
+        lineup: ['Shy FX', 'Goldie', 'DJ Hype', 'Aphrodite'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'Rumble In The Jungle', venue: 'Lab11', cap: 1000, sold: 950 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Birmingham', type: 'local',
+        active_since: 2013, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.birmingham', fb: 'DrumAndBassBirmingham',
+        lineup: ['Brum DnB selection'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'DnB Brum', venue: 'Lab11', cap: 1000, sold: 950 },
         ],
       }),
     ],
@@ -1313,6 +1934,26 @@ const CITIES_RAW: City[] = [
           { date: 'Nov 2024', year: 2024, name: 'Drumcomplex', venue: 'X-TRA', cap: 1500, sold: 1450 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Schweiz', type: 'local',
+        active_since: 2011, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.schweiz', fb: 'DrumAndBassSchweiz',
+        lineup: ['CH DnB DJs', 'Camo & Krooked (tour)'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB Schweiz', venue: 'Komplex 457', cap: 1000, sold: 950 },
+        ],
+      }),
+      P({
+        name: 'Bassgrip', type: 'local',
+        active_since: 2014, events_per_year: 6,
+        dominant_genre: 'Neurofunk / Deep',
+        ig: 'bassgrip.zh',
+        lineup: ['Mefjus', 'Phace', 'CH neuro acts'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Bassgrip', venue: 'Hive Club', cap: 700, sold: 680 },
+        ],
+      }),
     ],
   }),
 
@@ -1345,6 +1986,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Mefjus', 'Phace', 'Camo & Krooked', 'Bou'],
         events: [
           { date: 'Oct 2024', year: 2024, name: 'Hospitality Munich', venue: 'Tonhalle', cap: 3000, sold: 2900 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass München', type: 'local',
+        active_since: 2010, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.muenchen', fb: 'DrumAndBassMuenchen',
+        lineup: ['DE DnB DJs', 'Camo & Krooked (tour)'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB München', venue: 'Backstage', cap: 900, sold: 850 },
+        ],
+      }),
+      P({
+        name: 'Subground', type: 'local',
+        active_since: 2015, events_per_year: 8,
+        dominant_genre: 'Neurofunk / Dancefloor',
+        ig: 'subground.mu',
+        lineup: ['Mefjus', 'Bou', 'DE DnB acts'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Subground', venue: 'Rote Sonne', cap: 500, sold: 480 },
         ],
       }),
     ],
@@ -1381,6 +2042,26 @@ const CITIES_RAW: City[] = [
           { date: 'Sep 2024', year: 2024, name: 'Bassgeflüster', venue: 'Markthalle', cap: 1100, sold: 1050 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Hamburg', type: 'local',
+        active_since: 2009, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.hamburg', fb: 'DrumAndBassHamburg',
+        lineup: ['DE DnB selection'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB Hamburg', venue: 'Uebel & Gefährlich', cap: 900, sold: 850 },
+        ],
+      }),
+      P({
+        name: 'Bassgeflüster Sessions', type: 'local',
+        active_since: 2014, events_per_year: 8,
+        dominant_genre: 'Liquid / Soulful',
+        ig: 'bassgefluester',
+        lineup: ['LSB', 'Bcee', 'Hybrid Minds'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Bassgeflüster', venue: 'Mojo Club', cap: 600, sold: 580 },
+        ],
+      }),
     ],
   }),
 
@@ -1412,6 +2093,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Mefjus', 'Phace', 'Camo & Krooked'],
         events: [
           { date: 'Nov 2024', year: 2024, name: 'Bass Society', venue: 'Batschkapp', cap: 1500, sold: 1300 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Frankfurt', type: 'local',
+        active_since: 2011, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.frankfurt', fb: 'DrumAndBassFrankfurt',
+        lineup: ['DE DnB DJs'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB Frankfurt', venue: 'Tanzhaus West', cap: 900, sold: 850 },
+        ],
+      }),
+      P({
+        name: 'Frequenzfehler', type: 'local',
+        active_since: 2016, events_per_year: 6,
+        dominant_genre: 'Neurofunk',
+        ig: 'frequenzfehler',
+        lineup: ['Phace', 'Mefjus', 'Misanthrop'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Frequenzfehler', venue: 'Nachtleben', cap: 400, sold: 380 },
         ],
       }),
     ],
@@ -1448,6 +2149,26 @@ const CITIES_RAW: City[] = [
           { date: 'Oct 2024', year: 2024, name: 'Hospitality CPH', venue: 'Vega', cap: 1550, sold: 1500 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Denmark', type: 'local',
+        active_since: 2012, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.denmark', fb: 'DrumAndBassDenmark',
+        lineup: ['DK DnB selection', 'Hybrid Minds (tour)'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Denmark', venue: 'Pumpehuset', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Beats & Bass CPH', type: 'local',
+        active_since: 2015, events_per_year: 6,
+        dominant_genre: 'Dancefloor / Liquid',
+        ig: 'beatsandbass.cph',
+        lineup: ['DK DnB DJs', 'Bcee (tour)'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Beats & Bass', venue: 'Rust', cap: 400, sold: 380 },
+        ],
+      }),
     ],
   }),
 
@@ -1480,6 +2201,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Mefjus', 'Hybrid Minds', 'Camo & Krooked', 'BCee'],
         events: [
           { date: 'Nov 2024', year: 2024, name: 'Hospitality Stockholm', venue: 'Slaktkyrkan', cap: 1200, sold: 1100 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Sverige', type: 'local',
+        active_since: 2011, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.sverige', fb: 'DrumAndBassSverige',
+        lineup: ['SE DnB DJs', 'Camo & Krooked (tour)'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB Sverige', venue: 'Slaktkyrkan', cap: 900, sold: 850 },
+        ],
+      }),
+      P({
+        name: 'Subsessions Stockholm', type: 'local',
+        active_since: 2014, events_per_year: 6,
+        dominant_genre: 'Liquid / Deep',
+        ig: 'subsessions.sthlm',
+        lineup: ['LSB', 'Lenzman', 'Hybrid Minds'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Subsessions', venue: 'Trädgården', cap: 500, sold: 480 },
         ],
       }),
     ],
@@ -1526,6 +2267,26 @@ const CITIES_RAW: City[] = [
           { date: 'Mar 2024', year: 2024, name: 'UKF On Air Auckland', venue: 'Powerstation', cap: 1100, sold: 1080 },
         ],
       }),
+      P({
+        name: 'Drum & Bass NZ', type: 'local',
+        active_since: 2008, events_per_year: 12,
+        dominant_genre: 'All styles',
+        ig: 'dnb.nz', fb: 'DrumAndBassNZ',
+        lineup: ['Concord Dawn', 'State of Mind', 'Trei', 'NZ DnB roster'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB NZ', venue: 'Powerstation', cap: 1100, sold: 1050 },
+        ],
+      }),
+      P({
+        name: 'Bass Empire', type: 'local',
+        active_since: 2013, events_per_year: 8,
+        dominant_genre: 'Dancefloor / Jump Up',
+        ig: 'bassempire.nz',
+        lineup: ['Hedex (tour)', 'Bou (tour)', 'NZ DnB DJs'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Bass Empire', venue: 'Studio The Venue', cap: 900, sold: 850 },
+        ],
+      }),
     ],
   }),
 
@@ -1558,6 +2319,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Hybrid Minds', 'Sub Focus', 'Andy C', 'Netsky', 'Wilkinson'],
         events: [
           { date: 'Nov 2024', year: 2024, name: 'Hybrid Minds Toronto', venue: 'Rebel', cap: 2400, sold: 2300 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Toronto', type: 'local',
+        active_since: 2009, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.toronto', fb: 'DrumAndBassToronto',
+        lineup: ['CA DnB DJs', 'Hybrid Minds (tour)'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Toronto', venue: 'Velvet Underground', cap: 400, sold: 380 },
+        ],
+      }),
+      P({
+        name: 'Plus Plus', type: 'local',
+        active_since: 2013, events_per_year: 8,
+        dominant_genre: 'Liquid / Deep',
+        ig: 'plusplus.to',
+        lineup: ['LSB', 'Lenzman', 'Calibre'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Plus Plus', venue: 'Coda', cap: 600, sold: 580 },
         ],
       }),
     ],
@@ -1605,6 +2386,36 @@ const CITIES_RAW: City[] = [
           { date: 'May 2023', year: 2023, name: 'UKF On Air LA', venue: 'Exchange LA', cap: 1500, sold: 1450 },
         ],
       }),
+      P({
+        name: 'Respect (legacy)', type: 'local',
+        active_since: 2002, events_per_year: 24,
+        dominant_genre: 'All styles',
+        ig: 'respectdnb', website: 'respectdnb.com',
+        lineup: ['Andy C', 'Sub Focus', 'Goldie', 'Calibre'],
+        events: [
+          { date: 'Weekly', year: 2024, name: 'Respect Wednesdays', venue: 'Los Globos', cap: 600, sold: 550 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass California', type: 'local',
+        active_since: 2010, events_per_year: 12,
+        dominant_genre: 'All styles',
+        ig: 'dnb.california', fb: 'DrumAndBassCalifornia',
+        lineup: ['US DnB DJs'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB California', venue: 'Sound Nightclub', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Bassrush', type: 'local',
+        active_since: 1996, events_per_year: 20,
+        dominant_genre: 'All bass / DnB',
+        ig: 'bassrush', website: 'bassrush.com',
+        lineup: ['Andy C', 'Chase & Status', 'Sub Focus', 'Pendulum'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Bassrush Massive', venue: 'NOS Events Center', cap: 15000, sold: 14500 },
+        ],
+      }),
     ],
   }),
 
@@ -1650,6 +2461,36 @@ const CITIES_RAW: City[] = [
           { date: 'Sep 2023', year: 2023, name: 'UKF On Air NYC', venue: 'Knockdown Center', cap: 3200, sold: 3100 },
         ],
       }),
+      P({
+        name: 'Konkrete Jungle NYC', type: 'local',
+        active_since: 1994, events_per_year: 15,
+        dominant_genre: 'Jungle / DnB',
+        ig: 'konkretejungle', website: 'konkretejungle.com',
+        lineup: ['Dieselboy', 'AK1200', 'NYC DnB veterans'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'Konkrete Jungle', venue: 'Brooklyn Made', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass New York', type: 'local',
+        active_since: 2012, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.nyc', fb: 'DrumAndBassNewYork',
+        lineup: ['US DnB DJs', 'Mefjus (tour)'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'DnB NYC', venue: 'Avant Gardner', cap: 2000, sold: 1900 },
+        ],
+      }),
+      P({
+        name: 'Direct Drive', type: 'local',
+        active_since: 2015, events_per_year: 8,
+        dominant_genre: 'Liquid / Deep',
+        ig: 'directdrive.nyc',
+        lineup: ['LSB', 'Lenzman', 'NYC liquid heads'],
+        events: [
+          { date: 'Nov 2024', year: 2024, name: 'Direct Drive', venue: 'Public Records', cap: 300, sold: 300 },
+        ],
+      }),
     ],
   }),
 
@@ -1680,6 +2521,26 @@ const CITIES_RAW: City[] = [
           { date: 'Sep 2024', year: 2024, name: 'DNBI Mumbai', venue: 'Bonobo', cap: 250, sold: 240 },
         ],
       }),
+      P({
+        name: 'Drum & Bass India Mumbai', type: 'local',
+        active_since: 2014, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'drumandbassindia', fb: 'DrumAndBassIndia', website: 'drumandbassindia.com',
+        lineup: ['EZ Riser', 'BlackLetters', 'IN DnB DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB India Mumbai', venue: 'antiSOCIAL', cap: 400, sold: 380 },
+        ],
+      }),
+      P({
+        name: 'Krunk', type: 'local',
+        active_since: 2012, events_per_year: 12,
+        dominant_genre: 'All bass',
+        ig: 'krunkindia', website: 'krunkster.in',
+        lineup: ['Nucleya', 'EZ Riser', 'Su Real'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Krunk x Bass', venue: 'antiSOCIAL Mumbai', cap: 400, sold: 380 },
+        ],
+      }),
     ],
   }),
 
@@ -1705,6 +2566,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Bou', 'Whiney', 'The Untitled One', 'Sun-J'],
         events: [
           { date: 'Nov 2024', year: 2024, name: 'DNBI Bangalore', venue: 'Fandom', cap: 800, sold: 750 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass India BLR (extra)', type: 'local',
+        active_since: 2015, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'drumandbassindia',
+        lineup: ['EZ Riser', 'BlackLetters'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB India BLR', venue: 'Fandom @ Gilly\'s', cap: 500, sold: 480 },
+        ],
+      }),
+      P({
+        name: 'Boxout BLR', type: 'local',
+        active_since: 2017, events_per_year: 10,
+        dominant_genre: 'Bass / DnB',
+        ig: 'boxoutbangalore',
+        lineup: ['IN DnB selection'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Boxout BLR', venue: 'Fandom', cap: 500, sold: 480 },
         ],
       }),
     ],
@@ -1734,6 +2615,26 @@ const CITIES_RAW: City[] = [
           { date: 'Oct 2024', year: 2024, name: 'DNBI Delhi', venue: 'Summer House Café', cap: 400, sold: 380 },
         ],
       }),
+      P({
+        name: 'Drum & Bass India Delhi (extra)', type: 'local',
+        active_since: 2014, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'drumandbassindia',
+        lineup: ['EZ Riser', 'BlackLetters'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB India Delhi', venue: 'Summer House Cafe', cap: 300, sold: 300 },
+        ],
+      }),
+      P({
+        name: 'Auro Bass Society', type: 'local',
+        active_since: 2018, events_per_year: 8,
+        dominant_genre: 'Bass / DnB',
+        ig: 'aurobasssociety',
+        lineup: ['IN DnB DJs'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Auro Bass', venue: 'AntiSocial Delhi', cap: 300, sold: 300 },
+        ],
+      }),
     ],
   }),
 
@@ -1758,6 +2659,16 @@ const CITIES_RAW: City[] = [
         lineup: ['Radiant Light Unit', 'local crews'],
         events: [
           { date: 'May 2024', year: 2024, name: 'RLU Showcase Yangon', venue: 'Pioneer Club', cap: 400, sold: 320 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Myanmar', type: 'local',
+        active_since: 2018, events_per_year: 4,
+        dominant_genre: 'All styles',
+        fb: 'DrumAndBassMyanmar',
+        lineup: ['Local DnB DJs'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB Myanmar', venue: 'TBC', cap: 200, sold: 180 },
         ],
       }),
     ],
@@ -1788,6 +2699,26 @@ const CITIES_RAW: City[] = [
           { date: 'Nov 2024', year: 2024, name: 'Jungle Jam BKK', venue: 'Mustache Bangkok', cap: 500, sold: 480 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Thailand', type: 'local',
+        active_since: 2013, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.thailand', fb: 'DrumAndBassThailand',
+        lineup: ['TH DnB DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Thailand', venue: 'Beam Bangkok', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Mustache Bangkok', type: 'venue',
+        active_since: 2014, events_per_year: 20,
+        dominant_genre: 'Bass / DnB',
+        ig: 'mustachebangkok',
+        lineup: ['TH DnB selection', 'International tours'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'DnB Night', venue: 'Mustache', cap: 300, sold: 300 },
+        ],
+      }),
     ],
   }),
 
@@ -1814,6 +2745,16 @@ const CITIES_RAW: City[] = [
           { date: 'Feb 2024', year: 2024, name: 'District1 Degs', venue: 'District1 Phuket', cap: 500, sold: 480 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Phuket', type: 'local',
+        active_since: 2017, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.phuket', fb: 'DrumAndBassPhuket',
+        lineup: ['TH DnB DJs', 'Touring acts'],
+        events: [
+          { date: 'Feb 2024', year: 2024, name: 'DnB Phuket', venue: 'Illuzion Phuket', cap: 2000, sold: 1800 },
+        ],
+      }),
     ],
   }),
 
@@ -1838,6 +2779,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Local DJs', 'Asia tour selectors'],
         events: [
           { date: 'Aug 2024', year: 2024, name: 'Mad Circus 2', venue: 'The Observatory', cap: 400, sold: 360 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Vietnam', type: 'local',
+        active_since: 2016, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.vietnam', fb: 'DrumAndBassVietnam',
+        lineup: ['VN DnB DJs'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB Vietnam', venue: 'The Observatory', cap: 400, sold: 380 },
+        ],
+      }),
+      P({
+        name: 'Heart Beat Saigon', type: 'local',
+        active_since: 2018, events_per_year: 10,
+        dominant_genre: 'Bass / Electronic',
+        ig: 'heartbeat.saigon',
+        lineup: ['VN bass selection'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Heart Beat', venue: 'Arcan', cap: 400, sold: 380 },
         ],
       }),
     ],
@@ -1867,6 +2828,26 @@ const CITIES_RAW: City[] = [
           { date: 'Oct 2024', year: 2024, name: 'SVBKVLT Showcase', venue: 'ALL Club', cap: 400, sold: 390 },
         ],
       }),
+      P({
+        name: 'Drum & Bass China', type: 'local',
+        active_since: 2014, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.china', fb: 'DrumAndBassChina',
+        lineup: ['CN DnB DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB China', venue: 'ALL Club', cap: 400, sold: 380 },
+        ],
+      }),
+      P({
+        name: 'Specter Shanghai', type: 'local',
+        active_since: 2017, events_per_year: 10,
+        dominant_genre: 'Bass / DnB',
+        ig: 'specter.shanghai',
+        lineup: ['CN bass selection'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Specter', venue: 'ALL Club', cap: 400, sold: 380 },
+        ],
+      }),
     ],
   }),
 
@@ -1891,6 +2872,16 @@ const CITIES_RAW: City[] = [
         lineup: ['China bass DJs', 'visiting DnB acts'],
         events: [
           { date: 'Jun 2024', year: 2024, name: 'Bass Night Beijing', venue: 'Zhao Dai', cap: 450, sold: 400 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Beijing', type: 'local',
+        active_since: 2016, events_per_year: 6,
+        dominant_genre: 'All styles',
+        ig: 'dnb.beijing', fb: 'DrumAndBassBeijing',
+        lineup: ['CN DnB DJs'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB Beijing', venue: 'Zhao Dai', cap: 300, sold: 300 },
         ],
       }),
     ],
@@ -1920,6 +2911,26 @@ const CITIES_RAW: City[] = [
           { date: 'Sep 2024', year: 2024, name: 'DnB Night Seoul', venue: 'Cakeshop', cap: 400, sold: 390 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Korea', type: 'local',
+        active_since: 2014, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.korea', fb: 'DrumAndBassKorea',
+        lineup: ['KR DnB DJs'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB Korea', venue: 'Cakeshop', cap: 300, sold: 300 },
+        ],
+      }),
+      P({
+        name: 'Bass Seoul', type: 'local',
+        active_since: 2017, events_per_year: 10,
+        dominant_genre: 'Bass / DnB',
+        ig: 'bass.seoul',
+        lineup: ['KR bass selection', 'International tours'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Bass Seoul', venue: 'Faust', cap: 400, sold: 380 },
+        ],
+      }),
     ],
   }),
 
@@ -1946,6 +2957,16 @@ const CITIES_RAW: City[] = [
           { date: 'Jul 2024', year: 2024, name: 'Bass Showcase Taipei', venue: 'Pawnshop', cap: 350, sold: 320 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Taiwan', type: 'local',
+        active_since: 2016, events_per_year: 6,
+        dominant_genre: 'All styles',
+        ig: 'dnb.taiwan', fb: 'DrumAndBassTaiwan',
+        lineup: ['TW DnB DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Taiwan', venue: 'Pawnshop', cap: 300, sold: 300 },
+        ],
+      }),
     ],
   }),
 
@@ -1970,6 +2991,16 @@ const CITIES_RAW: City[] = [
         lineup: ['Local DnB DJs', 'visiting headliners'],
         events: [
           { date: 'Sep 2024', year: 2024, name: 'Bass Republic Jakarta', venue: 'Studio Palem', cap: 400, sold: 350 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Indonesia', type: 'local',
+        active_since: 2014, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.indonesia', fb: 'DrumAndBassIndonesia',
+        lineup: ['ID DnB DJs'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB Indonesia', venue: 'Colosseum Jakarta', cap: 600, sold: 580 },
         ],
       }),
     ],
@@ -1999,6 +3030,26 @@ const CITIES_RAW: City[] = [
           { date: 'Aug 2024', year: 2024, name: 'Sunset Bass Bali', venue: 'La Brisa', cap: 800, sold: 780 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Bali', type: 'local',
+        active_since: 2017, events_per_year: 12,
+        dominant_genre: 'All styles',
+        ig: 'dnb.bali', fb: 'DrumAndBassBali',
+        lineup: ['Bali DnB DJs', 'Touring AU/UK acts'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Bali', venue: 'The Lawn Canggu', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Finns Beach Club Bass', type: 'venue',
+        active_since: 2018, events_per_year: 10,
+        dominant_genre: 'Bass / DnB',
+        ig: 'finnsbeachclub',
+        lineup: ['Touring DnB acts'],
+        events: [
+          { date: 'Aug 2024', year: 2024, name: 'Bass at Finns', venue: 'Finns Beach Club', cap: 2000, sold: 1800 },
+        ],
+      }),
     ],
   }),
 
@@ -2023,6 +3074,16 @@ const CITIES_RAW: City[] = [
         lineup: ['Local DnB DJs', 'Asia tour acts'],
         events: [
           { date: 'Oct 2024', year: 2024, name: 'Manila Bass Night', venue: 'XX XX', cap: 400, sold: 350 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Philippines', type: 'local',
+        active_since: 2015, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.philippines', fb: 'DrumAndBassPhilippines',
+        lineup: ['PH DnB DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Philippines', venue: 'XYLO at The Palace', cap: 400, sold: 380 },
         ],
       }),
     ],
@@ -2052,6 +3113,26 @@ const CITIES_RAW: City[] = [
           { date: 'Nov 2024', year: 2024, name: 'Sub Focus Dubai', venue: 'Soho Garden DXB', cap: 2000, sold: 1900 },
         ],
       }),
+      P({
+        name: 'Drum & Bass UAE', type: 'local',
+        active_since: 2013, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.uae', fb: 'DrumAndBassUAE',
+        lineup: ['UAE DnB DJs', 'International tours'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB UAE', venue: 'Soho Garden', cap: 1500, sold: 1400 },
+        ],
+      }),
+      P({
+        name: 'Analog Room Bass', type: 'venue',
+        active_since: 2014, events_per_year: 15,
+        dominant_genre: 'Bass / Electronic',
+        ig: 'analogroom',
+        lineup: ['UAE bass selection'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Analog Bass', venue: 'Analog Room', cap: 400, sold: 380 },
+        ],
+      }),
     ],
   }),
 
@@ -2077,6 +3158,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Mefjus', 'Noisia', 'Camo & Krooked', 'Andy C'],
         events: [
           { date: 'Sep 2024', year: 2024, name: 'DnB Night Tel Aviv', venue: 'The Block', cap: 800, sold: 780 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Israel', type: 'local',
+        active_since: 2010, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.israel', fb: 'DrumAndBassIsrael',
+        lineup: ['IL DnB DJs'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB Israel', venue: 'The Block', cap: 900, sold: 850 },
+        ],
+      }),
+      P({
+        name: 'Disorder TLV', type: 'local',
+        active_since: 2014, events_per_year: 8,
+        dominant_genre: 'Neuro / Dancefloor',
+        ig: 'disorder.tlv',
+        lineup: ['Mefjus (tour)', 'Phace (tour)', 'IL DnB acts'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Disorder', venue: 'The Block', cap: 900, sold: 850 },
         ],
       }),
     ],
@@ -2106,6 +3207,26 @@ const CITIES_RAW: City[] = [
           { date: 'Oct 2024', year: 2024, name: 'Counterpoint Cape Town', venue: 'Modular', cap: 700, sold: 650 },
         ],
       }),
+      P({
+        name: 'Drum & Bass South Africa', type: 'local',
+        active_since: 2008, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.southafrica', fb: 'DrumAndBassSouthAfrica',
+        lineup: ['ZA DnB selection'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB SA Cape Town', venue: 'Modular', cap: 400, sold: 380 },
+        ],
+      }),
+      P({
+        name: 'Sonar Cape Town', type: 'local',
+        active_since: 2013, events_per_year: 8,
+        dominant_genre: 'Bass / DnB',
+        ig: 'sonar.capetown',
+        lineup: ['ZA bass acts'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Sonar', venue: 'Modular', cap: 400, sold: 380 },
+        ],
+      }),
     ],
   }),
 
@@ -2130,6 +3251,16 @@ const CITIES_RAW: City[] = [
         lineup: ['Tantrum Desire', 'Hybrid Minds', 'local heroes'],
         events: [
           { date: 'Aug 2024', year: 2024, name: 'Bass Konnect JHB', venue: 'And Club', cap: 600, sold: 550 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass JHB', type: 'local',
+        active_since: 2009, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.jhb', fb: 'DrumAndBassJHB',
+        lineup: ['ZA DnB DJs'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB JHB', venue: 'And Club', cap: 600, sold: 580 },
         ],
       }),
     ],
@@ -2158,6 +3289,16 @@ const CITIES_RAW: City[] = [
           { date: 'Sep 2024', year: 2024, name: 'The Kenyan Way (Degs)', venue: 'The Alchemist', cap: 800, sold: 800 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Kenya', type: 'local',
+        active_since: 2018, events_per_year: 6,
+        dominant_genre: 'All styles',
+        ig: 'dnb.kenya', fb: 'DrumAndBassKenya',
+        lineup: ['KE DnB DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Kenya', venue: 'The Alchemist', cap: 400, sold: 380 },
+        ],
+      }),
     ],
   }),
 
@@ -2182,6 +3323,16 @@ const CITIES_RAW: City[] = [
         lineup: ['Local DJs', 'visiting UK acts'],
         events: [
           { date: 'Nov 2024', year: 2024, name: 'Bass Lagos Launch', venue: 'Hard Rock Café Lagos', cap: 600, sold: 480 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Nigeria', type: 'local',
+        active_since: 2019, events_per_year: 4,
+        dominant_genre: 'All styles',
+        ig: 'dnb.nigeria', fb: 'DrumAndBassNigeria',
+        lineup: ['NG DnB DJs'],
+        events: [
+          { date: 'Mar 2024', year: 2024, name: 'DnB Nigeria', venue: 'TBC Lagos', cap: 300, sold: 280 },
         ],
       }),
     ],
@@ -2211,6 +3362,26 @@ const CITIES_RAW: City[] = [
           { date: 'Oct 2024', year: 2024, name: 'Subbase MX', venue: 'Foro Indie Rocks', cap: 1200, sold: 1150 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Mexico', type: 'local',
+        active_since: 2010, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.mexico', fb: 'DrumAndBassMexico',
+        lineup: ['MX DnB DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Mexico', venue: 'Foro Indie Rocks!', cap: 600, sold: 580 },
+        ],
+      }),
+      P({
+        name: 'Bassmental MX', type: 'local',
+        active_since: 2014, events_per_year: 8,
+        dominant_genre: 'Dancefloor / Neuro',
+        ig: 'bassmental.mx',
+        lineup: ['Mefjus (tour)', 'MX DnB acts'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Bassmental', venue: 'Fonoteca', cap: 400, sold: 380 },
+        ],
+      }),
     ],
   }),
 
@@ -2238,6 +3409,26 @@ const CITIES_RAW: City[] = [
           { date: 'Nov 2024', year: 2024, name: 'DnB Night BA', venue: 'Crobar', cap: 2500, sold: 2400 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Argentina', type: 'local',
+        active_since: 2008, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.argentina', fb: 'DrumAndBassArgentina',
+        lineup: ['AR DnB selection'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB Argentina', venue: 'Crobar', cap: 1500, sold: 1400 },
+        ],
+      }),
+      P({
+        name: 'Bassdrop BA', type: 'local',
+        active_since: 2013, events_per_year: 8,
+        dominant_genre: 'Dancefloor / Liquid',
+        ig: 'bassdrop.ba',
+        lineup: ['AR DnB DJs', 'DJ Marky (tour)'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Bassdrop', venue: 'Mandarine Park', cap: 2000, sold: 1900 },
+        ],
+      }),
     ],
   }),
 
@@ -2262,6 +3453,16 @@ const CITIES_RAW: City[] = [
         lineup: ['Mefjus', 'Bou', 'local DnB DJs'],
         events: [
           { date: 'Sep 2024', year: 2024, name: 'BassBog Showcase', venue: 'Video Club Bogotá', cap: 800, sold: 720 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Colombia', type: 'local',
+        active_since: 2014, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.colombia', fb: 'DrumAndBassColombia',
+        lineup: ['CO DnB DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Colombia', venue: 'Baum Club', cap: 600, sold: 580 },
         ],
       }),
     ],
@@ -2291,6 +3492,26 @@ const CITIES_RAW: City[] = [
           { date: 'Aug 2024', year: 2024, name: 'DnB Fundraiser Kyiv', venue: 'Closer', cap: 1200, sold: 1200 },
         ],
       }),
+      P({
+        name: 'Drum & Bass Ukraine', type: 'local',
+        active_since: 2009, events_per_year: 10,
+        dominant_genre: 'All styles',
+        ig: 'dnb.ukraine', fb: 'DrumAndBassUkraine',
+        lineup: ['UA DnB selection'],
+        events: [
+          { date: 'May 2024', year: 2024, name: 'DnB Ukraine', venue: 'Closer', cap: 900, sold: 850 },
+        ],
+      }),
+      P({
+        name: 'Subwoofer Kyiv', type: 'local',
+        active_since: 2013, events_per_year: 8,
+        dominant_genre: 'Neurofunk / Deep',
+        ig: 'subwoofer.kyiv',
+        lineup: ['Mefjus', 'Phace', 'UA neuro acts'],
+        events: [
+          { date: 'Sep 2024', year: 2024, name: 'Subwoofer', venue: 'Closer', cap: 900, sold: 850 },
+        ],
+      }),
     ],
   }),
 
@@ -2316,6 +3537,26 @@ const CITIES_RAW: City[] = [
         lineup: ['Mefjus', 'Noisia', 'visiting UK DnB acts'],
         events: [
           { date: 'Oct 2024', year: 2024, name: 'DnB Night Tbilisi', venue: 'Bassiani', cap: 1200, sold: 1180 },
+        ],
+      }),
+      P({
+        name: 'Drum & Bass Georgia', type: 'local',
+        active_since: 2015, events_per_year: 8,
+        dominant_genre: 'All styles',
+        ig: 'dnb.georgia', fb: 'DrumAndBassGeorgia',
+        lineup: ['GE DnB DJs'],
+        events: [
+          { date: 'Apr 2024', year: 2024, name: 'DnB Georgia', venue: 'Khidi', cap: 900, sold: 850 },
+        ],
+      }),
+      P({
+        name: 'Khidi Bass Series', type: 'venue',
+        active_since: 2017, events_per_year: 12,
+        dominant_genre: 'Bass / DnB',
+        ig: 'khidi.club', website: 'khidi.net',
+        lineup: ['International DnB tours'],
+        events: [
+          { date: 'Oct 2024', year: 2024, name: 'Khidi Bass', venue: 'Khidi', cap: 900, sold: 900 },
         ],
       }),
     ],
