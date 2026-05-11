@@ -116,50 +116,7 @@ export default function DetailPanel() {
           />
         </div>
 
-        {/* Top 10 acts in this market — composite score (bookings 50% / streams 30% / socials 20%) */}
-        {city.topActs && city.topActs.length > 0 && (
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">
-                Top 10 acts in {city.name}
-              </div>
-              {city.stats?.data_as_of && (
-                <span className="text-[9px] text-gray-400">{city.stats.data_as_of}</span>
-              )}
-            </div>
-            <div className="space-y-1">
-              {city.topActs.map((a, i) => (
-                <div key={a.name} className="bg-gray-50 rounded-md px-2.5 py-1.5">
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="w-4 text-gray-400 font-mono">{i + 1}</span>
-                    <span className="font-semibold flex-1 break-words text-gray-900">{a.name}</span>
-                    {a.country_origin && (
-                      <span className="text-[9px] uppercase text-gray-400">{a.country_origin}</span>
-                    )}
-                    <span className="text-[var(--undivide)] font-bold tabular-nums">{a.share}%</span>
-                  </div>
-                  <div className="h-1 bg-gray-200 rounded-full mt-1 overflow-hidden">
-                    <div className="h-full bg-[var(--undivide)]" style={{ width: `${Math.min(100, a.share * 4)}%` }} />
-                  </div>
-                  <div className="flex gap-2 mt-1 text-[10px] text-gray-500">
-                    <span>{a.bookings_yr} shows/yr</span>
-                    {a.spotify_monthly !== undefined && (
-                      <span>· {a.spotify_monthly >= 1 ? `${a.spotify_monthly.toFixed(1)}M` : `${Math.round(a.spotify_monthly * 1000)}k`} Spotify</span>
-                    )}
-                    {a.ig_followers !== undefined && (
-                      <span>· {a.ig_followers >= 1000 ? `${(a.ig_followers / 1000).toFixed(0)}k` : a.ig_followers} IG</span>
-                    )}
-                  </div>
-                  {a.notes && <div className="text-[10px] text-gray-400 mt-0.5 italic">{a.notes}</div>}
-                </div>
-              ))}
-            </div>
-            <p className="text-[9px] text-gray-400 mt-1.5 leading-snug">
-              Composite: 50% local booking frequency · 30% Spotify monthly listeners · 20% IG followers.
-              Sources: 1001Tracklists, Spotify, public IG.
-            </p>
-          </div>
-        )}
+        {/* Top 10 acts removed — data was not verifiable */}
 
         {/* Live-ish scene stats: socials, FB groups, RA */}
         {city.stats && (

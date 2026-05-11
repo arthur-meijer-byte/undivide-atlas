@@ -3589,5 +3589,5 @@ import { CITY_ENRICHMENT } from './cityStats';
 
 export const CITIES: City[] = CITIES_RAW.map((c) => {
   const e = CITY_ENRICHMENT[c.id];
-  return e ? { ...c, topActs: e.topActs, stats: e.stats } : c;
+  return e ? { ...c, stats: e.stats } : c;
 });
