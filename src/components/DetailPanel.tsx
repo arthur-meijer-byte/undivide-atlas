@@ -132,7 +132,7 @@ export default function DetailPanel() {
                 <div key={a.name} className="bg-gray-50 rounded-md px-2.5 py-1.5">
                   <div className="flex items-center gap-2 text-xs">
                     <span className="w-4 text-gray-400 font-mono">{i + 1}</span>
-                    <span className="font-semibold flex-1 break-words">{a.name}</span>
+                    <span className="font-semibold flex-1 break-words text-gray-900">{a.name}</span>
                     {a.country_origin && (
                       <span className="text-[9px] uppercase text-gray-400">{a.country_origin}</span>
                     )}
