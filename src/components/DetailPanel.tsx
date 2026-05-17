@@ -286,7 +286,7 @@ export default function DetailPanel() {
                     <span className="opacity-70">{b.date}</span>
                   </div>
                   <div className="text-[11px] opacity-80 mt-0.5">
-                    {b.promoter || '—'} · {b.sound} · {b.ticketsSold}/{b.capacity} sold
+                    {b.promoter || '—'}{b.brand ? ` · ${b.brand}` : ''} · {b.ticketsSold}/{b.capacity} sold
                   </div>
                 </button>
               ))}
