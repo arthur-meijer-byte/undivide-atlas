@@ -31,6 +31,7 @@ function Index() {
       <h1 className="sr-only">Undivide Territory Intelligence</h1>
       <div className="absolute top-4 right-[200px] z-30 flex items-center gap-2">
         <UploadEventsButton />
+        <PromotersButton />
         <AgendaButton />
         <ThemeToggle />
       </div>
