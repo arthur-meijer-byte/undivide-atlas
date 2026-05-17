@@ -53,7 +53,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
             Top Artists — {city.name} ({data?.countryCode ?? '…'})
           </div>
           <div className="text-[10px] text-gray-400 mt-0.5">
-            Live from Spotify + YouTube · refreshes weekly
+            Ranked per-city: Spotify market pop · YouTube mentions · Event line-ups
           </div>
         </div>
         <button
