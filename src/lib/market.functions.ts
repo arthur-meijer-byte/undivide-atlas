@@ -466,7 +466,7 @@ function activityFor(rel: { date: string } | null): 'active' | 'quiet' | 'inacti
 }
 
 function scoreArtists(
-  artists: Array<SpotifyArtist & { marketScore: number }>,
+  artists: ArtistWithExtras[],
   ytHaystack: string[],
   lineupsLc: string[],
 ): SpotifyMarketArtist[] {
@@ -477,10 +477,9 @@ function scoreArtists(
     const nameLc = a.name.toLowerCase();
     const ytMentions = ytHaystack.filter((h) => h.includes(nameLc)).length;
     const eventMentions = lineupCount.get(nameLc) ?? 0;
-    // Weighted composite, each component normalized 0..100
-    const spotifyComp = a.marketScore;                         // 0..100 already
-    const ytComp = Math.min(100, ytMentions * 20);             // 5 mentions = 100
-    const eventComp = Math.min(100, eventMentions * 25);       // 4 events = 100
+    const spotifyComp = a.marketScore;
+    const ytComp = Math.min(100, ytMentions * 20);
+    const eventComp = Math.min(100, eventMentions * 25);
     const cityScore = spotifyComp * 0.55 + ytComp * 0.25 + eventComp * 0.20;
     return {
       ...a,
@@ -489,6 +488,7 @@ function scoreArtists(
       ytMentions,
       eventMentions,
       cityScore: Math.round(cityScore * 10) / 10,
+      activity: activityFor(a.latestRelease),
     };
   });
 }
