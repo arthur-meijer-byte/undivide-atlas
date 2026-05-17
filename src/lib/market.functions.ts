@@ -301,56 +301,100 @@ interface YouTubeVideo {
   thumbnail: string;
   views: number;
   published: string;
+  roster: boolean;
 }
 
-const YT_QUERY = 'drum and bass mix OR neurofunk OR liquid dnb OR jungle dnb';
+const YT_QUERIES = [
+  'drum and bass',
+  'neurofunk OR liquid dnb OR jungle dnb',
+];
 const YT_BAD = [
   'tutorial', 'how to', 'reaction', 'lesson', 'theory',
   'hardwell', 'fred again', 'techno', 'house', 'edm',
-  'trance', 'dubstep', 'trap', 'melodic techno',
-  'podcast episode', 'interview',
+  'trance', 'dubstep', 'trap', 'melodic techno', 'melodic house',
+  'podcast episode', 'interview', 'afro', 'commercial',
 ];
 const YT_GOOD = [
   'drum and bass', 'dnb', 'd&b', 'neurofunk', 'liquid dnb',
-  'jungle', 'drum & bass', 'rollers', 'halftime',
+  'jungle', 'drum & bass', 'rollers', 'halftime', 'liquid',
 ];
 const ARTIST_NAMES_LC = DNB_ARTISTS.map((n) => n.toLowerCase());
+const KNOWN_LABELS_LC = ['hospital records', 'korsakov music', 'undivide', 'ram records',
+  'shogun audio', 'critical music', 'metalheadz', 'invisible', 'blackout', 'eatbrain',
+  'liquicity', 'monstercat', 'viper recordings'];
 
 function passesYouTubeFilter(title: string, channel: string): boolean {
   const hay = `${title} ${channel}`.toLowerCase();
   if (YT_BAD.some((b) => hay.includes(b))) return false;
   if (YT_GOOD.some((g) => hay.includes(g))) return true;
+  if (KNOWN_LABELS_LC.some((l) => hay.includes(l))) return true;
   return ARTIST_NAMES_LC.some((n) => hay.includes(n));
 }
 
-async function youtubeTopForRegion(region: string): Promise<{ videos: YouTubeVideo[]; note: string | null; rawHaystack: string[] }> {
+function isRosterTagged(title: string, channel: string): boolean {
+  const hay = `${title} ${channel}`.toLowerCase();
+  if (KNOWN_LABELS_LC.some((l) => hay.includes(l))) return true;
+  return Array.from(ROSTER_LOOKUP).some((n) => hay.includes(n));
+}
+
+interface YTSearchItem {
+  id: { videoId: string };
+  snippet: {
+    title: string;
+    channelTitle: string;
+    thumbnails: { medium?: { url: string }; default?: { url: string } };
+    publishedAt: string;
+  };
+}
+
+async function ytSearchOnce(query: string, region: string, after: string, key: string): Promise<YTSearchItem[]> {
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=25&videoCategoryId=10&order=viewCount&regionCode=${region}&publishedAfter=${after}&q=${encodeURIComponent(query)}&key=${key}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`YouTube search failed: ${r.status}`);
+  const j = (await r.json()) as { items?: YTSearchItem[] };
+  return (j.items ?? []).filter((it) => it.id?.videoId);
+}
+
+async function youtubeTopForRegion(region: string, topArtistNames: string[]): Promise<{ videos: YouTubeVideo[]; note: string | null; rawHaystack: string[] }> {
   const key = process.env.YOUTUBE_API_KEY;
   if (!key) throw new Error('YouTube key not configured');
   const after = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
-  const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=50&videoCategoryId=10&order=viewCount&regionCode=${region}&publishedAfter=${after}&q=${encodeURIComponent(YT_QUERY)}&key=${key}`;
-  const s = await fetch(searchUrl);
-  if (!s.ok) throw new Error(`YouTube search failed: ${s.status}`);
-  const sj = (await s.json()) as { items?: Array<{ id: { videoId: string }; snippet: { title: string; channelTitle: string; thumbnails: { medium?: { url: string }; default?: { url: string } }; publishedAt: string } }> };
-  const candidates = (sj.items ?? []).filter((it) => it.id.videoId);
-  const filtered = candidates.filter((it) => passesYouTubeFilter(it.snippet.title, it.snippet.channelTitle));
-  // Use ALL filtered results for artist-mention scoring per city.
+
+  // 3rd query: name-search bundle of the top-5 Spotify artists in this market.
+  const queries = [...YT_QUERIES];
+  if (topArtistNames.length) {
+    queries.push(topArtistNames.slice(0, 5).map((n) => `"${n}"`).join(' OR ') + ' drum and bass');
+  }
+
+  // Run all queries, combine, dedupe by videoId.
+  const seen = new Map<string, YTSearchItem>();
+  for (const q of queries) {
+    try {
+      const items = await ytSearchOnce(q, region, after, key);
+      for (const it of items) if (!seen.has(it.id.videoId)) seen.set(it.id.videoId, it);
+    } catch { /* skip this query, continue */ }
+  }
+  const combined = Array.from(seen.values());
+  const filtered = combined.filter((it) => passesYouTubeFilter(it.snippet.title, it.snippet.channelTitle));
   const rawHaystack = filtered.map((it) => `${it.snippet.title} ${it.snippet.channelTitle}`.toLowerCase());
+
   if (filtered.length === 0) {
     return { videos: [], note: 'No verified DnB content found for this region in the last 12 months — this may indicate a developing market', rawHaystack: [] };
   }
-  const ids = filtered.slice(0, 10).map((it) => it.id.videoId);
+  const ids = filtered.slice(0, 15).map((it) => it.id.videoId);
   const statsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${ids.join(',')}&key=${key}`;
   const v = await fetch(statsUrl);
   if (!v.ok) throw new Error(`YouTube stats failed: ${v.status}`);
   const vj = (await v.json()) as { items?: Array<{ id: string; statistics: { viewCount?: string } }> };
   const viewsById = new Map(vj.items?.map((x) => [x.id, parseInt(x.statistics.viewCount ?? '0', 10)]));
-  const merged: YouTubeVideo[] = filtered.slice(0, 10).map((it) => ({
+  const merged: YouTubeVideo[] = filtered.slice(0, 15).map((it) => ({
     id: it.id.videoId,
     title: it.snippet.title,
     channel: it.snippet.channelTitle,
     thumbnail: it.snippet.thumbnails?.medium?.url ?? it.snippet.thumbnails?.default?.url ?? '',
     views: viewsById.get(it.id.videoId) ?? 0,
     published: it.snippet.publishedAt,
+    roster: isRosterTagged(it.snippet.title, it.snippet.channelTitle),
   }));
   merged.sort((a, b) => b.views - a.views);
   const top = merged.slice(0, 5);
