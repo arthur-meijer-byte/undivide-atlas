@@ -125,6 +125,27 @@ export default function DetailPanel() {
         </button>
       </div>
 
+      <div className="flex border-b border-gray-200 text-xs font-semibold">
+        {(['overview', 'artists'] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`flex-1 py-2.5 transition-colors ${
+              tab === t
+                ? 'text-[var(--undivide)] border-b-2 border-[var(--undivide)]'
+                : 'text-gray-500 hover:text-gray-800'
+            }`}
+          >
+            {t === 'overview' ? 'Overview' : 'Top Artists'}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'artists' ? (
+        <div className="flex-1 overflow-y-auto thin-scroll">
+          <PanelTopArtists city={city} />
+        </div>
+      ) : (
       <div className="flex-1 overflow-y-auto thin-scroll p-4 space-y-4 text-sm">
         {/* Market quick stats — clickable for context */}
         <div className="grid grid-cols-2 gap-2">
