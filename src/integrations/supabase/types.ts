@@ -125,6 +125,33 @@ export type Database = {
         }
         Relationships: []
       }
+      market_cache: {
+        Row: {
+          city_id: string
+          country_code: string
+          fetched_at: string
+          id: string
+          kind: string
+          payload: Json
+        }
+        Insert: {
+          city_id: string
+          country_code: string
+          fetched_at?: string
+          id?: string
+          kind: string
+          payload: Json
+        }
+        Update: {
+          city_id?: string
+          country_code?: string
+          fetched_at?: string
+          id?: string
+          kind?: string
+          payload?: Json
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
