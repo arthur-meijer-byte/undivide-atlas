@@ -57,6 +57,7 @@ export default function DetailPanel() {
   const contactP = contactPromoter ? city.promoters.find((p) => p.name === contactPromoter) : null;
 
   return (
+    <>
     <div
       key={city.id}
       className="panel-slide-in absolute top-0 left-0 bottom-0 z-30 w-[400px] bg-white shadow-[var(--shadow-panel)] flex flex-col"
