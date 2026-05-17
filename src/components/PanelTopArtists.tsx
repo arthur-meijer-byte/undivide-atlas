@@ -92,7 +92,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
                       <div className="w-7 h-7 rounded-full bg-gray-200" />
                     )}
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs font-medium truncate flex items-center gap-1.5">
+                      <div className="text-xs font-semibold text-gray-900 truncate flex items-center gap-1.5">
                         {a.name}
                         <span className="text-[8px] uppercase tracking-wider font-semibold bg-gray-100 text-gray-600 px-1 py-px rounded">
                           {a.subgenre}
@@ -138,7 +138,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
                       <div className="w-7 h-7 rounded-full bg-gray-200" />
                     )}
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs font-medium truncate">{a.name}</div>
+                      <div className="text-xs font-semibold text-gray-900 truncate">{a.name}</div>
                       <div className="text-[10px] text-gray-400">
                         {fmt(a.followers)} followers · pop {a.popularity}
                       </div>
