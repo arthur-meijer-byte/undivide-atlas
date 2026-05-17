@@ -13,7 +13,7 @@ export default function Tooltip() {
       <div className="flex items-center gap-2 font-semibold">
         <span className="w-2 h-2 rounded-full" style={{ background: STATUS_COLORS[hover.city.status] }} />
         {hover.city.name}
-        <span className="text-gray-400 font-normal">{hover.city.country}</span>
+        <span className="text-gray-600 font-normal">{hover.city.country}</span>
       </div>
       <div className="text-gray-500 mt-0.5">{STATUS_LABEL[hover.city.status]} · {hover.city.genre}</div>
       <div className="text-gray-500">{totalEvents} events · {hover.city.promoters.length} promoters</div>

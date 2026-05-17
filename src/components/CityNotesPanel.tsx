@@ -105,7 +105,7 @@ export default function CityNotesPanel({ city, onClose, onOpenPromoter }: Props)
 
       <div className="flex-1 overflow-y-auto thin-scroll p-4 space-y-5 text-sm">
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">
+          <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">
             In conversation with
           </div>
           <div className="flex flex-wrap gap-1.5 mb-2">
@@ -131,7 +131,7 @@ export default function CityNotesPanel({ city, onClose, onOpenPromoter }: Props)
               );
             })}
             {promoterIds.length === 0 && (
-              <span className="text-xs text-gray-400 italic">No promoters added yet.</span>
+              <span className="text-xs text-gray-600 italic">No promoters added yet.</span>
             )}
           </div>
           <div className="relative">
@@ -165,7 +165,7 @@ export default function CityNotesPanel({ city, onClose, onOpenPromoter }: Props)
         </div>
 
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">Notes</div>
+          <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">Notes</div>
           <textarea
             value={notesDraft}
             onChange={(e) => setNotesDraft(e.target.value)}
@@ -175,15 +175,15 @@ export default function CityNotesPanel({ city, onClose, onOpenPromoter }: Props)
             className="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--undivide)]/30 resize-y"
           />
           {row?.updated_by && (
-            <div className="text-[11px] text-gray-400 mt-1">
+            <div className="text-[11px] text-gray-600 mt-1">
               Last edited by {updaterName(row.updated_by)} · {timeAgo(row.updated_at)}
             </div>
           )}
         </div>
 
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">Update log</div>
-          {logs.length === 0 && <div className="text-xs text-gray-400 italic">No updates yet.</div>}
+          <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">Update log</div>
+          {logs.length === 0 && <div className="text-xs text-gray-600 italic">No updates yet.</div>}
           <div className="space-y-1.5">
             {(showAllLogs ? logs : logs.slice(0, 10)).map((l) => {
               let text = '';
@@ -205,7 +205,7 @@ export default function CityNotesPanel({ city, onClose, onOpenPromoter }: Props)
                     {updaterInitial(l.changed_by)}
                   </span>
                   <span className="flex-1">
-                    {text} <span className="text-gray-400">— {timeAgo(l.changed_at)}</span>
+                    {text} <span className="text-gray-600">— {timeAgo(l.changed_at)}</span>
                   </span>
                 </div>
               );

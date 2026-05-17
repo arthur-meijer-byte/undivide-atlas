@@ -230,7 +230,7 @@ export default function BookingModal() {
                         </li>
                       ))}
                       {cityQuery.trim() && !citySuggestions.some((c) => c.name.toLowerCase() === cityQuery.trim().toLowerCase()) && (
-                        <li className="border-t border-gray-100">
+                        <li className="border-t border-gray-200">
                           <button
                             type="button"
                             onMouseDown={(e) => { e.preventDefault(); if (cityBlurTimer.current) clearTimeout(cityBlurTimer.current); pickCity(cityQuery.trim()); }}
@@ -329,9 +329,9 @@ export default function BookingModal() {
                         </li>
                       ))}
                       {promoterSuggestions.length === 0 && (
-                        <li className="px-3 py-1.5 text-xs text-gray-400 italic">No matches</li>
+                        <li className="px-3 py-1.5 text-xs text-gray-600 italic">No matches</li>
                       )}
-                      <li className="border-t border-gray-100">
+                      <li className="border-t border-gray-200">
                         <button
                           type="button"
                           onMouseDown={(e) => { e.preventDefault(); toast.message('Open a city panel to add a new promoter to its roster.'); setPromOpen(false); }}
@@ -438,7 +438,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="text-[11px] uppercase tracking-wider text-gray-400 font-bold mb-2 border-b border-gray-100 pb-1">{title}</div>
+      <div className="text-[11px] uppercase tracking-wider text-gray-600 font-bold mb-2 border-b border-gray-200 pb-1">{title}</div>
       {children}
     </div>
   );

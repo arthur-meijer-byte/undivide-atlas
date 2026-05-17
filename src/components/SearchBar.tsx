@@ -68,50 +68,50 @@ export default function SearchBar() {
         <div className="mt-2 bg-white rounded-lg shadow-[var(--shadow-panel)] max-h-[360px] overflow-y-auto thin-scroll text-sm">
           {results.cities.length > 0 && (
             <div>
-              <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-gray-400">Cities</div>
+              <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-gray-600">Cities</div>
               {results.cities.map((c) => (
                 <button key={c.id} onClick={() => pick(c.id)}
                   className="w-full flex justify-between px-3 py-2 hover:bg-gray-50 text-left">
-                  <span>{c.name}</span><span className="text-gray-400">{c.country}</span>
+                  <span>{c.name}</span><span className="text-gray-600">{c.country}</span>
                 </button>
               ))}
             </div>
           )}
           {results.promoters.length > 0 && (
             <div>
-              <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-gray-400">Promoters</div>
+              <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-gray-600">Promoters</div>
               {results.promoters.map((p, i) => (
                 <button key={i} onClick={() => pick(p.city.id)}
                   className="w-full flex justify-between px-3 py-2 hover:bg-gray-50 text-left">
-                  <span>{p.name}</span><span className="text-gray-400">{p.city.name}</span>
+                  <span>{p.name}</span><span className="text-gray-600">{p.city.name}</span>
                 </button>
               ))}
             </div>
           )}
           {results.artists.length > 0 && (
             <div>
-              <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-gray-400">Artists</div>
+              <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-gray-600">Artists</div>
               {results.artists.map((a, i) => (
                 <button key={i} onClick={() => pick(a.city.id)}
                   className="w-full flex justify-between px-3 py-2 hover:bg-gray-50 text-left">
-                  <span>{a.name}</span><span className="text-gray-400">{a.city.name}</span>
+                  <span>{a.name}</span><span className="text-gray-600">{a.city.name}</span>
                 </button>
               ))}
             </div>
           )}
           {results.venues.length > 0 && (
             <div>
-              <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-gray-400">Venues</div>
+              <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-gray-600">Venues</div>
               {results.venues.map((v, i) => (
                 <button key={i} onClick={() => pick(v.city.id)}
                   className="w-full flex justify-between px-3 py-2 hover:bg-gray-50 text-left">
-                  <span>{v.name}</span><span className="text-gray-400">{v.city.name}</span>
+                  <span>{v.name}</span><span className="text-gray-600">{v.city.name}</span>
                 </button>
               ))}
             </div>
           )}
           {results.cities.length + results.promoters.length + results.artists.length + results.venues.length === 0 && (
-            <div className="px-3 py-4 text-gray-400 text-center">No results</div>
+            <div className="px-3 py-4 text-gray-600 text-center">No results</div>
           )}
         </div>
       )}

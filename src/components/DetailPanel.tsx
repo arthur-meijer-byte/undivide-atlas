@@ -93,7 +93,7 @@ export default function DetailPanel() {
           return (
             <button
               onClick={() => openNotes(city.id)}
-              className="mt-3 w-full flex items-center gap-1.5 text-left text-[12px] text-white/70 hover:text-white/95 transition-colors"
+              className="mt-3 w-full flex items-center gap-1.5 text-left text-[12px] text-white/90 hover:text-white/95 transition-colors"
               title="Open city notes"
             >
               <span className={`w-2 h-2 rounded-full ${meta.dot} shrink-0`} />
@@ -461,7 +461,7 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-start justify-between gap-2 p-4 border-b border-gray-100">
+        <div className="flex items-start justify-between gap-2 p-4 border-b border-gray-200">
           <h3 className="font-bold text-base">{title}</h3>
           <button onClick={onClose} className="text-gray-600 hover:text-gray-700 text-2xl leading-none">×</button>
         </div>
@@ -508,7 +508,7 @@ function StatPop({ v, l, title, body }: { v: string; l: string; title: string; b
 
 function KV({ k, v }: { k: string; v: string | number }) {
   return (
-    <div className="flex justify-between text-xs py-1 border-b border-gray-100">
+    <div className="flex justify-between text-xs py-1 border-b border-gray-200">
       <span className="text-gray-500">{k}</span>
       <span className="font-semibold">{v}</span>
     </div>

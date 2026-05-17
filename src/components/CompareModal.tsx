@@ -65,11 +65,11 @@ export default function CompareModal() {
                     aWin = va > vb; bWin = vb > va;
                   }
                   return (
-                    <tr key={r.key} className="border-b border-gray-100">
+                    <tr key={r.key} className="border-b border-gray-200">
                       <td className={`px-5 py-3 text-right w-1/3 ${aWin ? 'bg-emerald-50 text-emerald-700 font-semibold' : ''}`}>
                         {String(va)}
                       </td>
-                      <td className="px-3 py-3 text-center text-xs text-gray-400 uppercase tracking-wider">{r.label}</td>
+                      <td className="px-3 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">{r.label}</td>
                       <td className={`px-5 py-3 w-1/3 ${bWin ? 'bg-emerald-50 text-emerald-700 font-semibold' : ''}`}>
                         {String(vb)}
                       </td>
@@ -79,7 +79,7 @@ export default function CompareModal() {
               </tbody>
             </table>
           ) : (
-            <div className="p-8 text-center text-gray-400 text-sm">Pick two cities to compare</div>
+            <div className="p-8 text-center text-gray-600 text-sm">Pick two cities to compare</div>
           )}
         </div>
       </div>

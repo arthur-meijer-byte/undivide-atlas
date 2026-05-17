@@ -14,10 +14,10 @@ export default function BookingsButton() {
           <div className="bg-white rounded-lg shadow-[var(--shadow-panel)] w-[320px] max-h-[60vh] overflow-y-auto thin-scroll">
             <div className="p-3 border-b border-gray-200 flex justify-between items-center">
               <div className="font-semibold text-sm">Booked shows ({bookings.length})</div>
-              <button onClick={() => setListOpen(false)} className="text-gray-400 hover:text-gray-700">×</button>
+              <button onClick={() => setListOpen(false)} className="text-gray-600 hover:text-gray-700">×</button>
             </div>
             {bookings.length === 0 ? (
-              <div className="p-6 text-center text-gray-400 text-sm">No shows booked yet.</div>
+              <div className="p-6 text-center text-gray-600 text-sm">No shows booked yet.</div>
             ) : (
               <div className="divide-y divide-gray-100">
                 {bookings
