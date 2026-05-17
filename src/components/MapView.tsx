@@ -147,11 +147,21 @@ function BookingPin({ lat, lng, onClick, label, zoom }: { lat: number; lng: numb
 }
 
 export default function MapView() {
-  const { activeBrands, selectedYear, setCity, setHover, mapTransform, setTransform } = useMapState();
+  const { activeBrands, selectedYear, setCity, setHover, mapTransform, setTransform, spotifyReachOn, setSpotifyReach } = useMapState();
   const openBookingModal = useBookings((s) => s.openModal);
   const bookings = useBookings((s) => s.bookings);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 1200, h: 800 });
+  const fetchReach = useServerFn(getAllRosterReach);
+  const { data: reachData } = useQuery({
+    queryKey: ['all-roster-reach'],
+    queryFn: () => fetchReach({}),
+    enabled: spotifyReachOn,
+    staleTime: 60 * 60 * 1000,
+  });
+  const reachMax = reachData
+    ? Math.max(1, ...Object.values(reachData.byCity).map((v) => v.total))
+    : 1;
 
   useEffect(() => {
     const update = () => {
