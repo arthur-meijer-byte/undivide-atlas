@@ -556,7 +556,12 @@ export const getCityMarketData = createServerFn({ method: 'POST' })
     }
     if (!youtubeRaw) {
       try {
-        youtubeRaw = await youtubeTopForRegion(market);
+        // Pre-rank Spotify artists by marketScore alone to feed YouTube query #3.
+        const preTopNames = [...spotifyRaw.artists]
+          .sort((a, b) => b.marketScore - a.marketScore)
+          .slice(0, 5)
+          .map((a) => a.name);
+        youtubeRaw = await youtubeTopForRegion(market, preTopNames);
         await putCached(data.cityId, market, 'youtube_top', youtubeRaw);
       } catch (e) {
         errors.youtube = (e as Error).message;
