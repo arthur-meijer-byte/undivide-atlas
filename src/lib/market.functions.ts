@@ -168,7 +168,7 @@ async function getCached<T>(cityId: string, kind: 'spotify_top' | 'youtube_top' 
 
 async function putCached(cityId: string, countryCode: string, kind: 'spotify_top' | 'youtube_top' | 'roster_reach', payload: unknown) {
   await supabaseAdmin.from('market_cache').upsert(
-    { city_id: cityId, country_code: countryCode, kind, payload, fetched_at: new Date().toISOString() },
+    { city_id: cityId, country_code: countryCode, kind, payload: payload as never, fetched_at: new Date().toISOString() },
     { onConflict: 'city_id,kind' },
   );
 }
