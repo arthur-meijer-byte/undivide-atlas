@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup, Graticule } from 'react-simple-maps';
+import { useServerFn } from '@tanstack/react-start';
+import { useQuery } from '@tanstack/react-query';
 import { CITIES, STATUS_COLORS, type City } from '../data/cities';
 import { useMapState } from '../hooks/useMapState';
 import { useBookings } from '../hooks/useBookings';
+import { getAllRosterReach } from '@/lib/market.functions';
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
@@ -53,22 +56,26 @@ function usePinClick(onClick: () => void) {
   };
 }
 
-interface PinProps { city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; zoom: number; }
-function Pin({ city, onClick, onHover, zoom }: PinProps) {
-  const color = STATUS_COLORS[city.status];
-  // Heat intensity from largest venue capacity — Snapchat heatmap style.
+interface PinProps {
+  city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; zoom: number;
+  reach?: number; reachMax?: number; spotifyMode?: boolean;
+}
+function Pin({ city, onClick, onHover, zoom, reach, reachMax, spotifyMode }: PinProps) {
+  const baseColor = STATUS_COLORS[city.status];
   const maxCap = city.clubs.reduce((m, c) => Math.max(m, c.capacity), 0);
-  // Heat tier: bigger crowds = bigger softer blob
-  const heat = maxCap >= 6000 ? 1.8
-    : maxCap >= 3000 ? 1.45
-    : maxCap >= 1500 ? 1.2
-    : maxCap >= 800 ? 1.0
-    : maxCap >= 200 ? 0.82
-    : 0.7;
-  const undivideBoost = city.status === 'undivide' ? 1.15 : 1;
-  // Blobs stay roughly constant on screen but grow slightly on zoom-out for that cluster feel.
+  const heat = maxCap >= 6000 ? 1.8 : maxCap >= 3000 ? 1.45 : maxCap >= 1500 ? 1.2 : maxCap >= 800 ? 1.0 : maxCap >= 200 ? 0.82 : 0.7;
+  let color = baseColor;
+  let sizeMult = heat;
+  if (spotifyMode) {
+    const r = reach ?? 0;
+    const max = reachMax || 1;
+    const t = Math.min(1, Math.log10(1 + r) / Math.log10(1 + max));
+    sizeMult = 0.6 + t * 1.8;
+    color = t < 0.05 ? '#9ca3af' : t < 0.35 ? '#3b82f6' : t < 0.7 ? '#10b981' : '#ef4444';
+  }
+  const undivideBoost = !spotifyMode && city.status === 'undivide' ? 1.15 : 1;
   const z = Math.max(zoom, 0.35);
-  const s = (heat * undivideBoost) / Math.pow(z, 0.7);
+  const s = (sizeMult * undivideBoost) / Math.pow(z, 0.7);
   const handlers = usePinClick(onClick);
 
   // Unique gradient id per city
@@ -140,11 +147,21 @@ function BookingPin({ lat, lng, onClick, label, zoom }: { lat: number; lng: numb
 }
 
 export default function MapView() {
-  const { activeBrands, selectedYear, setCity, setHover, mapTransform, setTransform } = useMapState();
+  const { activeBrands, selectedYear, setCity, setHover, mapTransform, setTransform, spotifyReachOn, setSpotifyReach } = useMapState();
   const openBookingModal = useBookings((s) => s.openModal);
   const bookings = useBookings((s) => s.bookings);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 1200, h: 800 });
+  const fetchReach = useServerFn(getAllRosterReach);
+  const { data: reachData } = useQuery({
+    queryKey: ['all-roster-reach'],
+    queryFn: () => fetchReach({}),
+    enabled: spotifyReachOn,
+    staleTime: 60 * 60 * 1000,
+  });
+  const reachMax = reachData
+    ? Math.max(1, ...Object.values(reachData.byCity).map((v) => v.total))
+    : 1;
 
   useEffect(() => {
     const update = () => {
@@ -165,6 +182,17 @@ export default function MapView() {
 
   return (
     <div ref={wrapRef} className="absolute inset-0 bg-map-ocean">
+      <button
+        onClick={() => setSpotifyReach(!spotifyReachOn)}
+        className={`absolute top-3 right-3 z-20 text-xs font-semibold px-3 py-1.5 rounded-full shadow-md transition-colors ${
+          spotifyReachOn
+            ? 'bg-[#1DB954] text-white'
+            : 'bg-white text-gray-700 hover:bg-gray-50'
+        }`}
+        title="Toggle Spotify reach heatmap (roster followers per market)"
+      >
+        {spotifyReachOn ? '● Spotify reach' : '○ Spotify reach'}
+      </button>
       <ComposableMap
         projection="geoNaturalEarth1"
         width={size.w}
@@ -220,6 +248,9 @@ export default function MapView() {
               zoom={mapTransform.scale}
               onClick={() => setCity(city)}
               onHover={(p) => setHover(p ? { city, x: p.x, y: p.y } : null)}
+              spotifyMode={spotifyReachOn}
+              reach={reachData?.byCity[city.id]?.total ?? 0}
+              reachMax={reachMax}
             />
           ))}
           {visibleBookings.map((b) => (

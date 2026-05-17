@@ -9,6 +9,7 @@ interface MapState {
   activeBrands: BrandFilter[];
   selectedYear: number | null;
   heatmapOn: boolean;
+  spotifyReachOn: boolean;
   currentCity: City | null;
   currentTab: number;
   compareOpen: boolean;
@@ -20,6 +21,7 @@ interface MapState {
   clearBrands: () => void;
   setYear: (y: number | null) => void;
   setHeatmap: (b: boolean) => void;
+  setSpotifyReach: (b: boolean) => void;
   setCity: (c: City | null) => void;
   setTab: (n: number) => void;
   openCompare: (a?: string, b?: string) => void;
@@ -35,6 +37,7 @@ export const useMapState = create<MapState>((set) => ({
   activeBrands: [],
   selectedYear: null,
   heatmapOn: false,
+  spotifyReachOn: false,
   currentCity: null,
   currentTab: 0,
   compareOpen: false,
@@ -51,6 +54,7 @@ export const useMapState = create<MapState>((set) => ({
   clearBrands: () => set({ activeBrands: [] }),
   setYear: (y) => set({ selectedYear: y }),
   setHeatmap: (b) => set({ heatmapOn: b }),
+  setSpotifyReach: (b) => set({ spotifyReachOn: b }),
   setCity: (c) => set({ currentCity: c, currentTab: 0, hoverCity: null }),
   setTab: (n) => set({ currentTab: n }),
   openCompare: (a, b) => set((s) => ({
