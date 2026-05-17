@@ -91,6 +91,7 @@ export default function TopNav() {
       </div>
 
       <div className="mx-1 h-6 w-px bg-border" />
+      <ActivityFeed />
       <ThemeToggleMini />
       <UserMenu />
     </div>
