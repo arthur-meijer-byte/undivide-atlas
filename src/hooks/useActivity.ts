@@ -13,9 +13,10 @@ export type ActivityAction =
   | 'logged email'
   | 'logged whatsapp'
   | 'logged meeting'
-  | 'logged note';
+  | 'logged note'
+  | 'updated city';
 
-export type ActivityTarget = 'show' | 'promoter';
+export type ActivityTarget = 'show' | 'promoter' | 'city';
 
 export interface ActivityEntry {
   id: string;

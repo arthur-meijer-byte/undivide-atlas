@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMapState } from '../hooks/useMapState';
 import { STATUS_LABEL, SCENE_LABEL, type City } from '../data/cities';
 import { useBookings } from '../hooks/useBookings';
 import PromoterModal from './PromoterModal';
 import { usePromoterStore, BRAND_META, STATUS_META, ALL_BRANDS } from '../hooks/usePromoterStore';
+import CityNotesPanel from './CityNotesPanel';
+import { useCityStatus, STATUS_META as CITY_STATUS_META, timeAgo as cityTimeAgo } from '../hooks/useCityStatus';
+import { useUser } from '../hooks/useUser';
 
 const TYPE_BADGE = {
   undivide: 'bg-[var(--undivide)] text-white',
@@ -33,6 +36,15 @@ export default function DetailPanel() {
   const [showPromoters, setShowPromoters] = useState(false);
   const [contactPromoter, setContactPromoter] = useState<string | null>(null);
 
+  const initCityStatus = useCityStatus((s) => s.init);
+  const cityRow = useCityStatus((s) => (currentCity ? s.byCity[currentCity.id] : undefined));
+  const notesPanelCityId = useCityStatus((s) => s.notesPanelCityId);
+  const openNotes = useCityStatus((s) => s.openNotes);
+  const closeNotes = useCityStatus((s) => s.closeNotes);
+  const profile = useUser((s) => s.profile);
+  const otherProfile = useUser((s) => s.otherProfile);
+  useEffect(() => { void initCityStatus(); }, [initCityStatus]);
+
   if (!currentCity) return null;
   const city = currentCity;
   const cityBookings = bookings.filter(
@@ -45,6 +57,7 @@ export default function DetailPanel() {
   const contactP = contactPromoter ? city.promoters.find((p) => p.name === contactPromoter) : null;
 
   return (
+    <>
     <div
       key={city.id}
       className="panel-slide-in absolute top-0 left-0 bottom-0 z-30 w-[400px] bg-white shadow-[var(--shadow-panel)] flex flex-col"
@@ -68,6 +81,36 @@ export default function DetailPanel() {
         <p className="mt-3 text-[11px] leading-relaxed opacity-90 line-clamp-3">
           {city.market.scene_notes}
         </p>
+        {(() => {
+          const s = (cityRow?.status ?? 'green') as keyof typeof CITY_STATUS_META;
+          const meta = CITY_STATUS_META[s];
+          const updaterId = cityRow?.updated_by;
+          const updater = updaterId
+            ? [profile, otherProfile].find((p) => p?.id === updaterId)?.initial ?? '—'
+            : null;
+          return (
+            <button
+              onClick={() => openNotes(city.id)}
+              className="mt-3 w-full flex items-center gap-1.5 text-left text-[12px] text-white/70 hover:text-white/95 transition-colors"
+              title="Open city notes"
+            >
+              <span className={`w-2 h-2 rounded-full ${meta.dot} shrink-0`} />
+              <span className="font-medium">{meta.label}</span>
+              {cityRow && (
+                <>
+                  <span className="opacity-70">·</span>
+                  <span className="opacity-80">Last update: {cityTimeAgo(cityRow.updated_at)}</span>
+                  {updater && (
+                    <>
+                      <span className="opacity-70">·</span>
+                      <span className="opacity-80">{updater}</span>
+                    </>
+                  )}
+                </>
+              )}
+            </button>
+          );
+        })()}
       </div>
 
       <div className="p-3 border-b border-gray-200">
@@ -374,6 +417,19 @@ export default function DetailPanel() {
         />
       )}
     </div>
+    {notesPanelCityId === city.id && (
+      <CityNotesPanel
+        city={city}
+        onClose={closeNotes}
+        onOpenPromoter={(pid) => {
+          // open promoter modal via name lookup (city.promoters uses name as key)
+          // fallback: ignore if not present in this city
+          const p = city.promoters.find((cp) => cp.name === pid);
+          if (p) setContactPromoter(p.name);
+        }}
+      />
+    )}
+    </>
   );
 }
 
