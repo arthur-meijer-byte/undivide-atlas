@@ -413,12 +413,12 @@ export default function DetailPanel() {
                 }}
                 className="w-full flex items-center gap-3 bg-gray-50 hover:bg-gray-100 rounded-lg p-2.5 text-left transition-colors"
               >
-                <div className="w-9 h-9 rounded-full bg-[var(--undivide)]/15 text-[var(--undivide)] flex items-center justify-center font-bold text-sm">
-                  {p.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
+                <div className="w-9 h-9 rounded-full bg-[var(--undivide)]/15 text-[var(--undivide)] flex items-center justify-center font-bold text-sm shrink-0">
+                  {(p.name.replace(/[^A-Za-z]+/g, ' ').trim().split(/\s+/).map((w) => w[0]).join('').slice(0, 2) || p.name.slice(0, 2)).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-sm truncate">{p.name}</div>
-                  <div className="text-xs text-gray-500">{p.events} events/yr · {p.dominant_genre}</div>
+                  <div className="font-semibold text-sm truncate text-gray-900">{p.name}</div>
+                  <div className="text-xs text-gray-700">{p.events} events/yr · {p.dominant_genre}</div>
                 </div>
                 <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${TYPE_BADGE[p.type]}`}>{p.type}</span>
               </button>
@@ -460,9 +460,9 @@ export default function DetailPanel() {
 function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white text-gray-900 rounded-xl shadow-xl max-w-md w-full max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between gap-2 p-4 border-b border-gray-200">
-          <h3 className="font-bold text-base">{title}</h3>
+          <h3 className="font-bold text-base text-gray-900">{title}</h3>
           <button onClick={onClose} className="text-gray-600 hover:text-gray-700 text-2xl leading-none">×</button>
         </div>
         <div className="p-4 overflow-y-auto thin-scroll">{children}</div>
