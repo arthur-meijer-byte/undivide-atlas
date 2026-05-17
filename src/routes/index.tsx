@@ -10,6 +10,7 @@ import BookingModal from '../components/BookingModal';
 import BookingsButton from '../components/BookingsButton';
 import ThemeToggle from '../components/ThemeToggle';
 import AgendaPanel, { AgendaButton } from '../components/AgendaPanel';
+import UploadEventsButton from '../components/UploadEventsButton';
 import { useApplyTheme } from '../hooks/useTheme';
 
 export const Route = createFileRoute('/')({
@@ -28,6 +29,7 @@ function Index() {
     <main className="fixed inset-0 overflow-hidden font-sans bg-background text-foreground" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       <h1 className="sr-only">Undivide Territory Intelligence</h1>
       <div className="absolute top-4 right-[200px] z-30 flex items-center gap-2">
+        <UploadEventsButton />
         <AgendaButton />
         <ThemeToggle />
       </div>
