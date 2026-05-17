@@ -192,7 +192,6 @@ export interface CityMarketData {
 }
 
 export const getCityMarketData = createServerFn({ method: 'POST' })
-  .middleware([requireSupabaseAuth])
   .inputValidator((data: { cityId: string; country: string; force?: boolean }) =>
     z.object({ cityId: z.string().min(1), country: z.string().min(1), force: z.boolean().optional() }).parse(data),
   )
