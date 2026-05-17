@@ -182,6 +182,17 @@ export default function MapView() {
 
   return (
     <div ref={wrapRef} className="absolute inset-0 bg-map-ocean">
+      <button
+        onClick={() => setSpotifyReach(!spotifyReachOn)}
+        className={`absolute top-3 right-3 z-20 text-xs font-semibold px-3 py-1.5 rounded-full shadow-md transition-colors ${
+          spotifyReachOn
+            ? 'bg-[#1DB954] text-white'
+            : 'bg-white text-gray-700 hover:bg-gray-50'
+        }`}
+        title="Toggle Spotify reach heatmap (roster followers per market)"
+      >
+        {spotifyReachOn ? '● Spotify reach' : '○ Spotify reach'}
+      </button>
       <ComposableMap
         projection="geoNaturalEarth1"
         width={size.w}
