@@ -76,7 +76,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
             <div className="flex items-center gap-1.5 mb-2">
               <SpotifyIcon className="w-3.5 h-3.5" />
               <div className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold">
-                Spotify Top 10 in {data.countryCode}
+                Top 10 in {city.name} — composite city score
               </div>
             </div>
             {data.errors.spotify ? (
@@ -110,8 +110,14 @@ export default function PanelTopArtists({ city }: { city: City }) {
                           </span>
                         )}
                       </div>
+                      <div className="text-[10px] text-gray-600 truncate">
+                        <span className="font-semibold text-gray-800">Score {a.cityScore}</span>
+                        {' · '}Spotify {Math.round(a.marketScore)}
+                        {' · '}YT {a.ytMentions}
+                        {' · '}Events {a.eventMentions}
+                      </div>
                       <div className="text-[10px] text-gray-400">
-                        {fmt(a.followers)} Spotify followers · pop {a.popularity}
+                        {fmt(a.followers)} followers · global pop {a.popularity}
                       </div>
                     </div>
                     <SpotifyIcon className="w-3 h-3 opacity-60" />
@@ -120,8 +126,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
               </div>
             )}
             <p className="text-[10px] text-gray-400 mt-2 leading-snug">
-              Spotify API exposes popularity (0–100) and total followers — monthly listeners is
-              not publicly available. Followers shown as the strongest available proxy.
+              City score = 55% Spotify per-market top-track popularity + 25% YouTube regional mentions + 20% line-up appearances in this city.
             </p>
           </div>
 
