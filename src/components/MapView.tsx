@@ -56,22 +56,26 @@ function usePinClick(onClick: () => void) {
   };
 }
 
-interface PinProps { city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; zoom: number; }
-function Pin({ city, onClick, onHover, zoom }: PinProps) {
-  const color = STATUS_COLORS[city.status];
-  // Heat intensity from largest venue capacity — Snapchat heatmap style.
+interface PinProps {
+  city: City; onClick: () => void; onHover: (e: { x: number; y: number } | null) => void; zoom: number;
+  reach?: number; reachMax?: number; spotifyMode?: boolean;
+}
+function Pin({ city, onClick, onHover, zoom, reach, reachMax, spotifyMode }: PinProps) {
+  const baseColor = STATUS_COLORS[city.status];
   const maxCap = city.clubs.reduce((m, c) => Math.max(m, c.capacity), 0);
-  // Heat tier: bigger crowds = bigger softer blob
-  const heat = maxCap >= 6000 ? 1.8
-    : maxCap >= 3000 ? 1.45
-    : maxCap >= 1500 ? 1.2
-    : maxCap >= 800 ? 1.0
-    : maxCap >= 200 ? 0.82
-    : 0.7;
-  const undivideBoost = city.status === 'undivide' ? 1.15 : 1;
-  // Blobs stay roughly constant on screen but grow slightly on zoom-out for that cluster feel.
+  const heat = maxCap >= 6000 ? 1.8 : maxCap >= 3000 ? 1.45 : maxCap >= 1500 ? 1.2 : maxCap >= 800 ? 1.0 : maxCap >= 200 ? 0.82 : 0.7;
+  let color = baseColor;
+  let sizeMult = heat;
+  if (spotifyMode) {
+    const r = reach ?? 0;
+    const max = reachMax || 1;
+    const t = Math.min(1, Math.log10(1 + r) / Math.log10(1 + max));
+    sizeMult = 0.6 + t * 1.8;
+    color = t < 0.05 ? '#9ca3af' : t < 0.35 ? '#3b82f6' : t < 0.7 ? '#10b981' : '#ef4444';
+  }
+  const undivideBoost = !spotifyMode && city.status === 'undivide' ? 1.15 : 1;
   const z = Math.max(zoom, 0.35);
-  const s = (heat * undivideBoost) / Math.pow(z, 0.7);
+  const s = (sizeMult * undivideBoost) / Math.pow(z, 0.7);
   const handlers = usePinClick(onClick);
 
   // Unique gradient id per city
