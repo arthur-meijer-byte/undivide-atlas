@@ -198,16 +198,16 @@ function InfoTab({
         <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">Socials</div>
         <div className="flex flex-wrap gap-2">
           {merged.ig && (
-            <a href={igUrl(merged.ig)} target="_blank" rel="noreferrer" className="bg-pink-50 text-pink-700 hover:bg-pink-100 px-2.5 py-1 rounded-full text-xs">IG @{merged.ig.replace(/^@/, '')}</a>
+            <a href={igUrl(merged.ig)} target="_blank" rel="noopener noreferrer" className="bg-pink-50 text-pink-700 hover:bg-pink-100 px-2.5 py-1 rounded-full text-xs">IG @{merged.ig.replace(/^@/, '')}</a>
           )}
           {merged.fb && (
-            <a href={fbUrl(merged.fb)} target="_blank" rel="noreferrer" className="bg-blue-50 text-blue-700 hover:bg-blue-100 px-2.5 py-1 rounded-full text-xs">FB {merged.fb}</a>
+            <a href={fbUrl(merged.fb)} target="_blank" rel="noopener noreferrer" className="bg-blue-50 text-blue-700 hover:bg-blue-100 px-2.5 py-1 rounded-full text-xs">FB {merged.fb}</a>
           )}
           {merged.yt && (
-            <a href={ytUrl(merged.yt)} target="_blank" rel="noreferrer" className="bg-red-50 text-red-700 hover:bg-red-100 px-2.5 py-1 rounded-full text-xs">YT {merged.yt}</a>
+            <a href={ytUrl(merged.yt)} target="_blank" rel="noopener noreferrer" className="bg-red-50 text-red-700 hover:bg-red-100 px-2.5 py-1 rounded-full text-xs">YT {merged.yt}</a>
           )}
           {merged.website && (
-            <a href={merged.website.startsWith('http') ? merged.website : `https://${merged.website}`} target="_blank" rel="noreferrer" className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-2.5 py-1 rounded-full text-xs">🌐 Website</a>
+            <a href={merged.website.startsWith('http') ? merged.website : `https://${merged.website}`} target="_blank" rel="noopener noreferrer" className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-2.5 py-1 rounded-full text-xs">🌐 Website</a>
           )}
           {!merged.ig && !merged.fb && !merged.yt && !merged.website && (
             <span className="text-xs text-gray-400 italic">None on file</span>

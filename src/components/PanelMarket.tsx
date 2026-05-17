@@ -80,7 +80,7 @@ export default function PanelMarket({ city }: { city: City }) {
                 </div>
                 <div className="text-[11px] text-gray-500 mt-0.5">{c.genre_focus}</div>
                 {c.ig && (
-                  <a href={`https://instagram.com/${c.ig}`} target="_blank" rel="noreferrer"
+                  <a href={`https://instagram.com/${c.ig}`} target="_blank" rel="noopener noreferrer"
                     className="text-[11px] text-pink-600 hover:underline">@{c.ig}</a>
                 )}
               </div>
