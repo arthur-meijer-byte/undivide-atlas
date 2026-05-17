@@ -267,7 +267,6 @@ export interface RosterReachAll {
 }
 
 export const getAllRosterReach = createServerFn({ method: 'POST' })
-  .middleware([requireSupabaseAuth])
   .handler(async (): Promise<RosterReachAll> => {
     const { data: rows } = await supabaseAdmin
       .from('market_cache')
