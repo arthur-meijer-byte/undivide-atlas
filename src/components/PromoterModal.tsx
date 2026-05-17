@@ -52,7 +52,7 @@ export default function PromoterModal({ city, promoter, onClose, onViewHistory }
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-4 border-b border-gray-100">
+        <div className="p-4 border-b border-gray-200">
           <div className="flex items-start justify-between gap-2">
             <div>
               <h3 className="font-bold text-base">{promoter.name}</h3>
@@ -69,7 +69,7 @@ export default function PromoterModal({ city, promoter, onClose, onViewHistory }
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-gray-100 px-2">
+        <div className="flex border-b border-gray-200 px-2">
           {([
             ['info', 'Info & contact'],
             ['status', 'Undivide status'],
@@ -406,7 +406,7 @@ function StatusTab({ city, promoter }: { city: City; promoter: Promoter }) {
         ) : (
           <ul className="space-y-1.5">
             {activity.slice(0, 20).map((a) => (
-              <li key={a.id} className="bg-white border border-gray-100 rounded-lg p-2 text-xs">
+              <li key={a.id} className="bg-white border border-gray-200 rounded-lg p-2 text-xs">
                 <div className="flex items-center gap-2 mb-0.5">
                   <span className={`text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full font-semibold ${BRAND_META[a.brand].color}`}>
                     {BRAND_META[a.brand].label}

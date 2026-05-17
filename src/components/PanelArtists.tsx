@@ -36,10 +36,10 @@ export default function PanelArtists({ city }: { city: City }) {
     <div className="p-4 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">
+          <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold">
             Top 10 in {city.name}
           </div>
-          <div className="text-[10px] text-gray-400 mt-0.5">
+          <div className="text-[10px] text-gray-600 mt-0.5">
             Spotify popularity · followers · YouTube subs · subgenre match
           </div>
         </div>
@@ -54,11 +54,11 @@ export default function PanelArtists({ city }: { city: City }) {
         </button>
       </div>
 
-      {isLoading && <div className="text-xs text-gray-400">Loading…</div>}
+      {isLoading && <div className="text-xs text-gray-600">Loading…</div>}
       {error && <div className="text-xs text-red-500">{(error as Error).message}</div>}
 
       {data && data.length === 0 && (
-        <div className="text-xs text-gray-400">
+        <div className="text-xs text-gray-600">
           No artists tagged for this region yet. Hit Refresh to populate stats, or add seed artists.
         </div>
       )}
@@ -71,17 +71,17 @@ export default function PanelArtists({ city }: { city: City }) {
               className="flex items-center justify-between gap-2 px-2.5 py-2 rounded-md hover:bg-gray-50"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="text-[10px] tabular-nums text-gray-400 w-4">{a.rank}</div>
+                <div className="text-[10px] tabular-nums text-gray-600 w-4">{a.rank}</div>
                 <div className="min-w-0">
                   <div className="text-xs font-medium truncate flex items-center gap-1.5">
                     {a.name}
                     {!a.active && (
-                      <span className="text-[9px] uppercase text-gray-400 border border-gray-200 px-1 rounded">
+                      <span className="text-[9px] uppercase text-gray-600 border border-gray-200 px-1 rounded">
                         inactive
                       </span>
                     )}
                   </div>
-                  <div className="text-[10px] text-gray-400">
+                  <div className="text-[10px] text-gray-600">
                     {a.subgenres.join(' · ') || '—'}
                   </div>
                 </div>
@@ -90,7 +90,7 @@ export default function PanelArtists({ city }: { city: City }) {
                 <div className="text-[10px] tabular-nums text-gray-700">
                   {a.share}% · pop {a.spotify_popularity ?? '—'}
                 </div>
-                <div className="text-[10px] tabular-nums text-gray-400">
+                <div className="text-[10px] tabular-nums text-gray-600">
                   SP {fmt(a.spotify_followers)} · YT {fmt(a.youtube_subs)}
                 </div>
               </div>
@@ -100,7 +100,7 @@ export default function PanelArtists({ city }: { city: City }) {
       )}
 
       {refreshMut.data && (
-        <div className="text-[10px] text-gray-400 border-t pt-2">
+        <div className="text-[10px] text-gray-600 border-t pt-2">
           Refreshed {refreshMut.data.updated}/{refreshMut.data.total}
           {refreshMut.data.errors.length > 0 && ` · ${refreshMut.data.errors.length} errors`}
         </div>
@@ -108,7 +108,7 @@ export default function PanelArtists({ city }: { city: City }) {
 
       {bookedArtists.length > 0 && (
         <div className="border-t pt-3">
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">
+          <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">
             Previously booked in city ({bookedArtists.length})
           </div>
           <div className="flex flex-wrap gap-1.5">

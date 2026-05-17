@@ -67,7 +67,7 @@ export default function PanelOverview({ city }: { city: City }) {
 
 function Row({ k, v }: { k: string; v: string | number }) {
   return (
-    <div className="flex justify-between text-xs py-1 border-b border-gray-100">
+    <div className="flex justify-between text-xs py-1 border-b border-gray-200">
       <span className="text-gray-500">{k}</span>
       <span className="font-semibold capitalize">{v}</span>
     </div>

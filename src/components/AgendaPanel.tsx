@@ -260,7 +260,7 @@ export default function AgendaPanel() {
         </div>
 
         {/* Summary bar */}
-        <div className="px-4 py-2 bg-gray-50 border-b border-gray-100 flex items-center gap-3 text-xs">
+        <div className="px-4 py-2 bg-gray-50 border-b border-gray-200 flex items-center gap-3 text-xs">
           <Stat label="Events" value={summary.count.toLocaleString()} />
           <Dot />
           <Stat label="Tickets sold" value={summary.sold.toLocaleString()} />
@@ -269,7 +269,7 @@ export default function AgendaPanel() {
         </div>
 
         {/* Search */}
-        <div className="px-4 pt-3 pb-2 border-b border-gray-100">
+        <div className="px-4 pt-3 pb-2 border-b border-gray-200">
           <input
             type="search"
             placeholder="Search event, city, venue, promoter, artist…"
@@ -280,7 +280,7 @@ export default function AgendaPanel() {
         </div>
 
         {/* Tabs + brand chips */}
-        <div className="px-4 pt-2 pb-2 border-b border-gray-100 space-y-2">
+        <div className="px-4 pt-2 pb-2 border-b border-gray-200 space-y-2">
           <div className="flex gap-1 text-xs">
             {(['upcoming', 'past', 'all'] as const).map((s) => (
               <button
@@ -423,7 +423,7 @@ function DetailModal({
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto thin-scroll" onClick={(e) => e.stopPropagation()}>
-        <div className="p-4 border-b border-gray-100 flex items-start justify-between gap-2">
+        <div className="p-4 border-b border-gray-200 flex items-start justify-between gap-2">
           <div className="flex items-start gap-2 min-w-0">
             <span className={`mt-1.5 w-2 h-2 rounded-full ${dot} shrink-0`} />
             <div className="min-w-0">
@@ -453,7 +453,7 @@ function DetailModal({
             </div>
           )}
         </div>
-        <div className="p-3 border-t border-gray-100 flex gap-2 justify-end">
+        <div className="p-3 border-t border-gray-200 flex gap-2 justify-end">
           {item.cityId && (
             <button onClick={onOpenCity} className="text-xs px-3 py-1.5 rounded-md border border-gray-200 hover:bg-gray-50">
               Open city
