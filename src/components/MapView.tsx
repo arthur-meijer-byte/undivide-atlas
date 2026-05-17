@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup, Graticule } from 'react-simple-maps';
+import { useServerFn } from '@tanstack/react-start';
+import { useQuery } from '@tanstack/react-query';
 import { CITIES, STATUS_COLORS, type City } from '../data/cities';
 import { useMapState } from '../hooks/useMapState';
 import { useBookings } from '../hooks/useBookings';
+import { getAllRosterReach } from '@/lib/market.functions';
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
