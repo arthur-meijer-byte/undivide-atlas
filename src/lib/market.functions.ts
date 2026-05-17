@@ -299,18 +299,20 @@ function passesYouTubeFilter(title: string, channel: string): boolean {
   return ARTIST_NAMES_LC.some((n) => hay.includes(n));
 }
 
-async function youtubeTopForRegion(region: string): Promise<{ videos: YouTubeVideo[]; note: string | null }> {
+async function youtubeTopForRegion(region: string): Promise<{ videos: YouTubeVideo[]; note: string | null; rawHaystack: string[] }> {
   const key = process.env.YOUTUBE_API_KEY;
   if (!key) throw new Error('YouTube key not configured');
   const after = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
-  const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=25&videoCategoryId=10&order=viewCount&regionCode=${region}&publishedAfter=${after}&q=${encodeURIComponent(YT_QUERY)}&key=${key}`;
+  const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=50&videoCategoryId=10&order=viewCount&regionCode=${region}&publishedAfter=${after}&q=${encodeURIComponent(YT_QUERY)}&key=${key}`;
   const s = await fetch(searchUrl);
   if (!s.ok) throw new Error(`YouTube search failed: ${s.status}`);
   const sj = (await s.json()) as { items?: Array<{ id: { videoId: string }; snippet: { title: string; channelTitle: string; thumbnails: { medium?: { url: string }; default?: { url: string } }; publishedAt: string } }> };
   const candidates = (sj.items ?? []).filter((it) => it.id.videoId);
   const filtered = candidates.filter((it) => passesYouTubeFilter(it.snippet.title, it.snippet.channelTitle));
+  // Use ALL filtered results for artist-mention scoring per city.
+  const rawHaystack = filtered.map((it) => `${it.snippet.title} ${it.snippet.channelTitle}`.toLowerCase());
   if (filtered.length === 0) {
-    return { videos: [], note: 'No verified DnB content found for this region in the last 12 months — this may indicate a developing market' };
+    return { videos: [], note: 'No verified DnB content found for this region in the last 12 months — this may indicate a developing market', rawHaystack: [] };
   }
   const ids = filtered.slice(0, 10).map((it) => it.id.videoId);
   const statsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${ids.join(',')}&key=${key}`;
@@ -329,7 +331,7 @@ async function youtubeTopForRegion(region: string): Promise<{ videos: YouTubeVid
   merged.sort((a, b) => b.views - a.views);
   const top = merged.slice(0, 5);
   const note = top.length < 5 ? 'Limited DnB video content found for this region' : null;
-  return { videos: top, note };
+  return { videos: top, note, rawHaystack };
 }
 
 // ───────────────────────── Cache helpers ─────────────────────────
