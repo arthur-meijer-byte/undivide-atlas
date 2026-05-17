@@ -27,14 +27,21 @@ export default function PanelTopArtists({ city }: { city: City }) {
   const qc = useQueryClient();
   const fetchMarket = useServerFn(getCityMarketData);
 
+  // Flatten all promoter line-ups + previous-event names so the server can
+  // count per-artist appearances inside THIS city's event analytics.
+  const lineups = city.promoters.flatMap((p) => [
+    ...p.lineup,
+    ...p.events_list.flatMap((e) => e.name.split(/[,&×x+/]| feat\.?| with /i).map((s) => s.trim()).filter(Boolean)),
+  ]);
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['city-market', city.id],
-    queryFn: () => fetchMarket({ data: { cityId: city.id, country: city.country } }),
+    queryFn: () => fetchMarket({ data: { cityId: city.id, country: city.country, lineups } }),
     staleTime: 60 * 60 * 1000,
   });
 
   const refreshMut = useMutation({
-    mutationFn: () => fetchMarket({ data: { cityId: city.id, country: city.country, force: true } }),
+    mutationFn: () => fetchMarket({ data: { cityId: city.id, country: city.country, force: true, lineups } }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['city-market', city.id] }),
   });
 
