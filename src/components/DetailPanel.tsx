@@ -247,11 +247,11 @@ export default function DetailPanel() {
                       className="flex items-center gap-3 flex-1 min-w-0 text-left"
                     >
                       <div className="w-9 h-9 rounded-full bg-[var(--undivide)]/15 text-[var(--undivide)] flex items-center justify-center font-bold text-sm shrink-0">
-                        {p.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
+                        {p.name.replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase()}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="font-semibold truncate">{p.name}</div>
-                        <div className="text-xs text-gray-500">{p.events} events · since {p.since}</div>
+                        <div className="font-bold truncate">{p.name}</div>
+                        <div className="text-xs text-gray-500 truncate">{city.name} · {p.events}/yr · since {p.since}</div>
                       </div>
                     </button>
                     <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${TYPE_BADGE[p.type]}`}>{p.type}</span>
