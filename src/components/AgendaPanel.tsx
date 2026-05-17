@@ -251,7 +251,7 @@ export function AgendaButton() {
   return (
     <button
       onClick={toggle}
-      className="bg-white shadow-[var(--shadow-float)] hover:bg-gray-50 px-3 py-2 rounded-full text-sm font-semibold flex items-center gap-1.5"
+      className="text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded-full flex items-center gap-1"
       title="Open agenda"
     >
       📅 <span>Agenda</span>
