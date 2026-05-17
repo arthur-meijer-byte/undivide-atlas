@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      dnb_artists: {
+        Row: {
+          active: boolean
+          id: string
+          ig_followers: number | null
+          ig_handle: string | null
+          last_release_at: string | null
+          name: string
+          regions: string[]
+          spotify_followers: number | null
+          spotify_id: string | null
+          spotify_popularity: number | null
+          subgenres: string[]
+          updated_at: string
+          youtube_channel_id: string | null
+          youtube_subs: number | null
+        }
+        Insert: {
+          active?: boolean
+          id?: string
+          ig_followers?: number | null
+          ig_handle?: string | null
+          last_release_at?: string | null
+          name: string
+          regions?: string[]
+          spotify_followers?: number | null
+          spotify_id?: string | null
+          spotify_popularity?: number | null
+          subgenres?: string[]
+          updated_at?: string
+          youtube_channel_id?: string | null
+          youtube_subs?: number | null
+        }
+        Update: {
+          active?: boolean
+          id?: string
+          ig_followers?: number | null
+          ig_handle?: string | null
+          last_release_at?: string | null
+          name?: string
+          regions?: string[]
+          spotify_followers?: number | null
+          spotify_id?: string | null
+          spotify_popularity?: number | null
+          subgenres?: string[]
+          updated_at?: string
+          youtube_channel_id?: string | null
+          youtube_subs?: number | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
