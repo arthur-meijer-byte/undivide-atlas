@@ -402,7 +402,7 @@ function SocialField({
     <Field label={<span>{icon} {label}</span>}>
       <div className="flex items-center gap-2">
         <InlineText value={value} onSave={onSave} placeholder="handle or URL" />
-        {value && <a href={hrefFn(value)} target="_blank" rel="noreferrer" className="text-xs text-blue-500 hover:underline">↗</a>}
+        {value && <a href={hrefFn(value)} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">↗</a>}
       </div>
     </Field>
   );

@@ -89,7 +89,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
                   <a
                     key={a.id}
                     href={`https://open.spotify.com/artist/${a.id}`}
-                    target="_blank" rel="noreferrer"
+                    target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-gray-50"
                   >
                     <div className="text-[10px] tabular-nums text-gray-400 w-4">{a.rank}</div>
@@ -141,7 +141,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
                   <a
                     key={a.id}
                     href={`https://open.spotify.com/artist/${a.id}`}
-                    target="_blank" rel="noreferrer"
+                    target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 px-2 py-1.5 rounded-md bg-[var(--undivide)]/5 hover:bg-[var(--undivide)]/10"
                   >
                     {a.image ? (
@@ -180,7 +180,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
                     <a
                       key={v.id}
                       href={`https://www.youtube.com/watch?v=${v.id}`}
-                      target="_blank" rel="noreferrer"
+                      target="_blank" rel="noopener noreferrer"
                       className="flex gap-2 hover:bg-gray-50 rounded-md p-1.5"
                     >
                       <img src={v.thumbnail} alt="" className="w-20 h-14 rounded object-cover shrink-0" />

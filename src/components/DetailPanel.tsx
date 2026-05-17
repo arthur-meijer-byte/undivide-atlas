@@ -275,19 +275,19 @@ export default function DetailPanel() {
                       {(p.ig || p.fb || p.yt) && (
                         <div className="flex flex-wrap gap-2">
                           {p.ig && (
-                            <a href={igUrl(p.ig)} target="_blank" rel="noreferrer"
+                            <a href={igUrl(p.ig)} target="_blank" rel="noopener noreferrer"
                               className="bg-pink-50 text-pink-700 hover:bg-pink-100 px-2.5 py-1 rounded-full">
                               IG @{p.ig}
                             </a>
                           )}
                           {p.fb && (
-                            <a href={fbUrl(p.fb)} target="_blank" rel="noreferrer"
+                            <a href={fbUrl(p.fb)} target="_blank" rel="noopener noreferrer"
                               className="bg-blue-50 text-blue-700 hover:bg-blue-100 px-2.5 py-1 rounded-full">
                               FB {p.fb}
                             </a>
                           )}
                           {p.yt && (
-                            <a href={ytUrl(p.yt)} target="_blank" rel="noreferrer"
+                            <a href={ytUrl(p.yt)} target="_blank" rel="noopener noreferrer"
                               className="bg-red-50 text-red-700 hover:bg-red-100 px-2.5 py-1 rounded-full">
                               YT {p.yt}
                             </a>
@@ -536,7 +536,7 @@ function Links({ city, kind }: { city: City; kind: 'fans' | 'tickets' | 'growth'
   return (
     <div className="flex flex-wrap gap-2 pt-2">
       {links.map((l) => (
-        <a key={l.label} href={l.url} target="_blank" rel="noreferrer"
+        <a key={l.label} href={l.url} target="_blank" rel="noopener noreferrer"
           className="text-[11px] bg-[var(--undivide)]/10 text-[var(--undivide)] hover:bg-[var(--undivide)]/20 px-2.5 py-1 rounded-full font-medium">
           {l.label} ↗
         </a>
