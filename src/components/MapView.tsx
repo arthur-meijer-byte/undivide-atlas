@@ -6,16 +6,28 @@ import { useBookings } from '../hooks/useBookings';
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
-function matchesFilter(city: City, filter: string): boolean {
-  if (filter === 'all') return true;
-  if (filter === 'undivide') return city.status === 'undivide';
-  if (filter === 'ukf' || filter === 'hospitality') {
-    const re = filter === 'ukf' ? /\bukf\b/i : /hospitalit/i;
-    return city.promoters.some((p) =>
-      re.test(p.name) || p.events_list.some((e) => re.test(e.name)),
-    );
+const BRAND_PATTERNS: Record<string, RegExp> = {
+  Hospitality: /hospitalit/i,
+  UKF: /\bukf\b/i,
+  Korsakov: /korsakov/i,
+  'The Blast': /\bthe\s*blast\b|\bblast\b/i,
+  RUN: /\brun\b/i,
+};
+
+function cityMatchesBrand(city: City, brand: string): boolean {
+  if (brand === 'Independent') {
+    return city.promoters.some((p) => p.type === 'independent' || p.type === 'local');
   }
-  return false;
+  const re = BRAND_PATTERNS[brand];
+  if (!re) return false;
+  return city.promoters.some(
+    (p) => re.test(p.name) || p.events_list.some((e) => re.test(e.name)),
+  );
+}
+
+function matchesFilter(city: City, activeBrands: string[]): boolean {
+  if (activeBrands.length === 0) return true;
+  return activeBrands.some((b) => cityMatchesBrand(city, b));
 }
 
 function inYear(city: City, year: number | null): boolean {
@@ -128,7 +140,7 @@ function BookingPin({ lat, lng, onClick, label, zoom }: { lat: number; lng: numb
 }
 
 export default function MapView() {
-  const { activeFilter, selectedYear, setCity, setHover, mapTransform, setTransform } = useMapState();
+  const { activeBrands, selectedYear, setCity, setHover, mapTransform, setTransform } = useMapState();
   const openBookingModal = useBookings((s) => s.openModal);
   const bookings = useBookings((s) => s.bookings);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -146,7 +158,10 @@ export default function MapView() {
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  const visible = CITIES.filter((c) => matchesFilter(c, activeFilter) && inYear(c, selectedYear));
+  const visible = CITIES.filter((c) => matchesFilter(c, activeBrands) && inYear(c, selectedYear));
+  const visibleBookings = activeBrands.length === 0
+    ? bookings
+    : bookings.filter((b) => b.brand && activeBrands.includes(b.brand));
 
   return (
     <div ref={wrapRef} className="absolute inset-0 bg-map-ocean">
@@ -207,7 +222,7 @@ export default function MapView() {
               onHover={(p) => setHover(p ? { city, x: p.x, y: p.y } : null)}
             />
           ))}
-          {bookings.map((b) => (
+          {visibleBookings.map((b) => (
             <BookingPin
               key={b.id}
               lat={b.lat}
