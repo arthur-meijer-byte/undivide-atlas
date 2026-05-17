@@ -68,7 +68,7 @@ export default function PanelMarket({ city }: { city: City }) {
       {/* Venues / clubs */}
       {city.clubs.length > 0 && (
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">
+          <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">
             Key venues ({city.clubs.length})
           </div>
           <div className="space-y-1.5">

@@ -33,7 +33,7 @@ export default function PanelOverview({ city }: { city: City }) {
       </div>
 
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">Promoters</div>
+        <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">Promoters</div>
         <div className="space-y-2">
           {city.promoters.map((p) => (
             <div key={p.name} className="flex items-center gap-3 bg-gray-50 rounded-lg p-2.5">

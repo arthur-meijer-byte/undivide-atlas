@@ -318,7 +318,7 @@ export default function AgendaPanel() {
             const label = d.toLocaleString('en', { month: 'long', year: 'numeric' });
             return (
               <div key={key}>
-                <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2 sticky top-0 bg-white py-1">
+                <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 sticky top-0 bg-white py-1">
                   {label} · {list.length}
                 </div>
                 <div className="space-y-2">
@@ -408,7 +408,7 @@ function Stat({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-function Dot() { return <span className="text-gray-300">·</span>; }
+function Dot() { return <span className="text-gray-500">·</span>; }
 
 function DetailModal({
   item, onClose, onEdit, onOpenCity,
@@ -444,7 +444,7 @@ function DetailModal({
           </div>
           {item.artists.length > 0 && (
             <div>
-              <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">Artists</div>
+              <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-1">Artists</div>
               <div className="flex flex-wrap gap-1">
                 {item.artists.map((a) => (
                   <span key={a} className="bg-gray-100 px-2 py-0.5 rounded-full text-[11px]">{a}</span>

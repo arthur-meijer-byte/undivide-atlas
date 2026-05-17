@@ -45,7 +45,7 @@ function ArtistRow({ a, showRank = true }: { a: SpotifyMarketArtist; showRank?: 
       target="_blank" rel="noopener noreferrer"
       className="flex items-start gap-2 px-2 py-2 rounded-md hover:bg-gray-50"
     >
-      {showRank && <div className="text-[10px] tabular-nums text-gray-400 w-5 pt-1">#{a.rank}</div>}
+      {showRank && <div className="text-[10px] tabular-nums text-gray-600 w-5 pt-1">#{a.rank}</div>}
       {a.image ? (
         <img src={a.image} alt="" className="w-9 h-9 rounded-full object-cover shrink-0" />
       ) : (
@@ -77,7 +77,7 @@ function ArtistRow({ a, showRank = true }: { a: SpotifyMarketArtist; showRank?: 
               {a.latestRelease.date}
             </span>
           ) : (
-            <span className="text-gray-400 italic">No releases indexed</span>
+            <span className="text-gray-600 italic">No releases indexed</span>
           )}
           <ActivityDot a={a.activity} />
         </div>

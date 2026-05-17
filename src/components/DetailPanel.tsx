@@ -187,7 +187,7 @@ export default function DetailPanel() {
         {/* Live-ish scene stats: socials, FB groups, RA */}
         {city.stats && (
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">
+            <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">
               Scene snapshot
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">
@@ -219,7 +219,7 @@ export default function DetailPanel() {
             </div>
             {city.stats.fb_groups && city.stats.fb_groups.length > 0 && (
               <div className="mt-2 space-y-1">
-                <div className="text-[9px] uppercase text-gray-400">Facebook groups</div>
+                <div className="text-[9px] uppercase text-gray-600">Facebook groups</div>
                 {city.stats.fb_groups.map((g) => (
                   <div key={g.name} className="flex justify-between text-[11px] bg-blue-50/50 rounded px-2 py-1">
                     <span className="truncate text-blue-900">{g.name}</span>
@@ -231,7 +231,7 @@ export default function DetailPanel() {
           </div>
         )}
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">
+          <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">
             Promoters in {city.name}
           </div>
           <div className="space-y-2">
@@ -264,7 +264,7 @@ export default function DetailPanel() {
                     </button>
                     <button
                       onClick={() => setOpenPromoter(open ? null : p.name)}
-                      className="text-gray-400 ml-0.5"
+                      className="text-gray-600 ml-0.5"
                     >{open ? '▾' : '▸'}</button>
                   </div>
                   <BrandStatusStrip cityId={city.id} promoter={p.name} onOpen={() => setContactPromoter(p.name)} />
@@ -304,7 +304,7 @@ export default function DetailPanel() {
 
                       {/* Lineup */}
                       <div>
-                        <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">Recent line-ups</div>
+                        <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-1">Recent line-ups</div>
                         <div className="flex flex-wrap gap-1">
                           {p.lineup.map((a) => (
                             <span key={a} className="bg-white border border-gray-200 px-2 py-0.5 rounded-full">{a}</span>
@@ -314,7 +314,7 @@ export default function DetailPanel() {
 
                       {/* Previous events */}
                       <div>
-                        <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">Previous events</div>
+                        <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-1">Previous events</div>
                         <div className="space-y-1">
                           {p.events_list.slice(-5).reverse().map((e, i) => (
                             <div key={i} className="bg-white px-2 py-1.5 rounded">
@@ -340,7 +340,7 @@ export default function DetailPanel() {
         {/* Bookings in this city */}
         {cityBookings.length > 0 && (
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-2">
+            <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">
               Booked shows ({cityBookings.length})
             </div>
             <div className="space-y-2">
@@ -463,7 +463,7 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
       <div className="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between gap-2 p-4 border-b border-gray-100">
           <h3 className="font-bold text-base">{title}</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700 text-2xl leading-none">×</button>
+          <button onClick={onClose} className="text-gray-600 hover:text-gray-700 text-2xl leading-none">×</button>
         </div>
         <div className="p-4 overflow-y-auto thin-scroll">{children}</div>
       </div>
@@ -496,7 +496,7 @@ function StatPop({ v, l, title, body }: { v: string; l: string; title: string; b
           >
             <div className="flex items-start justify-between gap-2">
               <h3 className="font-bold text-base">{title}</h3>
-              <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-700 text-xl leading-none">×</button>
+              <button onClick={() => setOpen(false)} className="text-gray-600 hover:text-gray-700 text-xl leading-none">×</button>
             </div>
             <div className="space-y-1 text-sm">{body}</div>
           </div>
