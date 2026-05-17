@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMapState } from '../hooks/useMapState';
 import { STATUS_LABEL, SCENE_LABEL, type City } from '../data/cities';
 import { useBookings } from '../hooks/useBookings';
 import PromoterModal from './PromoterModal';
 import { usePromoterStore, BRAND_META, STATUS_META, ALL_BRANDS } from '../hooks/usePromoterStore';
+import CityNotesPanel from './CityNotesPanel';
+import { useCityStatus, STATUS_META as CITY_STATUS_META, timeAgo as cityTimeAgo } from '../hooks/useCityStatus';
+import { useUser } from '../hooks/useUser';
 
 const TYPE_BADGE = {
   undivide: 'bg-[var(--undivide)] text-white',
