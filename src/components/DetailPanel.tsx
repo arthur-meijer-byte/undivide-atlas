@@ -319,10 +319,10 @@ export default function DetailPanel() {
                           {p.events_list.slice(-5).reverse().map((e, i) => (
                             <div key={i} className="bg-white px-2 py-1.5 rounded">
                               <div className="flex justify-between gap-2">
-                                <span className="truncate font-medium">{e.name}</span>
-                                <span className="text-gray-500 shrink-0">{e.sold.toLocaleString()}/{e.cap.toLocaleString()}</span>
+                                <span className="truncate font-semibold text-gray-900">{e.name}</span>
+                                <span className="text-gray-700 shrink-0">{e.sold.toLocaleString()}/{e.cap.toLocaleString()}</span>
                               </div>
-                              <div className="text-[10px] text-gray-500 truncate">
+                              <div className="text-[10px] text-gray-600 truncate">
                                 {e.date} · {e.venue}
                               </div>
                             </div>
