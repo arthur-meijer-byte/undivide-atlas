@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { useActivity, type ActivityAction } from './useActivity';
+import { useUser } from './useUser';
 
 export type PromoterType = 'Local promoter' | 'Venue' | 'Festival' | 'Undivide partner' | 'Independent';
 export type PromoterGenre = 'Liquid' | 'Neurofunk' | 'Jump Up' | 'Dancefloor' | 'All styles';
