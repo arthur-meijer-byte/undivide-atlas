@@ -36,6 +36,15 @@ export default function DetailPanel() {
   const [showPromoters, setShowPromoters] = useState(false);
   const [contactPromoter, setContactPromoter] = useState<string | null>(null);
 
+  const initCityStatus = useCityStatus((s) => s.init);
+  const cityRow = useCityStatus((s) => (currentCity ? s.byCity[currentCity.id] : undefined));
+  const notesPanelCityId = useCityStatus((s) => s.notesPanelCityId);
+  const openNotes = useCityStatus((s) => s.openNotes);
+  const closeNotes = useCityStatus((s) => s.closeNotes);
+  const profile = useUser((s) => s.profile);
+  const otherProfile = useUser((s) => s.otherProfile);
+  useEffect(() => { void initCityStatus(); }, [initCityStatus]);
+
   if (!currentCity) return null;
   const city = currentCity;
   const cityBookings = bookings.filter(
