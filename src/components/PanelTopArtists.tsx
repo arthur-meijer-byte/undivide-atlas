@@ -94,14 +94,17 @@ export default function PanelTopArtists({ city }: { city: City }) {
                     <div className="flex-1 min-w-0">
                       <div className="text-xs font-medium truncate flex items-center gap-1.5">
                         {a.name}
+                        <span className="text-[8px] uppercase tracking-wider font-semibold bg-gray-100 text-gray-600 px-1 py-px rounded">
+                          {a.subgenre}
+                        </span>
                         {a.roster && (
-                          <span className="text-[8px] uppercase tracking-wider font-bold bg-[var(--undivide)] text-white px-1 py-px rounded">
+                          <span className="text-[8px] uppercase tracking-wider font-bold bg-green-600 text-white px-1 py-px rounded">
                             Roster
                           </span>
                         )}
                       </div>
                       <div className="text-[10px] text-gray-400">
-                        {fmt(a.followers)} followers · pop {a.popularity}
+                        {fmt(a.followers)} Spotify followers · pop {a.popularity}
                       </div>
                     </div>
                     <SpotifyIcon className="w-3 h-3 opacity-60" />
@@ -155,27 +158,34 @@ export default function PanelTopArtists({ city }: { city: City }) {
             {data.errors.youtube ? (
               <div className="text-[11px] text-gray-400 italic">Data unavailable — {data.errors.youtube}</div>
             ) : data.youtubeTop.length === 0 ? (
-              <div className="text-[11px] text-gray-400 italic">No videos found.</div>
-            ) : (
-              <div className="space-y-2">
-                {data.youtubeTop.map((v) => (
-                  <a
-                    key={v.id}
-                    href={`https://www.youtube.com/watch?v=${v.id}`}
-                    target="_blank" rel="noreferrer"
-                    className="flex gap-2 hover:bg-gray-50 rounded-md p-1.5"
-                  >
-                    <img src={v.thumbnail} alt="" className="w-20 h-14 rounded object-cover shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs font-medium line-clamp-2 leading-snug">{v.title}</div>
-                      <div className="text-[10px] text-gray-500 truncate mt-0.5">{v.channel}</div>
-                      <div className="text-[10px] text-gray-400 flex items-center gap-1">
-                        {fmt(v.views)} views <ExternalLink size={9} />
-                      </div>
-                    </div>
-                  </a>
-                ))}
+              <div className="text-[11px] text-gray-500 italic">
+                {data.youtubeNote ?? 'No videos found.'}
               </div>
+            ) : (
+              <>
+                <div className="space-y-2">
+                  {data.youtubeTop.map((v) => (
+                    <a
+                      key={v.id}
+                      href={`https://www.youtube.com/watch?v=${v.id}`}
+                      target="_blank" rel="noreferrer"
+                      className="flex gap-2 hover:bg-gray-50 rounded-md p-1.5"
+                    >
+                      <img src={v.thumbnail} alt="" className="w-20 h-14 rounded object-cover shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-medium line-clamp-2 leading-snug">{v.title}</div>
+                        <div className="text-[10px] text-gray-500 truncate mt-0.5">{v.channel}</div>
+                        <div className="text-[10px] text-gray-400 flex items-center gap-1">
+                          {fmt(v.views)} views <ExternalLink size={9} />
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+                {data.youtubeNote && (
+                  <div className="text-[10px] text-gray-400 italic mt-2">{data.youtubeNote}</div>
+                )}
+              </>
             )}
           </div>
         </>
