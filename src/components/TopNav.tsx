@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { useAgenda } from './AgendaPanel';
 import { usePromoters } from '../hooks/usePromoters';
 import { useUser } from '../hooks/useUser';
