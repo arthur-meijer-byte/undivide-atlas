@@ -48,7 +48,7 @@ export default function PromoterModal({ city, promoter, onClose, onViewHistory }
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
       <div
-        className="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[85vh] flex flex-col"
+        className="bg-white text-gray-900 rounded-xl shadow-xl max-w-lg w-full max-h-[85vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -56,9 +56,9 @@ export default function PromoterModal({ city, promoter, onClose, onViewHistory }
           <div className="flex items-start justify-between gap-2">
             <div>
               <h3 className="font-bold text-base">{promoter.name}</h3>
-              <p className="text-xs text-gray-500">{city.name}, {city.country}</p>
+              <p className="text-xs text-gray-700">{city.name}, {city.country}</p>
             </div>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-700 text-2xl leading-none">×</button>
+            <button onClick={onClose} className="text-gray-600 hover:text-gray-700 text-2xl leading-none">×</button>
           </div>
           <div className="flex flex-wrap gap-1.5 mt-2">
             <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${TYPE_BADGE[promoter.type]}`}>{promoter.type}</span>
@@ -80,7 +80,7 @@ export default function PromoterModal({ city, promoter, onClose, onViewHistory }
               className={`px-3 py-2 text-xs font-semibold border-b-2 transition-colors ${
                 tab === key
                   ? 'border-[var(--undivide)] text-[var(--undivide)]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
+                  : 'border-transparent text-gray-700 hover:text-gray-700'
               }`}
             >
               {label}
@@ -142,7 +142,7 @@ function InfoTab({
         <Field label="YouTube" value={form.yt} onChange={(v) => setForm({ ...form, yt: v })} />
         <Field label="Website" value={form.website} onChange={(v) => setForm({ ...form, website: v })} />
         <div>
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block mb-1">Notes</label>
+          <label className="text-[10px] uppercase tracking-wider text-gray-700 font-semibold block mb-1">Notes</label>
           <textarea
             value={form.notes}
             onChange={(e) => setForm({ ...form, notes: e.target.value })}
@@ -165,7 +165,7 @@ function InfoTab({
     <div className="space-y-4 text-sm">
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Contact</div>
+          <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold">Contact</div>
           <button onClick={() => setEditing(true)} className="text-[11px] text-[var(--undivide)] hover:underline font-semibold">✎ Edit</button>
         </div>
         {hasContact ? (
@@ -173,7 +173,7 @@ function InfoTab({
             {merged.contactPerson && (
               <div className="font-semibold">
                 {merged.contactPerson}
-                {merged.contactRole && <span className="text-gray-500 font-normal"> · {merged.contactRole}</span>}
+                {merged.contactRole && <span className="text-gray-700 font-normal"> · {merged.contactRole}</span>}
               </div>
             )}
             {merged.email && (
@@ -188,14 +188,14 @@ function InfoTab({
             )}
           </div>
         ) : (
-          <div className="bg-gray-50 rounded-lg p-3 text-xs text-gray-400 italic">
+          <div className="bg-gray-50 rounded-lg p-3 text-xs text-gray-600 italic">
             No contact details on file. Click Edit to add.
           </div>
         )}
       </div>
 
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">Socials</div>
+        <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-1.5">Socials</div>
         <div className="flex flex-wrap gap-2">
           {merged.ig && (
             <a href={igUrl(merged.ig)} target="_blank" rel="noopener noreferrer" className="bg-pink-50 text-pink-700 hover:bg-pink-100 px-2.5 py-1 rounded-full text-xs">IG @{merged.ig.replace(/^@/, '')}</a>
@@ -210,20 +210,20 @@ function InfoTab({
             <a href={merged.website.startsWith('http') ? merged.website : `https://${merged.website}`} target="_blank" rel="noopener noreferrer" className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-2.5 py-1 rounded-full text-xs">🌐 Website</a>
           )}
           {!merged.ig && !merged.fb && !merged.yt && !merged.website && (
-            <span className="text-xs text-gray-400 italic">None on file</span>
+            <span className="text-xs text-gray-600 italic">None on file</span>
           )}
         </div>
       </div>
 
       {merged.notes && (
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">Notes</div>
+          <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-1.5">Notes</div>
           <div className="bg-gray-50 rounded-lg p-3 text-xs whitespace-pre-wrap">{merged.notes}</div>
         </div>
       )}
 
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">Recent line-ups</div>
+        <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-1.5">Recent line-ups</div>
         <div className="flex flex-wrap gap-1">
           {promoter.lineup.map((a) => (
             <span key={a} className="bg-white border border-gray-200 px-2 py-0.5 rounded-full text-[11px]">{a}</span>
@@ -246,7 +246,7 @@ function Field({
 }: { label: string; value: string; onChange: (v: string) => void; type?: string }) {
   return (
     <div>
-      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block mb-1">{label}</label>
+      <label className="text-[10px] uppercase tracking-wider text-gray-700 font-semibold block mb-1">{label}</label>
       <input
         type={type}
         value={value}
@@ -304,7 +304,7 @@ function StatusTab({ city, promoter }: { city: City; promoter: Promoter }) {
     <div className="space-y-4 text-sm">
       {/* Brand selector */}
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">Undivide brand</div>
+        <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-1.5">Undivide brand</div>
         <div className="flex flex-wrap gap-1.5">
           {ALL_BRANDS.map((b) => {
             const meta = BRAND_META[b];
@@ -329,7 +329,7 @@ function StatusTab({ city, promoter }: { city: City; promoter: Promoter }) {
       {/* Status form */}
       <div className="bg-gray-50 rounded-lg p-3 space-y-2.5">
         <div>
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block mb-1">Status</label>
+          <label className="text-[10px] uppercase tracking-wider text-gray-700 font-semibold block mb-1">Status</label>
           <div className="grid grid-cols-2 gap-1.5">
             {ALL_STATUSES.map((s) => {
               const m = STATUS_META[s];
@@ -356,7 +356,7 @@ function StatusTab({ city, promoter }: { city: City; promoter: Promoter }) {
         </div>
         <Field label="Fee" value={form.fee} onChange={(v) => setForm({ ...form, fee: v })} />
         <div>
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block mb-1">Notes</label>
+          <label className="text-[10px] uppercase tracking-wider text-gray-700 font-semibold block mb-1">Notes</label>
           <textarea
             value={form.notes}
             onChange={(e) => setForm({ ...form, notes: e.target.value })}
@@ -372,7 +372,7 @@ function StatusTab({ city, promoter }: { city: City; promoter: Promoter }) {
           Save {BRAND_META[activeBrand].label} status
         </button>
         {status.updatedAt > 0 && (
-          <div className="text-[10px] text-gray-400 text-center">
+          <div className="text-[10px] text-gray-600 text-center">
             Last updated {new Date(status.updatedAt).toLocaleString()}
           </div>
         )}
@@ -380,7 +380,7 @@ function StatusTab({ city, promoter }: { city: City; promoter: Promoter }) {
 
       {/* Activity log */}
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">Activity log</div>
+        <div className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-1.5">Activity log</div>
         <div className="flex gap-2 mb-2">
           <input
             value={logText}
@@ -402,7 +402,7 @@ function StatusTab({ city, promoter }: { city: City; promoter: Promoter }) {
           </button>
         </div>
         {activity.length === 0 ? (
-          <div className="text-xs text-gray-400 italic">No activity yet.</div>
+          <div className="text-xs text-gray-600 italic">No activity yet.</div>
         ) : (
           <ul className="space-y-1.5">
             {activity.slice(0, 20).map((a) => (
@@ -411,7 +411,7 @@ function StatusTab({ city, promoter }: { city: City; promoter: Promoter }) {
                   <span className={`text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full font-semibold ${BRAND_META[a.brand].color}`}>
                     {BRAND_META[a.brand].label}
                   </span>
-                  <span className="text-[10px] text-gray-400">{new Date(a.ts).toLocaleString()}</span>
+                  <span className="text-[10px] text-gray-600">{new Date(a.ts).toLocaleString()}</span>
                 </div>
                 <div>{a.text}</div>
               </li>
