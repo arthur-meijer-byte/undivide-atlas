@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { useAgenda } from './AgendaPanel';
 import { usePromoters } from '../hooks/usePromoters';
 import { useUser } from '../hooks/useUser';
 import UploadEventsButton from './UploadEventsButton';
 import ThemeToggle from './ThemeToggle';
 import ActivityFeed from './ActivityFeed';
+import NotificationsBell from './NotificationsBell';
 
 type ViewKey = 'map' | 'agenda' | 'promoters';
 
@@ -91,6 +93,7 @@ export default function TopNav() {
       </div>
 
       <div className="mx-1 h-6 w-px bg-border" />
+      <NotificationsBell />
       <ActivityFeed />
       <ThemeToggleMini />
       <UserMenu />
@@ -120,7 +123,9 @@ function ThemeToggleMini() {
 }
 
 function UserMenu() {
-  const { user, setUser, logout } = useUser();
+  const profile = useUser((s) => s.profile);
+  const logout = useUser((s) => s.logout);
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -130,21 +135,13 @@ function UserMenu() {
     return () => document.removeEventListener('mousedown', fn);
   }, []);
 
-  if (!user) {
-    return (
-      <div className="flex items-center gap-1">
-        <span className="text-[10px] text-muted-foreground hidden sm:inline">Logged out</span>
-        {(['Arthur', 'James'] as const).map((u) => (
-          <button key={u} onClick={() => setUser(u)} className="text-xs px-2 py-1 rounded text-foreground/70 hover:bg-foreground/10">
-            {u}
-          </button>
-        ))}
-      </div>
-    );
-  }
+  if (!profile) return null;
 
-  const initial = user.charAt(0);
-  const color = user === 'Arthur' ? 'bg-pink-600' : 'bg-blue-600';
+  const onLogout = async () => {
+    setOpen(false);
+    await logout();
+    navigate({ to: '/login' });
+  };
 
   return (
     <div ref={ref} className="relative">
@@ -152,26 +149,23 @@ function UserMenu() {
         onClick={() => setOpen((v) => !v)}
         className="flex items-center gap-1.5 pl-1 pr-2 py-1 rounded-full hover:bg-foreground/10"
       >
-        <span className={`w-6 h-6 rounded-full ${color} text-white text-[11px] font-bold flex items-center justify-center`}>{initial}</span>
-        <span className="text-xs hidden sm:inline">{user}</span>
+        <span
+          className="w-6 h-6 rounded-full text-white text-[11px] font-bold flex items-center justify-center"
+          style={{ background: profile.avatar_color }}
+        >
+          {profile.initial}
+        </span>
+        <span className="text-xs hidden sm:inline">{profile.display_name}</span>
       </button>
       {open && (
-        <div className="absolute right-0 mt-1 bg-background border border-border rounded-lg shadow-lg py-2 min-w-[180px] text-xs">
-          <div className="px-3 py-1.5 text-muted-foreground">Logged in as <span className="text-foreground font-medium">{user}</span></div>
-          <div className="border-t border-border my-1" />
-          <div className="px-3 py-1 text-[10px] uppercase tracking-wider text-muted-foreground">Switch user</div>
-          {(['Arthur', 'James'] as const).map((u) => (
-            <button
-              key={u}
-              onClick={() => { setUser(u); setOpen(false); }}
-              className={`w-full text-left px-3 py-1.5 hover:bg-foreground/5 ${user === u ? 'font-semibold text-foreground' : 'text-foreground/70'}`}
-            >
-              {u}
-            </button>
-          ))}
+        <div className="absolute right-0 mt-1 bg-background border border-border rounded-lg shadow-lg py-2 min-w-[200px] text-xs z-50">
+          <div className="px-3 py-1.5 text-muted-foreground">
+            Logged in as <span className="text-foreground font-medium">{profile.display_name}</span>
+          </div>
+          <div className="px-3 pb-1.5 text-[10px] text-muted-foreground">{profile.email}</div>
           <div className="border-t border-border my-1" />
           <button
-            onClick={() => { logout(); setOpen(false); }}
+            onClick={onLogout}
             className="w-full text-left px-3 py-1.5 text-red-500 hover:bg-red-500/10"
           >
             Logout
