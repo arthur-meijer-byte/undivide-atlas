@@ -31,7 +31,7 @@ export default function BookingsButton() {
                         <span className="font-semibold">{b.city}</span>
                         <span className="text-gray-500 text-xs">{b.date}</span>
                       </div>
-                      <div className="text-xs text-gray-500">{b.venue} · {b.sound}</div>
+                      <div className="text-xs text-gray-500">{b.venue}{b.brand ? ` · ${b.brand}` : ''}</div>
                     </button>
                   ))}
               </div>
