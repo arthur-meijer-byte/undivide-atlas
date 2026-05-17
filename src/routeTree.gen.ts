@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SetPasswordRouteImport } from './routes/set-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiPublicSeedUsersRouteImport } from './routes/api/public/seed-users'
 
 const SetPasswordRoute = SetPasswordRouteImport.update({
   id: '/set-password',
@@ -29,44 +28,35 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicSeedUsersRoute = ApiPublicSeedUsersRouteImport.update({
-  id: '/api/public/seed-users',
-  path: '/api/public/seed-users',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/set-password': typeof SetPasswordRoute
-  '/api/public/seed-users': typeof ApiPublicSeedUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/set-password': typeof SetPasswordRoute
-  '/api/public/seed-users': typeof ApiPublicSeedUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/set-password': typeof SetPasswordRoute
-  '/api/public/seed-users': typeof ApiPublicSeedUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/set-password' | '/api/public/seed-users'
+  fullPaths: '/' | '/login' | '/set-password'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/set-password' | '/api/public/seed-users'
-  id: '__root__' | '/' | '/login' | '/set-password' | '/api/public/seed-users'
+  to: '/' | '/login' | '/set-password'
+  id: '__root__' | '/' | '/login' | '/set-password'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   SetPasswordRoute: typeof SetPasswordRoute
-  ApiPublicSeedUsersRoute: typeof ApiPublicSeedUsersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,13 +82,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/seed-users': {
-      id: '/api/public/seed-users'
-      path: '/api/public/seed-users'
-      fullPath: '/api/public/seed-users'
-      preLoaderRoute: typeof ApiPublicSeedUsersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -106,8 +89,16 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   SetPasswordRoute: SetPasswordRoute,
-  ApiPublicSeedUsersRoute: ApiPublicSeedUsersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
