@@ -27,14 +27,21 @@ export default function PanelTopArtists({ city }: { city: City }) {
   const qc = useQueryClient();
   const fetchMarket = useServerFn(getCityMarketData);
 
+  // Flatten all promoter line-ups + previous-event names so the server can
+  // count per-artist appearances inside THIS city's event analytics.
+  const lineups = city.promoters.flatMap((p) => [
+    ...p.lineup,
+    ...p.events_list.flatMap((e) => e.name.split(/[,&×x+/]| feat\.?| with /i).map((s) => s.trim()).filter(Boolean)),
+  ]);
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['city-market', city.id],
-    queryFn: () => fetchMarket({ data: { cityId: city.id, country: city.country } }),
+    queryFn: () => fetchMarket({ data: { cityId: city.id, country: city.country, lineups } }),
     staleTime: 60 * 60 * 1000,
   });
 
   const refreshMut = useMutation({
-    mutationFn: () => fetchMarket({ data: { cityId: city.id, country: city.country, force: true } }),
+    mutationFn: () => fetchMarket({ data: { cityId: city.id, country: city.country, force: true, lineups } }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['city-market', city.id] }),
   });
 
@@ -46,7 +53,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
             Top Artists — {city.name} ({data?.countryCode ?? '…'})
           </div>
           <div className="text-[10px] text-gray-400 mt-0.5">
-            Live from Spotify + YouTube · refreshes weekly
+            Ranked per-city: Spotify market pop · YouTube mentions · Event line-ups
           </div>
         </div>
         <button
@@ -69,7 +76,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
             <div className="flex items-center gap-1.5 mb-2">
               <SpotifyIcon className="w-3.5 h-3.5" />
               <div className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold">
-                Spotify Top 10 in {data.countryCode}
+                Top 10 in {city.name} — composite city score
               </div>
             </div>
             {data.errors.spotify ? (
@@ -103,8 +110,14 @@ export default function PanelTopArtists({ city }: { city: City }) {
                           </span>
                         )}
                       </div>
+                      <div className="text-[10px] text-gray-600 truncate">
+                        <span className="font-semibold text-gray-800">Score {a.cityScore}</span>
+                        {' · '}Spotify {Math.round(a.marketScore)}
+                        {' · '}YT {a.ytMentions}
+                        {' · '}Events {a.eventMentions}
+                      </div>
                       <div className="text-[10px] text-gray-400">
-                        {fmt(a.followers)} Spotify followers · pop {a.popularity}
+                        {fmt(a.followers)} followers · global pop {a.popularity}
                       </div>
                     </div>
                     <SpotifyIcon className="w-3 h-3 opacity-60" />
@@ -113,8 +126,7 @@ export default function PanelTopArtists({ city }: { city: City }) {
               </div>
             )}
             <p className="text-[10px] text-gray-400 mt-2 leading-snug">
-              Spotify API exposes popularity (0–100) and total followers — monthly listeners is
-              not publicly available. Followers shown as the strongest available proxy.
+              City score = 55% Spotify per-market top-track popularity + 25% YouTube regional mentions + 20% line-up appearances in this city.
             </p>
           </div>
 
