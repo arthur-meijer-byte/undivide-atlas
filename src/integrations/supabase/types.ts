@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      city_status: {
+        Row: {
+          city_id: string
+          created_at: string
+          notes: string
+          promoters_in_conversation: string[]
+          status: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          city_id: string
+          created_at?: string
+          notes?: string
+          promoters_in_conversation?: string[]
+          status?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          city_id?: string
+          created_at?: string
+          notes?: string
+          promoters_in_conversation?: string[]
+          status?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      city_status_log: {
+        Row: {
+          change_type: string
+          changed_at: string
+          changed_by: string | null
+          city_id: string
+          id: string
+          new_value: string | null
+          old_value: string | null
+        }
+        Insert: {
+          change_type: string
+          changed_at?: string
+          changed_by?: string | null
+          city_id: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+        }
+        Update: {
+          change_type?: string
+          changed_at?: string
+          changed_by?: string | null
+          city_id?: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+        }
+        Relationships: []
+      }
       dnb_artists: {
         Row: {
           active: boolean
