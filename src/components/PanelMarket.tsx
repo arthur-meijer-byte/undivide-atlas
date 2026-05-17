@@ -56,7 +56,7 @@ export default function PanelMarket({ city }: { city: City }) {
       </div>
 
       {/* Opportunity card */}
-      <div className="rounded-lg p-4 text-white" style={{ background: city.heroColor }}>
+      <div className="hero-text rounded-lg p-4 text-white" style={{ background: city.heroColor }}>
         <div className="text-[10px] uppercase tracking-wider opacity-90">Opportunity Score</div>
         <div className="flex items-baseline gap-3 mt-1">
           <div className="text-3xl font-bold">{m.yoy_growth}</div>
