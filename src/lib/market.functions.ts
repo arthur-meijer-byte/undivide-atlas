@@ -335,6 +335,7 @@ export interface CityMarketData {
   rosterReachTotal: number;
   rosterBreakdown: Array<{ name: string; followers: number; popularity: number }>;
   youtubeTop: YouTubeVideo[];
+  youtubeNote: string | null;
   errors: { spotify?: string; youtube?: string };
 }
 
