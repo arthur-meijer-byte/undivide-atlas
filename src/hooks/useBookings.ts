@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { useActivity } from './useActivity';
+import { useUser } from './useUser';
 
 export type Sound = 'Liquid' | 'Neuro' | 'Jump Up' | 'Dancefloor' | 'Minimal' | 'Halftime' | 'All Styles';
 
