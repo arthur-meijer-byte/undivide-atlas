@@ -94,14 +94,17 @@ export default function PanelTopArtists({ city }: { city: City }) {
                     <div className="flex-1 min-w-0">
                       <div className="text-xs font-medium truncate flex items-center gap-1.5">
                         {a.name}
+                        <span className="text-[8px] uppercase tracking-wider font-semibold bg-gray-100 text-gray-600 px-1 py-px rounded">
+                          {a.subgenre}
+                        </span>
                         {a.roster && (
-                          <span className="text-[8px] uppercase tracking-wider font-bold bg-[var(--undivide)] text-white px-1 py-px rounded">
+                          <span className="text-[8px] uppercase tracking-wider font-bold bg-green-600 text-white px-1 py-px rounded">
                             Roster
                           </span>
                         )}
                       </div>
                       <div className="text-[10px] text-gray-400">
-                        {fmt(a.followers)} followers · pop {a.popularity}
+                        {fmt(a.followers)} Spotify followers · pop {a.popularity}
                       </div>
                     </div>
                     <SpotifyIcon className="w-3 h-3 opacity-60" />
