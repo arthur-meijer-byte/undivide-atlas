@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { supabaseAdmin } from '@/integrations/supabase/client.server';
-import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
+
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
