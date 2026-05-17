@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { useActivity } from './useActivity';
+import { useUser } from './useUser';
 
 export type Sound = 'Liquid' | 'Neuro' | 'Jump Up' | 'Dancefloor' | 'Minimal' | 'Halftime' | 'All Styles';
 
@@ -51,14 +53,30 @@ export const useBookings = create<BookingsState>()(
       bookingModalOpen: false,
       editingId: null,
       prefill: null,
-      add: (b) =>
+      add: (b) => {
+        const id = crypto.randomUUID();
         set((s) => ({
-          bookings: [...s.bookings, { ...b, id: crypto.randomUUID(), createdAt: Date.now() }],
-        })),
-      update: (id, b) =>
+          bookings: [...s.bookings, { ...b, id, createdAt: Date.now() }],
+        }));
+        const user = useUser.getState().user ?? '—';
+        const subject = `${b.eventName || b.venue || 'Show'} — ${b.city}`;
+        useActivity.getState().log({
+          user, action: b.status === 'Confirmed' ? 'confirmed show' : 'added show',
+          subject, target: 'show', targetId: id,
+        });
+      },
+      update: (id, b) => {
         set((s) => ({
           bookings: s.bookings.map((x) => (x.id === id ? { ...x, ...b } : x)),
-        })),
+        }));
+        const cur = useBookings.getState().bookings.find((x) => x.id === id);
+        if (!cur) return;
+        const user = useUser.getState().user ?? '—';
+        const subject = `${cur.eventName || cur.venue || 'Show'} — ${cur.city}`;
+        const action: 'confirmed show' | 'updated show' =
+          b.status === 'Confirmed' ? 'confirmed show' : 'updated show';
+        useActivity.getState().log({ user, action, subject, target: 'show', targetId: id });
+      },
       remove: (id) => set((s) => ({ bookings: s.bookings.filter((x) => x.id !== id) })),
       openModal: (prefill, editingId) =>
         set({ bookingModalOpen: true, prefill: prefill ?? null, editingId: editingId ?? null }),

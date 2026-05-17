@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { useActivity, type ActivityAction } from './useActivity';
+import { useUser } from './useUser';
 
 export type PromoterType = 'Local promoter' | 'Venue' | 'Festival' | 'Undivide partner' | 'Independent';
 export type PromoterGenre = 'Liquid' | 'Neurofunk' | 'Jump Up' | 'Dancefloor' | 'All styles';
@@ -102,25 +104,53 @@ export const usePromoters = create<PromotersState>()(
           ],
           selectedId: id,
         }));
+        const user = useUser.getState().user ?? '—';
+        useActivity.getState().log({
+          user, action: 'added promoter', subject: p.name,
+          target: 'promoter', targetId: id,
+        });
         return id;
       },
-      update: (id, patch) =>
+      update: (id, patch) => {
+        const before = usePromoters.getState().promoters.find((x) => x.id === id);
         set((s) => ({
           promoters: s.promoters.map((x) => (x.id === id ? { ...x, ...patch } : x)),
-        })),
+        }));
+        if (!before) return;
+        const user = useUser.getState().user ?? '—';
+        let action: ActivityAction = 'updated promoter';
+        if (patch.status && patch.status !== before.status) action = 'moved promoter';
+        else if (patch.followUp && patch.followUp !== before.followUp) action = 'set follow-up';
+        useActivity.getState().log({
+          user, action, subject: before.name,
+          target: 'promoter', targetId: id,
+        });
+      },
       remove: (id) =>
         set((s) => ({
           promoters: s.promoters.filter((x) => x.id !== id),
           selectedId: s.selectedId === id ? null : s.selectedId,
         })),
-      addActivity: (id, a) =>
+      addActivity: (id, a) => {
         set((s) => ({
           promoters: s.promoters.map((x) =>
             x.id === id
               ? { ...x, activity: [{ ...a, id: crypto.randomUUID() }, ...x.activity] }
               : x,
           ),
-        })),
+        }));
+        const promoter = usePromoters.getState().promoters.find((x) => x.id === id);
+        if (!promoter) return;
+        const user = useUser.getState().user ?? a.loggedBy;
+        const map: Record<string, ActivityAction> = {
+          Call: 'logged call', Email: 'logged email', WhatsApp: 'logged whatsapp',
+          Meeting: 'logged meeting', Note: 'logged note',
+        };
+        useActivity.getState().log({
+          user, action: map[a.type] ?? 'logged note',
+          subject: promoter.name, target: 'promoter', targetId: id,
+        });
+      },
     }),
     { name: 'undivide-promoters' },
   ),

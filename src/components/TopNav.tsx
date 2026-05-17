@@ -4,6 +4,7 @@ import { usePromoters } from '../hooks/usePromoters';
 import { useUser } from '../hooks/useUser';
 import UploadEventsButton from './UploadEventsButton';
 import ThemeToggle from './ThemeToggle';
+import ActivityFeed from './ActivityFeed';
 
 type ViewKey = 'map' | 'agenda' | 'promoters';
 
@@ -90,6 +91,7 @@ export default function TopNav() {
       </div>
 
       <div className="mx-1 h-6 w-px bg-border" />
+      <ActivityFeed />
       <ThemeToggleMini />
       <UserMenu />
     </div>
