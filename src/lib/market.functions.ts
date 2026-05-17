@@ -356,12 +356,11 @@ export const getCityMarketData = createServerFn({ method: 'POST' })
     if (!spotifyPayload) {
       try {
         const [top, roster] = await Promise.all([
-          spotifySearchArtistsForMarket(market),
+          spotifyTopForMarket(market),
           spotifyLookupRoster(market),
         ]);
-        const rosterNames = new Set(roster.map((r) => r.name.toLowerCase()));
         const top10: SpotifyMarketArtist[] = top.slice(0, 10).map((a, i) => ({
-          ...a, rank: i + 1, roster: rosterNames.has(a.name.toLowerCase()),
+          ...a, rank: i + 1, roster: ROSTER_LOOKUP.has(a.name.toLowerCase()),
         }));
         const top10Names = new Set(top10.map((t) => t.name.toLowerCase()));
         const rosterOutside: SpotifyMarketArtist[] = roster
@@ -381,19 +380,22 @@ export const getCityMarketData = createServerFn({ method: 'POST' })
       }
     }
 
-    // 2. YouTube top
-    let youtubeTop: YouTubeVideo[] = [];
-    let ytFetched = false;
+    // 2. YouTube top (cached as { videos, note })
+    let youtubePayload: { videos: YouTubeVideo[]; note: string | null } | null = null;
     if (!force) {
-      const cached = await getCached<YouTubeVideo[]>(data.cityId, 'youtube_top');
-      if (cached) { youtubeTop = cached.data; ytFetched = true; }
+      const cached = await getCached<{ videos: YouTubeVideo[]; note: string | null } | YouTubeVideo[]>(data.cityId, 'youtube_top');
+      if (cached) {
+        // Migrate legacy cache shape (bare array) so we don't surface stale broken data.
+        youtubePayload = Array.isArray(cached.data) ? null : cached.data;
+      }
     }
-    if (!ytFetched) {
+    if (!youtubePayload) {
       try {
-        youtubeTop = await youtubeTopForRegion(market);
-        await putCached(data.cityId, market, 'youtube_top', youtubeTop);
+        youtubePayload = await youtubeTopForRegion(market);
+        await putCached(data.cityId, market, 'youtube_top', youtubePayload);
       } catch (e) {
         errors.youtube = (e as Error).message;
+        youtubePayload = { videos: [], note: null };
       }
     }
 
@@ -404,7 +406,8 @@ export const getCityMarketData = createServerFn({ method: 'POST' })
       rosterOutside: spotifyPayload.rosterOutside,
       rosterBreakdown: spotifyPayload.rosterBreakdown,
       rosterReachTotal: spotifyPayload.rosterReachTotal,
-      youtubeTop,
+      youtubeTop: youtubePayload.videos,
+      youtubeNote: youtubePayload.note,
       errors,
     };
   });
