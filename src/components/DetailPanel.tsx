@@ -80,6 +80,36 @@ export default function DetailPanel() {
         <p className="mt-3 text-[11px] leading-relaxed opacity-90 line-clamp-3">
           {city.market.scene_notes}
         </p>
+        {(() => {
+          const s = (cityRow?.status ?? 'green') as keyof typeof CITY_STATUS_META;
+          const meta = CITY_STATUS_META[s];
+          const updaterId = cityRow?.updated_by;
+          const updater = updaterId
+            ? [profile, otherProfile].find((p) => p?.id === updaterId)?.initial ?? '—'
+            : null;
+          return (
+            <button
+              onClick={() => openNotes(city.id)}
+              className="mt-3 w-full flex items-center gap-1.5 text-left text-[12px] text-white/70 hover:text-white/95 transition-colors"
+              title="Open city notes"
+            >
+              <span className={`w-2 h-2 rounded-full ${meta.dot} shrink-0`} />
+              <span className="font-medium">{meta.label}</span>
+              {cityRow && (
+                <>
+                  <span className="opacity-70">·</span>
+                  <span className="opacity-80">Last update: {cityTimeAgo(cityRow.updated_at)}</span>
+                  {updater && (
+                    <>
+                      <span className="opacity-70">·</span>
+                      <span className="opacity-80">{updater}</span>
+                    </>
+                  )}
+                </>
+              )}
+            </button>
+          );
+        })()}
       </div>
 
       <div className="p-3 border-b border-gray-200">
