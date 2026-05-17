@@ -63,7 +63,7 @@ function normaliseBrand(v: unknown): string {
   return s;
 }
 
-export default function UploadEventsButton() {
+export default function UploadEventsButton({ className, label = 'Upload', icon = '⬆️' }: { className?: string; label?: string; icon?: string } = {}) {
   const fileRef = useRef<HTMLInputElement>(null);
   const add = useBookings((s) => s.add);
   const [status, setStatus] = useState<string>('');
@@ -173,10 +173,10 @@ export default function UploadEventsButton() {
     <>
       <button
         onClick={() => fileRef.current?.click()}
-        className="text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded-full flex items-center gap-1"
+        className={className ?? 'text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded-full flex items-center gap-1'}
         title="Bulk import shows from an .xlsx file"
       >
-        ⬆️ <span>Upload</span>
+        <span>{icon}</span> <span>{label}</span>
       </button>
       <input
         ref={fileRef}
@@ -186,10 +186,11 @@ export default function UploadEventsButton() {
         className="hidden"
       />
       {status && (
-        <div className="absolute top-14 right-4 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-full shadow">
+        <div className="fixed top-14 right-4 z-50 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-full shadow">
           {status}
         </div>
       )}
     </>
   );
 }
+
