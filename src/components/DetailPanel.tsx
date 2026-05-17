@@ -417,6 +417,19 @@ export default function DetailPanel() {
         />
       )}
     </div>
+    {notesPanelCityId === city.id && (
+      <CityNotesPanel
+        city={city}
+        onClose={closeNotes}
+        onOpenPromoter={(pid) => {
+          // open promoter modal via name lookup (city.promoters uses name as key)
+          // fallback: ignore if not present in this city
+          const p = city.promoters.find((cp) => cp.name === pid);
+          if (p) setContactPromoter(p.name);
+        }}
+      />
+    )}
+    </>
   );
 }
 
