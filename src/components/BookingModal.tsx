@@ -188,7 +188,7 @@ export default function BookingModal() {
         onClick={(e) => e.stopPropagation()}
         className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[92vh] overflow-y-auto thin-scroll"
       >
-        <div className="p-5 text-white" style={{ background: 'linear-gradient(135deg,#e84118,#7a0f00)' }}>
+        <div className="hero-text p-5 text-white" style={{ background: 'linear-gradient(135deg,#e84118,#7a0f00)' }}>
           <div className="flex justify-between items-start">
             <div>
               <div className="text-[10px] uppercase tracking-wider font-semibold bg-white/20 inline-block px-2 py-0.5 rounded-full">
