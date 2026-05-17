@@ -188,9 +188,24 @@ async function spotifyMarketTopTrackAvg(id: string, market: string, token: strin
   }
 }
 
-// Search every DnB artist for this market, then fetch fresh /artists/{id} stats
-// AND per-market top-track popularity (real city-specific Spotify signal).
-async function spotifyTopForMarket(market: string): Promise<Array<SpotifyArtist & { marketScore: number }>> {
+async function spotifyLatestRelease(id: string, market: string, token: string): Promise<{ name: string; date: string } | null> {
+  try {
+    const r = await fetch(
+      `https://api.spotify.com/v1/artists/${id}/albums?market=${market}&limit=1&include_groups=album,single&order=desc`,
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+    if (!r.ok) return null;
+    const j = (await r.json()) as { items?: Array<{ name: string; release_date: string }> };
+    const it = j.items?.[0];
+    return it ? { name: it.name, date: it.release_date } : null;
+  } catch {
+    return null;
+  }
+}
+
+// Search every DnB artist for this market, then fetch fresh /artists/{id} stats,
+// per-market top-track popularity, and latest release (per-market availability).
+async function spotifyTopForMarket(market: string): Promise<Array<SpotifyArtist & { marketScore: number; latestRelease: { name: string; date: string } | null }>> {
   const token = await getSpotifyToken();
   // Step 1 — resolve IDs by name search (concurrency limited).
   const hits: SpotifySearchHit[] = [];
@@ -212,25 +227,28 @@ async function spotifyTopForMarket(market: string): Promise<Array<SpotifyArtist 
   const ids = Array.from(new Set(hits.map((h) => h.id)));
   const fresh = await refreshArtistsByIds(ids, token);
 
-  // Step 3 — for each artist, fetch market-specific top-track popularity.
-  // This is the real per-city Spotify signal (popularity is computed by Spotify
-  // per market on a track basis, unlike artist popularity which is global).
+  // Step 3 — per-market track popularity + latest release for each artist.
   const marketScores = new Map<string, number>();
+  const latestReleases = new Map<string, { name: string; date: string } | null>();
   let mtCursor = 0;
-  const mtIds = ids;
   async function mtWorker() {
-    while (mtCursor < mtIds.length) {
+    while (mtCursor < ids.length) {
       const i = mtCursor++;
-      const id = mtIds[i];
-      const v = await spotifyMarketTopTrackAvg(id, market, token);
-      marketScores.set(id, v);
+      const id = ids[i];
+      const [score, rel] = await Promise.all([
+        spotifyMarketTopTrackAvg(id, market, token),
+        spotifyLatestRelease(id, market, token),
+      ]);
+      marketScores.set(id, score);
+      latestReleases.set(id, rel);
     }
   }
   await Promise.all(Array.from({ length: 6 }, mtWorker));
 
-  // Step 4 — merge
+  // Step 4 — merge (only artists with content available in this market, i.e. marketScore > 0
+  // or a release surfaced — Spotify's market filter on search already excludes unavailable).
   const seen = new Set<string>();
-  const list: Array<SpotifyArtist & { marketScore: number }> = [];
+  const list: Array<SpotifyArtist & { marketScore: number; latestRelease: { name: string; date: string } | null }> = [];
   for (const h of hits) {
     if (seen.has(h.id)) continue;
     seen.add(h.id);
@@ -243,26 +261,32 @@ async function spotifyTopForMarket(market: string): Promise<Array<SpotifyArtist 
       image: a.images?.[0]?.url ?? null,
       subgenre: subgenreFor(a.name),
       marketScore: marketScores.get(a.id) ?? 0,
+      latestRelease: latestReleases.get(a.id) ?? null,
     });
   }
   return list;
 }
 
-async function spotifyLookupRoster(market: string): Promise<SpotifyArtist[]> {
+async function spotifyLookupRoster(market: string): Promise<Array<SpotifyArtist & { marketScore: number; latestRelease: { name: string; date: string } | null }>> {
   const token = await getSpotifyToken();
-  const out: SpotifyArtist[] = [];
+  const out: Array<SpotifyArtist & { marketScore: number; latestRelease: { name: string; date: string } | null }> = [];
   for (const name of UNDIVIDE_ROSTER) {
     try {
       const h = await spotifySearchOne(name, market, token);
-      if (h) {
-        out.push({
-          id: h.id, name: h.name,
-          popularity: h.popularity ?? 0,
-          followers: h.followers?.total ?? 0,
-          image: h.images?.[0]?.url ?? null,
-          subgenre: subgenreFor(h.name),
-        });
-      }
+      if (!h) continue;
+      const [score, rel] = await Promise.all([
+        spotifyMarketTopTrackAvg(h.id, market, token),
+        spotifyLatestRelease(h.id, market, token),
+      ]);
+      out.push({
+        id: h.id, name: h.name,
+        popularity: h.popularity ?? 0,
+        followers: h.followers?.total ?? 0,
+        image: h.images?.[0]?.url ?? null,
+        subgenre: subgenreFor(h.name),
+        marketScore: score,
+        latestRelease: rel,
+      });
     } catch { /* skip */ }
   }
   return out;
@@ -277,56 +301,100 @@ interface YouTubeVideo {
   thumbnail: string;
   views: number;
   published: string;
+  roster: boolean;
 }
 
-const YT_QUERY = 'drum and bass mix OR neurofunk OR liquid dnb OR jungle dnb';
+const YT_QUERIES = [
+  'drum and bass',
+  'neurofunk OR liquid dnb OR jungle dnb',
+];
 const YT_BAD = [
   'tutorial', 'how to', 'reaction', 'lesson', 'theory',
   'hardwell', 'fred again', 'techno', 'house', 'edm',
-  'trance', 'dubstep', 'trap', 'melodic techno',
-  'podcast episode', 'interview',
+  'trance', 'dubstep', 'trap', 'melodic techno', 'melodic house',
+  'podcast episode', 'interview', 'afro', 'commercial',
 ];
 const YT_GOOD = [
   'drum and bass', 'dnb', 'd&b', 'neurofunk', 'liquid dnb',
-  'jungle', 'drum & bass', 'rollers', 'halftime',
+  'jungle', 'drum & bass', 'rollers', 'halftime', 'liquid',
 ];
 const ARTIST_NAMES_LC = DNB_ARTISTS.map((n) => n.toLowerCase());
+const KNOWN_LABELS_LC = ['hospital records', 'korsakov music', 'undivide', 'ram records',
+  'shogun audio', 'critical music', 'metalheadz', 'invisible', 'blackout', 'eatbrain',
+  'liquicity', 'monstercat', 'viper recordings'];
 
 function passesYouTubeFilter(title: string, channel: string): boolean {
   const hay = `${title} ${channel}`.toLowerCase();
   if (YT_BAD.some((b) => hay.includes(b))) return false;
   if (YT_GOOD.some((g) => hay.includes(g))) return true;
+  if (KNOWN_LABELS_LC.some((l) => hay.includes(l))) return true;
   return ARTIST_NAMES_LC.some((n) => hay.includes(n));
 }
 
-async function youtubeTopForRegion(region: string): Promise<{ videos: YouTubeVideo[]; note: string | null; rawHaystack: string[] }> {
+function isRosterTagged(title: string, channel: string): boolean {
+  const hay = `${title} ${channel}`.toLowerCase();
+  if (KNOWN_LABELS_LC.some((l) => hay.includes(l))) return true;
+  return Array.from(ROSTER_LOOKUP).some((n) => hay.includes(n));
+}
+
+interface YTSearchItem {
+  id: { videoId: string };
+  snippet: {
+    title: string;
+    channelTitle: string;
+    thumbnails: { medium?: { url: string }; default?: { url: string } };
+    publishedAt: string;
+  };
+}
+
+async function ytSearchOnce(query: string, region: string, after: string, key: string): Promise<YTSearchItem[]> {
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=25&videoCategoryId=10&order=viewCount&regionCode=${region}&publishedAfter=${after}&q=${encodeURIComponent(query)}&key=${key}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`YouTube search failed: ${r.status}`);
+  const j = (await r.json()) as { items?: YTSearchItem[] };
+  return (j.items ?? []).filter((it) => it.id?.videoId);
+}
+
+async function youtubeTopForRegion(region: string, topArtistNames: string[]): Promise<{ videos: YouTubeVideo[]; note: string | null; rawHaystack: string[] }> {
   const key = process.env.YOUTUBE_API_KEY;
   if (!key) throw new Error('YouTube key not configured');
   const after = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
-  const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=50&videoCategoryId=10&order=viewCount&regionCode=${region}&publishedAfter=${after}&q=${encodeURIComponent(YT_QUERY)}&key=${key}`;
-  const s = await fetch(searchUrl);
-  if (!s.ok) throw new Error(`YouTube search failed: ${s.status}`);
-  const sj = (await s.json()) as { items?: Array<{ id: { videoId: string }; snippet: { title: string; channelTitle: string; thumbnails: { medium?: { url: string }; default?: { url: string } }; publishedAt: string } }> };
-  const candidates = (sj.items ?? []).filter((it) => it.id.videoId);
-  const filtered = candidates.filter((it) => passesYouTubeFilter(it.snippet.title, it.snippet.channelTitle));
-  // Use ALL filtered results for artist-mention scoring per city.
+
+  // 3rd query: name-search bundle of the top-5 Spotify artists in this market.
+  const queries = [...YT_QUERIES];
+  if (topArtistNames.length) {
+    queries.push(topArtistNames.slice(0, 5).map((n) => `"${n}"`).join(' OR ') + ' drum and bass');
+  }
+
+  // Run all queries, combine, dedupe by videoId.
+  const seen = new Map<string, YTSearchItem>();
+  for (const q of queries) {
+    try {
+      const items = await ytSearchOnce(q, region, after, key);
+      for (const it of items) if (!seen.has(it.id.videoId)) seen.set(it.id.videoId, it);
+    } catch { /* skip this query, continue */ }
+  }
+  const combined = Array.from(seen.values());
+  const filtered = combined.filter((it) => passesYouTubeFilter(it.snippet.title, it.snippet.channelTitle));
   const rawHaystack = filtered.map((it) => `${it.snippet.title} ${it.snippet.channelTitle}`.toLowerCase());
+
   if (filtered.length === 0) {
     return { videos: [], note: 'No verified DnB content found for this region in the last 12 months — this may indicate a developing market', rawHaystack: [] };
   }
-  const ids = filtered.slice(0, 10).map((it) => it.id.videoId);
+  const ids = filtered.slice(0, 15).map((it) => it.id.videoId);
   const statsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${ids.join(',')}&key=${key}`;
   const v = await fetch(statsUrl);
   if (!v.ok) throw new Error(`YouTube stats failed: ${v.status}`);
   const vj = (await v.json()) as { items?: Array<{ id: string; statistics: { viewCount?: string } }> };
   const viewsById = new Map(vj.items?.map((x) => [x.id, parseInt(x.statistics.viewCount ?? '0', 10)]));
-  const merged: YouTubeVideo[] = filtered.slice(0, 10).map((it) => ({
+  const merged: YouTubeVideo[] = filtered.slice(0, 15).map((it) => ({
     id: it.id.videoId,
     title: it.snippet.title,
     channel: it.snippet.channelTitle,
     thumbnail: it.snippet.thumbnails?.medium?.url ?? it.snippet.thumbnails?.default?.url ?? '',
     views: viewsById.get(it.id.videoId) ?? 0,
     published: it.snippet.publishedAt,
+    roster: isRosterTagged(it.snippet.title, it.snippet.channelTitle),
   }));
   merged.sort((a, b) => b.views - a.views);
   const top = merged.slice(0, 5);
@@ -360,10 +428,12 @@ async function putCached(cityId: string, countryCode: string, kind: 'spotify_top
 export interface SpotifyMarketArtist extends SpotifyArtist {
   rank: number;
   roster: boolean;
-  marketScore: number;     // 0..100  per-market Spotify top-track avg popularity
-  ytMentions: number;      // count of regional top videos mentioning artist
-  eventMentions: number;   // appearances in this city's promoter line-ups
-  cityScore: number;       // 0..100 composite used for ranking
+  marketScore: number;
+  ytMentions: number;
+  eventMentions: number;
+  cityScore: number;
+  latestRelease: { name: string; date: string } | null;
+  activity: 'active' | 'quiet' | 'inactive';
 }
 
 export interface CityMarketData {
@@ -378,14 +448,25 @@ export interface CityMarketData {
   errors: { spotify?: string; youtube?: string };
 }
 
+type ArtistWithExtras = SpotifyArtist & { marketScore: number; latestRelease: { name: string; date: string } | null };
 type CachedSpotify = {
-  artists: Array<SpotifyArtist & { marketScore: number }>;
-  rosterAll: Array<SpotifyArtist & { marketScore: number }>;
+  artists: ArtistWithExtras[];
+  rosterAll: ArtistWithExtras[];
 };
 type CachedYoutube = { videos: YouTubeVideo[]; note: string | null; rawHaystack: string[] };
 
+function activityFor(rel: { date: string } | null): 'active' | 'quiet' | 'inactive' {
+  if (!rel) return 'inactive';
+  const d = new Date(rel.date).getTime();
+  if (!Number.isFinite(d)) return 'inactive';
+  const ageDays = (Date.now() - d) / 86400000;
+  if (ageDays < 120) return 'active';
+  if (ageDays < 365) return 'quiet';
+  return 'inactive';
+}
+
 function scoreArtists(
-  artists: Array<SpotifyArtist & { marketScore: number }>,
+  artists: ArtistWithExtras[],
   ytHaystack: string[],
   lineupsLc: string[],
 ): SpotifyMarketArtist[] {
@@ -396,10 +477,9 @@ function scoreArtists(
     const nameLc = a.name.toLowerCase();
     const ytMentions = ytHaystack.filter((h) => h.includes(nameLc)).length;
     const eventMentions = lineupCount.get(nameLc) ?? 0;
-    // Weighted composite, each component normalized 0..100
-    const spotifyComp = a.marketScore;                         // 0..100 already
-    const ytComp = Math.min(100, ytMentions * 20);             // 5 mentions = 100
-    const eventComp = Math.min(100, eventMentions * 25);       // 4 events = 100
+    const spotifyComp = a.marketScore;
+    const ytComp = Math.min(100, ytMentions * 20);
+    const eventComp = Math.min(100, eventMentions * 25);
     const cityScore = spotifyComp * 0.55 + ytComp * 0.25 + eventComp * 0.20;
     return {
       ...a,
@@ -408,6 +488,7 @@ function scoreArtists(
       ytMentions,
       eventMentions,
       cityScore: Math.round(cityScore * 10) / 10,
+      activity: activityFor(a.latestRelease),
     };
   });
 }
@@ -475,7 +556,12 @@ export const getCityMarketData = createServerFn({ method: 'POST' })
     }
     if (!youtubeRaw) {
       try {
-        youtubeRaw = await youtubeTopForRegion(market);
+        // Pre-rank Spotify artists by marketScore alone to feed YouTube query #3.
+        const preTopNames = [...spotifyRaw.artists]
+          .sort((a, b) => b.marketScore - a.marketScore)
+          .slice(0, 5)
+          .map((a) => a.name);
+        youtubeRaw = await youtubeTopForRegion(market, preTopNames);
         await putCached(data.cityId, market, 'youtube_top', youtubeRaw);
       } catch (e) {
         errors.youtube = (e as Error).message;

@@ -138,7 +138,7 @@ export default function DetailPanel() {
                 : 'text-gray-500 hover:text-gray-800'
             }`}
           >
-            {t === 'overview' ? 'Overview' : 'Top Artists'}
+            {t === 'overview' ? 'Overview' : 'Scene Intel'}
           </button>
         ))}
       </div>
