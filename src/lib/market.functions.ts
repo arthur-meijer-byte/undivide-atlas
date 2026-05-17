@@ -428,10 +428,12 @@ async function putCached(cityId: string, countryCode: string, kind: 'spotify_top
 export interface SpotifyMarketArtist extends SpotifyArtist {
   rank: number;
   roster: boolean;
-  marketScore: number;     // 0..100  per-market Spotify top-track avg popularity
-  ytMentions: number;      // count of regional top videos mentioning artist
-  eventMentions: number;   // appearances in this city's promoter line-ups
-  cityScore: number;       // 0..100 composite used for ranking
+  marketScore: number;
+  ytMentions: number;
+  eventMentions: number;
+  cityScore: number;
+  latestRelease: { name: string; date: string } | null;
+  activity: 'active' | 'quiet' | 'inactive';
 }
 
 export interface CityMarketData {
@@ -446,11 +448,22 @@ export interface CityMarketData {
   errors: { spotify?: string; youtube?: string };
 }
 
+type ArtistWithExtras = SpotifyArtist & { marketScore: number; latestRelease: { name: string; date: string } | null };
 type CachedSpotify = {
-  artists: Array<SpotifyArtist & { marketScore: number }>;
-  rosterAll: Array<SpotifyArtist & { marketScore: number }>;
+  artists: ArtistWithExtras[];
+  rosterAll: ArtistWithExtras[];
 };
 type CachedYoutube = { videos: YouTubeVideo[]; note: string | null; rawHaystack: string[] };
+
+function activityFor(rel: { date: string } | null): 'active' | 'quiet' | 'inactive' {
+  if (!rel) return 'inactive';
+  const d = new Date(rel.date).getTime();
+  if (!Number.isFinite(d)) return 'inactive';
+  const ageDays = (Date.now() - d) / 86400000;
+  if (ageDays < 120) return 'active';
+  if (ageDays < 365) return 'quiet';
+  return 'inactive';
+}
 
 function scoreArtists(
   artists: Array<SpotifyArtist & { marketScore: number }>,
