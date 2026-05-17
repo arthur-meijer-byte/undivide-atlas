@@ -460,9 +460,9 @@ export default function DetailPanel() {
 function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white text-gray-900 rounded-xl shadow-xl max-w-md w-full max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between gap-2 p-4 border-b border-gray-200">
-          <h3 className="font-bold text-base">{title}</h3>
+          <h3 className="font-bold text-base text-gray-900">{title}</h3>
           <button onClick={onClose} className="text-gray-600 hover:text-gray-700 text-2xl leading-none">×</button>
         </div>
         <div className="p-4 overflow-y-auto thin-scroll">{children}</div>
