@@ -36,6 +36,7 @@ export default function DetailPanel() {
   const [showEvents, setShowEvents] = useState(false);
   const [showPromoters, setShowPromoters] = useState(false);
   const [contactPromoter, setContactPromoter] = useState<string | null>(null);
+  const [tab, setTab] = useState<'overview' | 'artists'>('overview');
 
   const initCityStatus = useCityStatus((s) => s.init);
   const cityRow = useCityStatus((s) => (currentCity ? s.byCity[currentCity.id] : undefined));
