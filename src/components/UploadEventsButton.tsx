@@ -3,20 +3,16 @@ import * as XLSX from 'xlsx';
 import { useBookings, type Sound } from '../hooks/useBookings';
 import { CITIES } from '../data/cities';
 
-// Map an Excel serial date or string into YYYY-MM-DD.
 function toISODate(v: unknown): string {
   if (v == null || v === '') return '';
   if (typeof v === 'number') {
-    // Excel serial date (1900 system). 25569 = 1970-01-01.
     const ms = Math.round((v - 25569) * 86400 * 1000);
     const d = new Date(ms);
     if (!isNaN(d.getTime())) return d.toISOString().slice(0, 10);
   }
   const s = String(v).trim();
-  // already ISO?
   const iso = /^(\d{4})-(\d{2})-(\d{2})/.exec(s);
   if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
-  // dd/mm/yyyy or dd-mm-yyyy
   const dmy = /^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/.exec(s);
   if (dmy) {
     const d = dmy[1].padStart(2, '0');
@@ -35,7 +31,6 @@ function toInt(v: unknown): number {
   return isNaN(n) ? 0 : n;
 }
 
-// Get a case/space-insensitive value from a row.
 function pick(row: Record<string, unknown>, keys: string[]): unknown {
   const norm = (s: string) => s.toLowerCase().replace(/[\s_\-/()]/g, '');
   const map: Record<string, unknown> = {};
@@ -112,7 +107,7 @@ export default function UploadEventsButton() {
           const brand = normaliseBrand(pick(r, ['brand', 'promoter']) ?? fallbackBrand);
           const cap = toInt(pick(r, ['capacity', 'cap', 'no tickets']));
           const sold = toInt(pick(r, ['tickets sold', 'sold', 'on-sale', 'ticketssold']));
-          const status = String(pick(r, ['status']) ?? '').trim();
+          const statusVal = String(pick(r, ['status']) ?? '').trim();
           const ref = String(pick(r, ['und ref', 'ref', 'reference']) ?? '').trim();
           const notes = String(pick(r, ['notes', 'comments']) ?? '').trim();
           const runtimes = String(pick(r, ['run times', 'run times 24hr', 'times']) ?? '').trim();
@@ -128,7 +123,7 @@ export default function UploadEventsButton() {
 
           const notesBlocks = [
             ref && `Ref: ${ref}`,
-            status && `Status: ${status}`,
+            statusVal && `Status: ${statusVal}`,
             runtimes && `Run: ${runtimes}`,
             share && `Undivide share: ${share}`,
             bookingLead && `Booking: ${bookingLead}`,
@@ -178,10 +173,10 @@ export default function UploadEventsButton() {
     <>
       <button
         onClick={() => fileRef.current?.click()}
-        className="bg-white shadow-[var(--shadow-float)] hover:bg-gray-50 px-3 py-2 rounded-full text-sm font-semibold flex items-center gap-1.5"
+        className="text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded-full flex items-center gap-1"
         title="Bulk import shows from an .xlsx file"
       >
-        ⬆️ <span>Upload event data</span>
+        ⬆️ <span>Upload</span>
       </button>
       <input
         ref={fileRef}
