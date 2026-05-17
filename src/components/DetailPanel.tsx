@@ -358,6 +358,7 @@ export default function DetailPanel() {
           </div>
         )}
       </div>
+      )}
 
       {/* Events overview modal */}
       {showEvents && (
