@@ -237,6 +237,9 @@ export default function MapView() {
               zoom={mapTransform.scale}
               onClick={() => setCity(city)}
               onHover={(p) => setHover(p ? { city, x: p.x, y: p.y } : null)}
+              spotifyMode={spotifyReachOn}
+              reach={reachData?.byCity[city.id]?.total ?? 0}
+              reachMax={reachMax}
             />
           ))}
           {visibleBookings.map((b) => (
