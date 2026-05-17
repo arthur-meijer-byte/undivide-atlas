@@ -104,25 +104,59 @@ export const usePromoters = create<PromotersState>()(
           ],
           selectedId: id,
         }));
+        const user = useUser.getState().user ?? '—';
+        useActivity.getState().log({
+          user, action: 'added promoter', subject: p.name,
+          target: 'promoter', targetId: id,
+        });
         return id;
       },
-      update: (id, patch) =>
+      update: (id, patch) => {
+        const prev = (useUser.getState(), null);
+        // capture previous before mutating
+        const prior = (typeof window !== 'undefined') ? undefined : prev;
+        void prior;
+        const before = (set as unknown as { getState?: () => PromotersState }).getState?.();
+        // fallback: read current store
+        const currentBefore = usePromoters.getState().promoters.find((x) => x.id === id);
         set((s) => ({
           promoters: s.promoters.map((x) => (x.id === id ? { ...x, ...patch } : x)),
-        })),
+        }));
+        if (!currentBefore) return;
+        const user = useUser.getState().user ?? '—';
+        let action: ActivityAction = 'updated promoter';
+        if (patch.status && patch.status !== currentBefore.status) action = 'moved promoter';
+        if (patch.followUp && patch.followUp !== currentBefore.followUp) action = 'set follow-up';
+        useActivity.getState().log({
+          user, action, subject: currentBefore.name,
+          target: 'promoter', targetId: id,
+        });
+      },
       remove: (id) =>
         set((s) => ({
           promoters: s.promoters.filter((x) => x.id !== id),
           selectedId: s.selectedId === id ? null : s.selectedId,
         })),
-      addActivity: (id, a) =>
+      addActivity: (id, a) => {
         set((s) => ({
           promoters: s.promoters.map((x) =>
             x.id === id
               ? { ...x, activity: [{ ...a, id: crypto.randomUUID() }, ...x.activity] }
               : x,
           ),
-        })),
+        }));
+        const promoter = usePromoters.getState().promoters.find((x) => x.id === id);
+        if (!promoter) return;
+        const user = useUser.getState().user ?? a.loggedBy;
+        const map: Record<string, ActivityAction> = {
+          Call: 'logged call', Email: 'logged email', WhatsApp: 'logged whatsapp',
+          Meeting: 'logged meeting', Note: 'logged note',
+        };
+        useActivity.getState().log({
+          user, action: map[a.type] ?? 'logged note',
+          subject: promoter.name, target: 'promoter', targetId: id,
+        });
+      },
     }),
     { name: 'undivide-promoters' },
   ),
