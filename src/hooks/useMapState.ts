@@ -54,6 +54,7 @@ export const useMapState = create<MapState>((set) => ({
   clearBrands: () => set({ activeBrands: [] }),
   setYear: (y) => set({ selectedYear: y }),
   setHeatmap: (b) => set({ heatmapOn: b }),
+  setSpotifyReach: (b) => set({ spotifyReachOn: b }),
   setCity: (c) => set({ currentCity: c, currentTab: 0, hoverCity: null }),
   setTab: (n) => set({ currentTab: n }),
   openCompare: (a, b) => set((s) => ({
