@@ -291,15 +291,6 @@ async function spotifyLookupRoster(market: string): Promise<Array<SpotifyArtist 
   }
   return out;
 }
-          followers: h.followers?.total ?? 0,
-          image: h.images?.[0]?.url ?? null,
-          subgenre: subgenreFor(h.name),
-        });
-      }
-    } catch { /* skip */ }
-  }
-  return out;
-}
 
 // ───────────────────────── YouTube ─────────────────────────
 
