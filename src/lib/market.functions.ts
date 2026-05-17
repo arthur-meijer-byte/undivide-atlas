@@ -360,6 +360,10 @@ async function putCached(cityId: string, countryCode: string, kind: 'spotify_top
 export interface SpotifyMarketArtist extends SpotifyArtist {
   rank: number;
   roster: boolean;
+  marketScore: number;     // 0..100  per-market Spotify top-track avg popularity
+  ytMentions: number;      // count of regional top videos mentioning artist
+  eventMentions: number;   // appearances in this city's promoter line-ups
+  cityScore: number;       // 0..100 composite used for ranking
 }
 
 export interface CityMarketData {
@@ -374,76 +378,137 @@ export interface CityMarketData {
   errors: { spotify?: string; youtube?: string };
 }
 
+type CachedSpotify = {
+  artists: Array<SpotifyArtist & { marketScore: number }>;
+  rosterAll: Array<SpotifyArtist & { marketScore: number }>;
+};
+type CachedYoutube = { videos: YouTubeVideo[]; note: string | null; rawHaystack: string[] };
+
+function scoreArtists(
+  artists: Array<SpotifyArtist & { marketScore: number }>,
+  ytHaystack: string[],
+  lineupsLc: string[],
+): SpotifyMarketArtist[] {
+  const lineupCount = new Map<string, number>();
+  for (const n of lineupsLc) lineupCount.set(n, (lineupCount.get(n) ?? 0) + 1);
+
+  return artists.map((a) => {
+    const nameLc = a.name.toLowerCase();
+    const ytMentions = ytHaystack.filter((h) => h.includes(nameLc)).length;
+    const eventMentions = lineupCount.get(nameLc) ?? 0;
+    // Weighted composite, each component normalized 0..100
+    const spotifyComp = a.marketScore;                         // 0..100 already
+    const ytComp = Math.min(100, ytMentions * 20);             // 5 mentions = 100
+    const eventComp = Math.min(100, eventMentions * 25);       // 4 events = 100
+    const cityScore = spotifyComp * 0.55 + ytComp * 0.25 + eventComp * 0.20;
+    return {
+      ...a,
+      rank: 0,
+      roster: ROSTER_LOOKUP.has(nameLc),
+      ytMentions,
+      eventMentions,
+      cityScore: Math.round(cityScore * 10) / 10,
+    };
+  });
+}
+
 export const getCityMarketData = createServerFn({ method: 'POST' })
-  .inputValidator((data: { cityId: string; country: string; force?: boolean }) =>
-    z.object({ cityId: z.string().min(1), country: z.string().min(1), force: z.boolean().optional() }).parse(data),
+  .inputValidator((data: { cityId: string; country: string; force?: boolean; lineups?: string[] }) =>
+    z.object({
+      cityId: z.string().min(1),
+      country: z.string().min(1),
+      force: z.boolean().optional(),
+      lineups: z.array(z.string()).max(2000).optional(),
+    }).parse(data),
   )
   .handler(async ({ data }): Promise<CityMarketData> => {
     const market = isoForCountry(data.country);
     const errors: { spotify?: string; youtube?: string } = {};
     const force = data.force === true;
+    const lineupsLc = (data.lineups ?? []).map((n) => n.toLowerCase());
 
-    // 1. Spotify top + roster (combined cache)
-    let spotifyPayload: { spotifyTop: SpotifyMarketArtist[]; rosterOutside: SpotifyMarketArtist[]; rosterBreakdown: Array<{ name: string; followers: number; popularity: number }>; rosterReachTotal: number } | null = null;
+    // 1. Spotify raw fetch (artists + roster, with per-market track scores).
+    let spotifyRaw: CachedSpotify | null = null;
     if (!force) {
-      const cached = await getCached<typeof spotifyPayload>(data.cityId, 'spotify_top');
-      if (cached) spotifyPayload = cached.data;
+      const cached = await getCached<CachedSpotify>(data.cityId, 'spotify_top');
+      // Legacy cache shape had { spotifyTop, ... } — invalidate it.
+      if (cached && (cached.data as unknown as { artists?: unknown }).artists) {
+        spotifyRaw = cached.data;
+      }
     }
-    if (!spotifyPayload) {
+    if (!spotifyRaw) {
       try {
-        const [top, roster] = await Promise.all([
+        const [top, rosterAll] = await Promise.all([
           spotifyTopForMarket(market),
-          spotifyLookupRoster(market),
+          spotifyLookupRoster(market).then(async (roster) => {
+            // Also compute market top-track score for roster artists.
+            const token = await getSpotifyToken();
+            const withScore = await Promise.all(
+              roster.map(async (r) => ({
+                ...r,
+                marketScore: await spotifyMarketTopTrackAvg(r.id, market, token),
+              })),
+            );
+            return withScore;
+          }),
         ]);
-        const top10: SpotifyMarketArtist[] = top.slice(0, 10).map((a, i) => ({
-          ...a, rank: i + 1, roster: ROSTER_LOOKUP.has(a.name.toLowerCase()),
-        }));
-        const top10Names = new Set(top10.map((t) => t.name.toLowerCase()));
-        const rosterOutside: SpotifyMarketArtist[] = roster
-          .filter((r) => !top10Names.has(r.name.toLowerCase()))
-          .sort((a, b) => b.followers - a.followers)
-          .slice(0, 10)
-          .map((a, i) => ({ ...a, rank: i + 1, roster: true }));
-        const rosterBreakdown = roster
-          .map((r) => ({ name: r.name, followers: r.followers, popularity: r.popularity }))
-          .sort((a, b) => b.followers - a.followers);
-        const rosterReachTotal = roster.reduce((s, r) => s + r.followers, 0);
-        spotifyPayload = { spotifyTop: top10, rosterOutside, rosterBreakdown, rosterReachTotal };
-        await putCached(data.cityId, market, 'spotify_top', spotifyPayload);
+        spotifyRaw = { artists: top, rosterAll };
+        await putCached(data.cityId, market, 'spotify_top', spotifyRaw);
       } catch (e) {
         errors.spotify = (e as Error).message;
-        spotifyPayload = { spotifyTop: [], rosterOutside: [], rosterBreakdown: [], rosterReachTotal: 0 };
+        spotifyRaw = { artists: [], rosterAll: [] };
       }
     }
 
-    // 2. YouTube top (cached as { videos, note })
-    let youtubePayload: { videos: YouTubeVideo[]; note: string | null } | null = null;
+    // 2. YouTube raw fetch (videos + note + rawHaystack for scoring).
+    let youtubeRaw: CachedYoutube | null = null;
     if (!force) {
-      const cached = await getCached<{ videos: YouTubeVideo[]; note: string | null } | YouTubeVideo[]>(data.cityId, 'youtube_top');
+      const cached = await getCached<CachedYoutube | YouTubeVideo[] | { videos: YouTubeVideo[]; note: string | null }>(data.cityId, 'youtube_top');
       if (cached) {
-        // Migrate legacy cache shape (bare array) so we don't surface stale broken data.
-        youtubePayload = Array.isArray(cached.data) ? null : cached.data;
+        const c = cached.data as { rawHaystack?: unknown };
+        if (Array.isArray(cached.data) || !c.rawHaystack) {
+          youtubeRaw = null; // legacy shape — refetch
+        } else {
+          youtubeRaw = cached.data as CachedYoutube;
+        }
       }
     }
-    if (!youtubePayload) {
+    if (!youtubeRaw) {
       try {
-        youtubePayload = await youtubeTopForRegion(market);
-        await putCached(data.cityId, market, 'youtube_top', youtubePayload);
+        youtubeRaw = await youtubeTopForRegion(market);
+        await putCached(data.cityId, market, 'youtube_top', youtubeRaw);
       } catch (e) {
         errors.youtube = (e as Error).message;
-        youtubePayload = { videos: [], note: null };
+        youtubeRaw = { videos: [], note: null, rawHaystack: [] };
       }
     }
+
+    // 3. Composite per-city ranking.
+    const scored = scoreArtists(spotifyRaw.artists, youtubeRaw.rawHaystack, lineupsLc);
+    scored.sort((a, b) => b.cityScore - a.cityScore || b.popularity - a.popularity);
+    const spotifyTop = scored.slice(0, 10).map((a, i) => ({ ...a, rank: i + 1 }));
+    const top10Names = new Set(spotifyTop.map((t) => t.name.toLowerCase()));
+
+    const rosterScored = scoreArtists(spotifyRaw.rosterAll, youtubeRaw.rawHaystack, lineupsLc);
+    const rosterOutside = rosterScored
+      .filter((r) => !top10Names.has(r.name.toLowerCase()))
+      .sort((a, b) => b.cityScore - a.cityScore || b.followers - a.followers)
+      .slice(0, 10)
+      .map((a, i) => ({ ...a, rank: i + 1, roster: true }));
+    const rosterBreakdown = spotifyRaw.rosterAll
+      .map((r) => ({ name: r.name, followers: r.followers, popularity: r.popularity }))
+      .sort((a, b) => b.followers - a.followers);
+    const rosterReachTotal = spotifyRaw.rosterAll.reduce((s, r) => s + r.followers, 0);
 
     return {
       countryCode: market,
       fetchedAt: new Date().toISOString(),
-      spotifyTop: spotifyPayload.spotifyTop,
-      rosterOutside: spotifyPayload.rosterOutside,
-      rosterBreakdown: spotifyPayload.rosterBreakdown,
-      rosterReachTotal: spotifyPayload.rosterReachTotal,
-      youtubeTop: youtubePayload.videos,
-      youtubeNote: youtubePayload.note,
+      spotifyTop,
+      rosterOutside,
+      rosterBreakdown,
+      rosterReachTotal,
+      youtubeTop: youtubeRaw.videos,
+      youtubeNote: youtubeRaw.note,
       errors,
     };
   });
