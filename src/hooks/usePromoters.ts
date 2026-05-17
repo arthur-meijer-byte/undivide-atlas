@@ -112,23 +112,17 @@ export const usePromoters = create<PromotersState>()(
         return id;
       },
       update: (id, patch) => {
-        const prev = (useUser.getState(), null);
-        // capture previous before mutating
-        const prior = (typeof window !== 'undefined') ? undefined : prev;
-        void prior;
-        const before = (set as unknown as { getState?: () => PromotersState }).getState?.();
-        // fallback: read current store
-        const currentBefore = usePromoters.getState().promoters.find((x) => x.id === id);
+        const before = usePromoters.getState().promoters.find((x) => x.id === id);
         set((s) => ({
           promoters: s.promoters.map((x) => (x.id === id ? { ...x, ...patch } : x)),
         }));
-        if (!currentBefore) return;
+        if (!before) return;
         const user = useUser.getState().user ?? '—';
         let action: ActivityAction = 'updated promoter';
-        if (patch.status && patch.status !== currentBefore.status) action = 'moved promoter';
-        if (patch.followUp && patch.followUp !== currentBefore.followUp) action = 'set follow-up';
+        if (patch.status && patch.status !== before.status) action = 'moved promoter';
+        else if (patch.followUp && patch.followUp !== before.followUp) action = 'set follow-up';
         useActivity.getState().log({
-          user, action, subject: currentBefore.name,
+          user, action, subject: before.name,
           target: 'promoter', targetId: id,
         });
       },
