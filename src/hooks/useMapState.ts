@@ -1,10 +1,12 @@
 import { create } from 'zustand';
 import type { City } from '../data/cities';
 
-export type FilterKey = 'all' | 'undivide' | 'ukf' | 'hospitality';
+export type BrandFilter = 'Hospitality' | 'UKF' | 'Korsakov' | 'The Blast' | 'RUN' | 'Independent';
+// Kept for backwards compat with any callers; not used directly anymore.
+export type FilterKey = 'all' | BrandFilter;
 
 interface MapState {
-  activeFilter: FilterKey;
+  activeBrands: BrandFilter[];
   selectedYear: number | null;
   heatmapOn: boolean;
   currentCity: City | null;
@@ -14,7 +16,8 @@ interface MapState {
   compareCityB: string | null;
   mapTransform: { scale: number; x: number; y: number };
   hoverCity: { city: City; x: number; y: number } | null;
-  setFilter: (f: FilterKey) => void;
+  toggleBrand: (b: BrandFilter) => void;
+  clearBrands: () => void;
   setYear: (y: number | null) => void;
   setHeatmap: (b: boolean) => void;
   setCity: (c: City | null) => void;
@@ -29,7 +32,7 @@ interface MapState {
 }
 
 export const useMapState = create<MapState>((set) => ({
-  activeFilter: 'all',
+  activeBrands: [],
   selectedYear: null,
   heatmapOn: false,
   currentCity: null,
@@ -39,7 +42,13 @@ export const useMapState = create<MapState>((set) => ({
   compareCityB: null,
   mapTransform: { scale: 1, x: 0, y: 0 },
   hoverCity: null,
-  setFilter: (f) => set({ activeFilter: f }),
+  toggleBrand: (b) =>
+    set((s) => ({
+      activeBrands: s.activeBrands.includes(b)
+        ? s.activeBrands.filter((x) => x !== b)
+        : [...s.activeBrands, b],
+    })),
+  clearBrands: () => set({ activeBrands: [] }),
   setYear: (y) => set({ selectedYear: y }),
   setHeatmap: (b) => set({ heatmapOn: b }),
   setCity: (c) => set({ currentCity: c, currentTab: 0, hoverCity: null }),
