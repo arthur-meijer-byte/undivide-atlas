@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { supabaseAdmin } from '@/integrations/supabase/client.server';
-import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
+
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -192,7 +192,6 @@ export interface CityMarketData {
 }
 
 export const getCityMarketData = createServerFn({ method: 'POST' })
-  .middleware([requireSupabaseAuth])
   .inputValidator((data: { cityId: string; country: string; force?: boolean }) =>
     z.object({ cityId: z.string().min(1), country: z.string().min(1), force: z.boolean().optional() }).parse(data),
   )
@@ -268,7 +267,6 @@ export interface RosterReachAll {
 }
 
 export const getAllRosterReach = createServerFn({ method: 'POST' })
-  .middleware([requireSupabaseAuth])
   .handler(async (): Promise<RosterReachAll> => {
     const { data: rows } = await supabaseAdmin
       .from('market_cache')
