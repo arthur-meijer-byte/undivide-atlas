@@ -60,10 +60,12 @@ export const useBookings = create<BookingsState>()(
         }));
         const user = useUser.getState().user ?? '—';
         const subject = `${b.eventName || b.venue || 'Show'} — ${b.city}`;
-        useActivity.getState().log({
-          user, action: b.status === 'Confirmed' ? 'confirmed show' : 'added show',
-          subject, target: 'show', targetId: id,
-        });
+        const action: 'confirmed show' | 'added show' = b.status === 'Confirmed' ? 'confirmed show' : 'added show';
+        useActivity.getState().log({ user, action, subject, target: 'show', targetId: id });
+        void useUser.getState().notify(
+          `${user} ${action === 'confirmed show' ? 'confirmed' : 'added'} a show in ${b.city} — ${b.eventName || b.venue || 'Show'}`,
+          'show', id, 'show.add',
+        );
       },
       update: (id, b) => {
         set((s) => ({
@@ -76,6 +78,10 @@ export const useBookings = create<BookingsState>()(
         const action: 'confirmed show' | 'updated show' =
           b.status === 'Confirmed' ? 'confirmed show' : 'updated show';
         useActivity.getState().log({ user, action, subject, target: 'show', targetId: id });
+        void useUser.getState().notify(
+          `${user} ${action === 'confirmed show' ? 'confirmed' : 'updated'} ${cur.eventName || cur.venue || 'show'} in ${cur.city}`,
+          'show', id, 'show.update',
+        );
       },
       remove: (id) => set((s) => ({ bookings: s.bookings.filter((x) => x.id !== id) })),
       openModal: (prefill, editingId) =>

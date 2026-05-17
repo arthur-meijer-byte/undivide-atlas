@@ -109,6 +109,10 @@ export const usePromoters = create<PromotersState>()(
           user, action: 'added promoter', subject: p.name,
           target: 'promoter', targetId: id,
         });
+        void useUser.getState().notify(
+          `${user} added promoter ${p.name} in ${p.city}`,
+          'promoter', id, 'promoter.add',
+        );
         return id;
       },
       update: (id, patch) => {
@@ -119,12 +123,19 @@ export const usePromoters = create<PromotersState>()(
         if (!before) return;
         const user = useUser.getState().user ?? '—';
         let action: ActivityAction = 'updated promoter';
-        if (patch.status && patch.status !== before.status) action = 'moved promoter';
-        else if (patch.followUp && patch.followUp !== before.followUp) action = 'set follow-up';
+        let message = `${user} updated promoter ${before.name}`;
+        if (patch.status && patch.status !== before.status) {
+          action = 'moved promoter';
+          message = `${user} moved ${before.name} to '${patch.status}'`;
+        } else if (patch.followUp && patch.followUp !== before.followUp) {
+          action = 'set follow-up';
+          message = `${user} set a follow-up for ${before.name} on ${patch.followUp}`;
+        }
         useActivity.getState().log({
           user, action, subject: before.name,
           target: 'promoter', targetId: id,
         });
+        void useUser.getState().notify(message, 'promoter', id, `promoter.${action}`);
       },
       remove: (id) =>
         set((s) => ({
@@ -146,10 +157,14 @@ export const usePromoters = create<PromotersState>()(
           Call: 'logged call', Email: 'logged email', WhatsApp: 'logged whatsapp',
           Meeting: 'logged meeting', Note: 'logged note',
         };
+        const action = map[a.type] ?? 'logged note';
         useActivity.getState().log({
-          user, action: map[a.type] ?? 'logged note',
-          subject: promoter.name, target: 'promoter', targetId: id,
+          user, action, subject: promoter.name, target: 'promoter', targetId: id,
         });
+        void useUser.getState().notify(
+          `${user} ${action} — ${promoter.name}`,
+          'promoter', id, `promoter.${action}`,
+        );
       },
     }),
     { name: 'undivide-promoters' },
