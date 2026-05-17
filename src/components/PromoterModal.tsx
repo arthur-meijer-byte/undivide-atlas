@@ -48,7 +48,7 @@ export default function PromoterModal({ city, promoter, onClose, onViewHistory }
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
       <div
-        className="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[85vh] flex flex-col"
+        className="bg-white text-gray-900 rounded-xl shadow-xl max-w-lg w-full max-h-[85vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
