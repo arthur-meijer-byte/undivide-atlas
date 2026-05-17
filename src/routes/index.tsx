@@ -11,6 +11,7 @@ import BookingsButton from '../components/BookingsButton';
 import ThemeToggle from '../components/ThemeToggle';
 import AgendaPanel, { AgendaButton } from '../components/AgendaPanel';
 import UploadEventsButton from '../components/UploadEventsButton';
+import PromotersPanel, { PromotersButton } from '../components/PromotersPanel';
 import { useApplyTheme } from '../hooks/useTheme';
 
 export const Route = createFileRoute('/')({
