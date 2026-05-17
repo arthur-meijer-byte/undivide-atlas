@@ -172,8 +172,25 @@ async function refreshArtistsByIds(ids: string[], token: string): Promise<Map<st
   return out;
 }
 
-// Search every DnB artist for this market, then fetch fresh /artists/{id} stats.
-async function spotifyTopForMarket(market: string): Promise<SpotifyArtist[]> {
+async function spotifyMarketTopTrackAvg(id: string, market: string, token: string): Promise<number> {
+  try {
+    const r = await fetch(
+      `https://api.spotify.com/v1/artists/${id}/top-tracks?market=${market}`,
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+    if (!r.ok) return 0;
+    const j = (await r.json()) as { tracks?: Array<{ popularity?: number }> };
+    const ps = (j.tracks ?? []).slice(0, 5).map((t) => t.popularity ?? 0);
+    if (!ps.length) return 0;
+    return ps.reduce((a, b) => a + b, 0) / ps.length;
+  } catch {
+    return 0;
+  }
+}
+
+// Search every DnB artist for this market, then fetch fresh /artists/{id} stats
+// AND per-market top-track popularity (real city-specific Spotify signal).
+async function spotifyTopForMarket(market: string): Promise<Array<SpotifyArtist & { marketScore: number }>> {
   const token = await getSpotifyToken();
   // Step 1 — resolve IDs by name search (concurrency limited).
   const hits: SpotifySearchHit[] = [];
@@ -195,9 +212,25 @@ async function spotifyTopForMarket(market: string): Promise<SpotifyArtist[]> {
   const ids = Array.from(new Set(hits.map((h) => h.id)));
   const fresh = await refreshArtistsByIds(ids, token);
 
-  // Step 3 — merge
+  // Step 3 — for each artist, fetch market-specific top-track popularity.
+  // This is the real per-city Spotify signal (popularity is computed by Spotify
+  // per market on a track basis, unlike artist popularity which is global).
+  const marketScores = new Map<string, number>();
+  let mtCursor = 0;
+  const mtIds = ids;
+  async function mtWorker() {
+    while (mtCursor < mtIds.length) {
+      const i = mtCursor++;
+      const id = mtIds[i];
+      const v = await spotifyMarketTopTrackAvg(id, market, token);
+      marketScores.set(id, v);
+    }
+  }
+  await Promise.all(Array.from({ length: 6 }, mtWorker));
+
+  // Step 4 — merge
   const seen = new Set<string>();
-  const list: SpotifyArtist[] = [];
+  const list: Array<SpotifyArtist & { marketScore: number }> = [];
   for (const h of hits) {
     if (seen.has(h.id)) continue;
     seen.add(h.id);
@@ -209,9 +242,9 @@ async function spotifyTopForMarket(market: string): Promise<SpotifyArtist[]> {
       followers: a.followers?.total ?? 0,
       image: a.images?.[0]?.url ?? null,
       subgenre: subgenreFor(a.name),
+      marketScore: marketScores.get(a.id) ?? 0,
     });
   }
-  list.sort((a, b) => b.popularity - a.popularity || b.followers - a.followers);
   return list;
 }
 
