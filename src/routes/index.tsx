@@ -11,6 +11,7 @@ import BookingsButton from '../components/BookingsButton';
 import ThemeToggle from '../components/ThemeToggle';
 import AgendaPanel, { AgendaButton } from '../components/AgendaPanel';
 import UploadEventsButton from '../components/UploadEventsButton';
+import PromotersPanel, { PromotersButton } from '../components/PromotersPanel';
 import { useApplyTheme } from '../hooks/useTheme';
 
 export const Route = createFileRoute('/')({
@@ -30,6 +31,7 @@ function Index() {
       <h1 className="sr-only">Undivide Territory Intelligence</h1>
       <div className="absolute top-4 right-[200px] z-30 flex items-center gap-2">
         <UploadEventsButton />
+        <PromotersButton />
         <AgendaButton />
         <ThemeToggle />
       </div>
@@ -43,6 +45,7 @@ function Index() {
       <BookingsButton />
       <BookingModal />
       <AgendaPanel />
+      <PromotersPanel />
     </main>
   );
 }
