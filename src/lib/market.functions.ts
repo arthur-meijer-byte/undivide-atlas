@@ -525,8 +525,11 @@ export const getAllRosterReach = createServerFn({ method: 'POST' })
       .eq('kind', 'spotify_top');
     const byCity: Record<string, { total: number; iso: string }> = {};
     for (const r of rows ?? []) {
-      const p = r.payload as { rosterReachTotal?: number } | null;
-      byCity[r.city_id] = { total: p?.rosterReachTotal ?? 0, iso: r.country_code };
+      const p = r.payload as { rosterAll?: Array<{ followers?: number }>; rosterReachTotal?: number } | null;
+      const total = p?.rosterAll
+        ? p.rosterAll.reduce((s, a) => s + (a.followers ?? 0), 0)
+        : p?.rosterReachTotal ?? 0;
+      byCity[r.city_id] = { total, iso: r.country_code };
     }
     return { byCity };
   });
