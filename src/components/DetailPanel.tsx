@@ -64,7 +64,7 @@ export default function DetailPanel() {
       key={city.id}
       className="panel-slide-in absolute top-0 left-0 bottom-0 z-30 w-[400px] bg-white shadow-[var(--shadow-panel)] flex flex-col"
     >
-      <div className="relative p-5 text-white" style={{ background: city.heroColor }}>
+      <div className="hero-text relative p-5 text-white" style={{ background: city.heroColor }}>
         <button
           onClick={() => setCity(null)}
           className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center"
