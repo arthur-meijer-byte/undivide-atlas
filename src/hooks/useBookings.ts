@@ -3,6 +3,9 @@ import { persist } from 'zustand/middleware';
 
 export type Sound = 'Liquid' | 'Neuro' | 'Jump Up' | 'Dancefloor' | 'Minimal' | 'Halftime' | 'All Styles';
 
+export type ShowBrand = 'Hospitality' | 'UKF' | 'Korsakov' | 'The Blast' | 'RUN' | 'Independent';
+export type ShowStatus = 'Upcoming' | 'Confirmed' | 'Completed' | 'Cancelled';
+
 export interface Booking {
   id: string;
   city: string;
@@ -10,12 +13,17 @@ export interface Booking {
   lat: number;
   lng: number;
   venue: string;
+  eventName?: string;
   date: string; // YYYY-MM-DD
   promoter: string;
   capacity: number;
   ticketsSold: number;
-  sound: Sound;
-  lineup: string; // comma separated
+  ticketPrice?: number;
+  brand?: ShowBrand;
+  status?: ShowStatus;
+  artists?: string[];
+  sound?: Sound;
+  lineup?: string; // legacy comma-separated
   ig?: string;
   fb?: string;
   yt?: string;
