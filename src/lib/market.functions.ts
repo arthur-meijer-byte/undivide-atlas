@@ -64,30 +64,155 @@ interface SpotifyArtist {
   popularity: number;
   followers: number;
   image: string | null;
+  subgenre: string;
 }
 
-async function spotifySearchArtistsForMarket(market: string): Promise<SpotifyArtist[]> {
-  const token = await getSpotifyToken();
-  // Spotify recognises "drum and bass" as a genre; combine with market filter.
-  const q = encodeURIComponent('genre:"drum and bass"');
+// Hardcoded DnB artist universe — search Spotify by name, never by genre filter.
+const DNB_ARTISTS: string[] = [
+  'Chase & Status', 'Sub Focus', 'Wilkinson', 'Logistics', 'Hybrid Minds',
+  'Etherwood', 'Camo & Krooked', 'Fred V & Grafix', 'S.P.Y', 'Bcee',
+  'Calibre', 'Netsky', 'High Contrast', 'London Elektricity', 'Friction',
+  'Metrik', 'Whiney', 'Pola & Bryson', 'Maduk', 'Andromedik', 'Mefjus',
+  'Emperor', 'Phace', 'Icicle', 'Misanthrop', 'Calyx & TeeBee',
+  'Current Value', 'Neonlight', 'Black Sun Empire', 'Noisia', 'InsideInfo',
+  'Hedex', 'Turno', 'Hazard', 'Voltage', 'Bou', 'Kanine', 'Serum',
+  'Kings of the Rollers', 'Disrupta', 'Annix', 'Shy FX', 'DJ Marky',
+  'Fabio & Grooverider', 'LTJ Bukem', 'Bryan Gee', 'Goldie', 'DJ Hype',
+  'Andy C', 'Pendulum', 'Grooverider', 'Bad Company UK', 'Optical',
+  'Ed Rush', 'Dillinja', 'Doc Scott', 'Break', 'Skeptical', 'DLR',
+  'Alix Perez', 'Halogenix', 'Lenzman', 'Klute', 'Kasra', 'Spor',
+  'Concord Dawn', 'Teebee', 'Evol Intent', 'Gridlok', 'Audio',
+  'Consequence', 'Cern', 'Dub Phizix', 'Commix', 'Loxy', 'Resound',
+  'Seba', 'Nu:Tone', 'Spectrasoul', 'Fixate',
+  'Redeyes', 'Rockwell', 'Enei', 'Ivy Lab', 'Paradox', 'Blocks & Escher',
+];
+
+// Subgenre lookup (lowercase name -> tag). Fallback for unknowns is "DnB".
+const SUBGENRES: Record<string, string> = {
+  'chase & status': 'Dancefloor', 'sub focus': 'Dancefloor', 'wilkinson': 'Dancefloor',
+  'pendulum': 'Dancefloor', 'andy c': 'All styles', 'friction': 'All styles',
+  'mefjus': 'Neurofunk', 'noisia': 'Neurofunk', 'black sun empire': 'Neurofunk',
+  'calyx & teebee': 'Neurofunk', 'phace': 'Neurofunk', 'misanthrop': 'Neurofunk',
+  'current value': 'Neurofunk', 'neonlight': 'Neurofunk', 'emperor': 'Neurofunk',
+  'insideinfo': 'Neurofunk', 'spor': 'Neurofunk', 'icicle': 'Neurofunk',
+  'audio': 'Neurofunk',
+  'logistics': 'Liquid', 'hybrid minds': 'Liquid', 'etherwood': 'Liquid',
+  'bcee': 'Liquid', 'calibre': 'Liquid', 'netsky': 'Liquid', 'high contrast': 'Liquid',
+  'london elektricity': 'Liquid', 'pola & bryson': 'Liquid', 'maduk': 'Liquid',
+  'lenzman': 'Liquid', 'nu:tone': 'Liquid', 'spectrasoul': 'Liquid',
+  'fred v & grafix': 'Liquid', 'whiney': 'Liquid', 'redeyes': 'Liquid',
+  'dj marky': 'Liquid/Jungle', 's.p.y': 'Liquid',
+  'hedex': 'Jump Up', 'turno': 'Jump Up', 'hazard': 'Jump Up',
+  'voltage': 'Jump Up', 'bou': 'Jump Up', 'kanine': 'Jump Up',
+  'serum': 'Jump Up', 'kings of the rollers': 'Jump Up',
+  'disrupta': 'Jump Up', 'annix': 'Jump Up',
+  'shy fx': 'Jungle', 'dj hype': 'Jungle', 'goldie': 'Jungle',
+  'fabio & grooverider': 'Jungle', 'ltj bukem': 'Jungle', 'bryan gee': 'Jungle',
+  'grooverider': 'Jungle', 'paradox': 'Jungle',
+  'camo & krooked': 'Dancefloor', 'metrik': 'Dancefloor', 'andromedik': 'Dancefloor',
+  'break': 'Minimal', 'skeptical': 'Minimal', 'dlr': 'Minimal',
+  'alix perez': 'Halftime', 'halogenix': 'Halftime', 'ivy lab': 'Halftime',
+  'fixate': 'Halftime', 'blocks & escher': 'Halftime', 'rockwell': 'Halftime',
+  'enei': 'Minimal', 'commix': 'Minimal', 'klute': 'Minimal', 'kasra': 'Minimal',
+  'bad company uk': 'Neurofunk', 'optical': 'Neurofunk', 'ed rush': 'Neurofunk',
+  'dillinja': 'Dancefloor', 'doc scott': 'Tech', 'concord dawn': 'Neurofunk',
+  'teebee': 'Neurofunk', 'evol intent': 'Neurofunk', 'gridlok': 'Neurofunk',
+  'consequence': 'Tech', 'cern': 'Tech', 'dub phizix': 'Halftime',
+  'loxy': 'Tech', 'resound': 'Tech', 'seba': 'Liquid',
+};
+
+// Extended roster across the labels we represent / partner with.
+const ROSTER_LABELS: Record<string, string[]> = {
+  Undivide: [...UNDIVIDE_ROSTER],
+  Hospital: ['Logistics', 'Etherwood', 'Bcee', 'Nu:Tone', 'London Elektricity',
+    'High Contrast', 'Whiney', 'Pola & Bryson', 'Fred V & Grafix', 'S.P.Y', 'Maduk',
+    'Netsky', 'Metrik', 'Camo & Krooked', 'Hybrid Minds'],
+  Korsakov: ['Mefjus', 'Neonlight', 'Phace', 'Misanthrop', 'InsideInfo', 'Emperor'],
+};
+const ROSTER_LOOKUP = new Set<string>(
+  Object.values(ROSTER_LABELS).flat().map((n) => n.toLowerCase()),
+);
+
+function subgenreFor(name: string): string {
+  return SUBGENRES[name.toLowerCase()] ?? 'DnB';
+}
+
+interface SpotifySearchHit {
+  id: string;
+  name: string;
+  popularity: number;
+  followers: { total: number };
+  images: Array<{ url: string }>;
+}
+
+async function spotifySearchOne(name: string, market: string, token: string): Promise<SpotifySearchHit | null> {
   const r = await fetch(
-    `https://api.spotify.com/v1/search?type=artist&limit=50&market=${market}&q=${q}`,
+    `https://api.spotify.com/v1/search?type=artist&limit=5&market=${market}&q=${encodeURIComponent(name)}`,
     { headers: { Authorization: `Bearer ${token}` } },
   );
-  if (!r.ok) throw new Error(`Spotify search failed: ${r.status}`);
-  const j = (await r.json()) as {
-    artists?: { items: Array<{ id: string; name: string; popularity: number; followers: { total: number }; images: Array<{ url: string }> }> };
-  };
+  if (!r.ok) return null;
+  const j = (await r.json()) as { artists?: { items: SpotifySearchHit[] } };
   const items = j.artists?.items ?? [];
-  return items
-    .map((a) => ({
+  // Prefer exact name match (case-insensitive), otherwise first result.
+  return items.find((a) => a.name.toLowerCase() === name.toLowerCase()) ?? items[0] ?? null;
+}
+
+async function refreshArtistsByIds(ids: string[], token: string): Promise<Map<string, SpotifySearchHit>> {
+  const out = new Map<string, SpotifySearchHit>();
+  for (let i = 0; i < ids.length; i += 50) {
+    const batch = ids.slice(i, i + 50);
+    const r = await fetch(
+      `https://api.spotify.com/v1/artists?ids=${batch.join(',')}`,
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+    if (!r.ok) continue;
+    const j = (await r.json()) as { artists?: SpotifySearchHit[] };
+    for (const a of j.artists ?? []) if (a?.id) out.set(a.id, a);
+  }
+  return out;
+}
+
+// Search every DnB artist for this market, then fetch fresh /artists/{id} stats.
+async function spotifyTopForMarket(market: string): Promise<SpotifyArtist[]> {
+  const token = await getSpotifyToken();
+  // Step 1 — resolve IDs by name search (concurrency limited).
+  const hits: SpotifySearchHit[] = [];
+  const concurrency = 6;
+  let cursor = 0;
+  async function worker() {
+    while (cursor < DNB_ARTISTS.length) {
+      const idx = cursor++;
+      const name = DNB_ARTISTS[idx];
+      try {
+        const h = await spotifySearchOne(name, market, token);
+        if (h) hits.push(h);
+      } catch { /* skip */ }
+    }
+  }
+  await Promise.all(Array.from({ length: concurrency }, worker));
+
+  // Step 2 — refresh stats via /artists?ids=
+  const ids = Array.from(new Set(hits.map((h) => h.id)));
+  const fresh = await refreshArtistsByIds(ids, token);
+
+  // Step 3 — merge
+  const seen = new Set<string>();
+  const list: SpotifyArtist[] = [];
+  for (const h of hits) {
+    if (seen.has(h.id)) continue;
+    seen.add(h.id);
+    const a = fresh.get(h.id) ?? h;
+    list.push({
       id: a.id,
       name: a.name,
       popularity: a.popularity ?? 0,
       followers: a.followers?.total ?? 0,
       image: a.images?.[0]?.url ?? null,
-    }))
-    .sort((a, b) => b.popularity - a.popularity || b.followers - a.followers);
+      subgenre: subgenreFor(a.name),
+    });
+  }
+  list.sort((a, b) => b.popularity - a.popularity || b.followers - a.followers);
+  return list;
 }
 
 async function spotifyLookupRoster(market: string): Promise<SpotifyArtist[]> {
@@ -95,19 +220,14 @@ async function spotifyLookupRoster(market: string): Promise<SpotifyArtist[]> {
   const out: SpotifyArtist[] = [];
   for (const name of UNDIVIDE_ROSTER) {
     try {
-      const r = await fetch(
-        `https://api.spotify.com/v1/search?type=artist&limit=1&market=${market}&q=${encodeURIComponent(name)}`,
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-      if (!r.ok) continue;
-      const j = (await r.json()) as { artists?: { items: Array<{ id: string; name: string; popularity: number; followers: { total: number }; images: Array<{ url: string }> }> } };
-      const a = j.artists?.items?.[0];
-      if (a) {
+      const h = await spotifySearchOne(name, market, token);
+      if (h) {
         out.push({
-          id: a.id, name: a.name,
-          popularity: a.popularity ?? 0,
-          followers: a.followers?.total ?? 0,
-          image: a.images?.[0]?.url ?? null,
+          id: h.id, name: h.name,
+          popularity: h.popularity ?? 0,
+          followers: h.followers?.total ?? 0,
+          image: h.images?.[0]?.url ?? null,
+          subgenre: subgenreFor(h.name),
         });
       }
     } catch { /* skip */ }
@@ -126,22 +246,46 @@ interface YouTubeVideo {
   published: string;
 }
 
-async function youtubeTopForRegion(region: string): Promise<YouTubeVideo[]> {
+const YT_QUERY = 'drum and bass mix OR neurofunk OR liquid dnb OR jungle dnb';
+const YT_BAD = [
+  'tutorial', 'how to', 'reaction', 'lesson', 'theory',
+  'hardwell', 'fred again', 'techno', 'house', 'edm',
+  'trance', 'dubstep', 'trap', 'melodic techno',
+  'podcast episode', 'interview',
+];
+const YT_GOOD = [
+  'drum and bass', 'dnb', 'd&b', 'neurofunk', 'liquid dnb',
+  'jungle', 'drum & bass', 'rollers', 'halftime',
+];
+const ARTIST_NAMES_LC = DNB_ARTISTS.map((n) => n.toLowerCase());
+
+function passesYouTubeFilter(title: string, channel: string): boolean {
+  const hay = `${title} ${channel}`.toLowerCase();
+  if (YT_BAD.some((b) => hay.includes(b))) return false;
+  if (YT_GOOD.some((g) => hay.includes(g))) return true;
+  return ARTIST_NAMES_LC.some((n) => hay.includes(n));
+}
+
+async function youtubeTopForRegion(region: string): Promise<{ videos: YouTubeVideo[]; note: string | null }> {
   const key = process.env.YOUTUBE_API_KEY;
   if (!key) throw new Error('YouTube key not configured');
   const after = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
-  const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&videoCategoryId=10&order=viewCount&regionCode=${region}&publishedAfter=${after}&q=${encodeURIComponent('drum and bass')}&key=${key}`;
+  const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=25&videoCategoryId=10&order=viewCount&regionCode=${region}&publishedAfter=${after}&q=${encodeURIComponent(YT_QUERY)}&key=${key}`;
   const s = await fetch(searchUrl);
   if (!s.ok) throw new Error(`YouTube search failed: ${s.status}`);
   const sj = (await s.json()) as { items?: Array<{ id: { videoId: string }; snippet: { title: string; channelTitle: string; thumbnails: { medium?: { url: string }; default?: { url: string } }; publishedAt: string } }> };
-  const ids = (sj.items ?? []).map((it) => it.id.videoId).filter(Boolean);
-  if (ids.length === 0) return [];
+  const candidates = (sj.items ?? []).filter((it) => it.id.videoId);
+  const filtered = candidates.filter((it) => passesYouTubeFilter(it.snippet.title, it.snippet.channelTitle));
+  if (filtered.length === 0) {
+    return { videos: [], note: 'No verified DnB content found for this region in the last 12 months — this may indicate a developing market' };
+  }
+  const ids = filtered.slice(0, 10).map((it) => it.id.videoId);
   const statsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${ids.join(',')}&key=${key}`;
   const v = await fetch(statsUrl);
   if (!v.ok) throw new Error(`YouTube stats failed: ${v.status}`);
   const vj = (await v.json()) as { items?: Array<{ id: string; statistics: { viewCount?: string } }> };
   const viewsById = new Map(vj.items?.map((x) => [x.id, parseInt(x.statistics.viewCount ?? '0', 10)]));
-  const merged: YouTubeVideo[] = (sj.items ?? []).map((it) => ({
+  const merged: YouTubeVideo[] = filtered.slice(0, 10).map((it) => ({
     id: it.id.videoId,
     title: it.snippet.title,
     channel: it.snippet.channelTitle,
@@ -149,7 +293,10 @@ async function youtubeTopForRegion(region: string): Promise<YouTubeVideo[]> {
     views: viewsById.get(it.id.videoId) ?? 0,
     published: it.snippet.publishedAt,
   }));
-  return merged.sort((a, b) => b.views - a.views).slice(0, 3);
+  merged.sort((a, b) => b.views - a.views);
+  const top = merged.slice(0, 5);
+  const note = top.length < 5 ? 'Limited DnB video content found for this region' : null;
+  return { videos: top, note };
 }
 
 // ───────────────────────── Cache helpers ─────────────────────────
