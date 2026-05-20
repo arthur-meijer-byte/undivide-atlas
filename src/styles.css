@@ -127,10 +127,10 @@
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
 
-  /* Map tokens — dark mode */
-  --map-ocean: oklch(0.18 0.03 260);
-  --map-land: oklch(0.28 0.02 260);
-  --map-stroke: oklch(0.38 0.02 260);
+  /* Map tokens — keep realistic atlas look in dark mode too */
+  --map-ocean: oklch(0.78 0.06 230);
+  --map-land: oklch(0.92 0.04 95);
+  --map-stroke: oklch(0.62 0.03 230);
 
   --shadow-float: 0 0 10px rgba(255,45,111,0.35), 0 2px 6px rgba(0,0,0,0.6);
   --shadow-panel: 0 4px 24px rgba(255,45,111,0.18), 0 4px 16px rgba(0,0,0,0.55);
