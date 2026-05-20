@@ -84,9 +84,9 @@
   --status-new: oklch(0.82 0.18 215);        /* neon cyan */
 
   /* Soft daytime map */
-  --map-ocean: oklch(0.96 0.02 220);
-  --map-land: oklch(0.985 0.005 90);
-  --map-stroke: oklch(0.92 0.008 90);
+  --map-ocean: oklch(0.86 0.05 230);
+  --map-land: oklch(0.94 0.03 95);
+  --map-stroke: oklch(0.72 0.03 230);
 
   --shadow-float: 0 2px 6px rgba(0,0,0,0.18);
   --shadow-panel: 0 4px 16px rgba(0,0,0,0.12);
