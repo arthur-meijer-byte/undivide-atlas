@@ -11,7 +11,7 @@ import BookingsButton from '../components/BookingsButton';
 import AgendaPanel from '../components/AgendaPanel';
 import PromotersPanel from '../components/PromotersPanel';
 import TopNav from '../components/TopNav';
-import RequireAuth from '../components/RequireAuth';
+
 import { useApplyTheme } from '../hooks/useTheme';
 
 export const Route = createFileRoute('/')({
@@ -27,22 +27,20 @@ export const Route = createFileRoute('/')({
 function Index() {
   useApplyTheme();
   return (
-    <RequireAuth>
-      <main className="fixed inset-0 overflow-hidden font-sans bg-background text-foreground" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-        <h1 className="sr-only">Undivide Territory Intelligence</h1>
-        <TopNav />
-        <MapView />
-        <SearchBar />
-        <FilterChips />
-        <MapControls />
-        <DetailPanel />
-        <Tooltip />
-        <CompareModal />
-        <BookingsButton />
-        <BookingModal />
-        <AgendaPanel />
-        <PromotersPanel />
-      </main>
-    </RequireAuth>
+    <main className="fixed inset-0 overflow-hidden font-sans bg-background text-foreground" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      <h1 className="sr-only">Undivide Territory Intelligence</h1>
+      <TopNav />
+      <MapView />
+      <SearchBar />
+      <FilterChips />
+      <MapControls />
+      <DetailPanel />
+      <Tooltip />
+      <CompareModal />
+      <BookingsButton />
+      <BookingModal />
+      <AgendaPanel />
+      <PromotersPanel />
+    </main>
   );
 }
