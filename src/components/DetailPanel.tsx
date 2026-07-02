@@ -6,6 +6,7 @@ import PromoterModal from './PromoterModal';
 import { usePromoterStore, BRAND_META, STATUS_META, ALL_BRANDS } from '../hooks/usePromoterStore';
 import CityNotesPanel from './CityNotesPanel';
 import PanelTopArtists from './PanelTopArtists';
+import PanelPulse from './PanelPulse';
 import { useCityStatus, STATUS_META as CITY_STATUS_META, timeAgo as cityTimeAgo } from '../hooks/useCityStatus';
 import { useUser } from '../hooks/useUser';
 
@@ -36,7 +37,7 @@ export default function DetailPanel() {
   const [showEvents, setShowEvents] = useState(false);
   const [showPromoters, setShowPromoters] = useState(false);
   const [contactPromoter, setContactPromoter] = useState<string | null>(null);
-  const [tab, setTab] = useState<'overview' | 'artists'>('overview');
+  const [tab, setTab] = useState<'overview' | 'artists' | 'pulse'>('overview');
 
   const initCityStatus = useCityStatus((s) => s.init);
   const cityRow = useCityStatus((s) => (currentCity ? s.byCity[currentCity.id] : undefined));
@@ -128,7 +129,7 @@ export default function DetailPanel() {
       </div>
 
       <div className="flex border-b border-gray-200 text-xs font-semibold">
-        {(['overview', 'artists'] as const).map((t) => (
+        {(['overview', 'artists', 'pulse'] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -138,7 +139,7 @@ export default function DetailPanel() {
                 : 'text-gray-500 hover:text-gray-800'
             }`}
           >
-            {t === 'overview' ? 'Overview' : 'Scene Intel'}
+            {t === 'overview' ? 'Overview' : t === 'artists' ? 'Scene Intel' : 'Pulse'}
           </button>
         ))}
       </div>
@@ -146,6 +147,10 @@ export default function DetailPanel() {
       {tab === 'artists' ? (
         <div className="flex-1 overflow-y-auto thin-scroll">
           <PanelTopArtists city={city} />
+        </div>
+      ) : tab === 'pulse' ? (
+        <div className="flex-1 overflow-y-auto thin-scroll">
+          <PanelPulse city={city} />
         </div>
       ) : (
       <div className="flex-1 overflow-y-auto thin-scroll p-4 space-y-4 text-sm">
