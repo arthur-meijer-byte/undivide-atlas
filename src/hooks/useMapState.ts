@@ -16,6 +16,7 @@ interface MapState {
   compareCityA: string | null;
   compareCityB: string | null;
   mapTransform: { scale: number; x: number; y: number };
+  flyTarget: { lat: number; lng: number; nonce: number } | null;
   hoverCity: { city: City; x: number; y: number } | null;
   toggleBrand: (b: BrandFilter) => void;
   clearBrands: () => void;
