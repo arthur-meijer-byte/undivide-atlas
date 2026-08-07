@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import MapView from '../components/MapView';
+import GoogleMapView from '../components/GoogleMapView';
 import SearchBar from '../components/SearchBar';
 import FilterChips from '../components/FilterChips';
 import Tooltip from '../components/Tooltip';
@@ -30,7 +30,7 @@ function Index() {
     <main className="fixed inset-0 overflow-hidden font-sans bg-background text-foreground" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       <h1 className="sr-only">Undivide Territory Intelligence</h1>
       <TopNav />
-      <MapView />
+      <GoogleMapView />
       <SearchBar />
       <FilterChips />
       <MapControls />
