@@ -45,6 +45,7 @@ export const useMapState = create<MapState>((set) => ({
   compareCityA: null,
   compareCityB: null,
   mapTransform: { scale: 1, x: 0, y: 0 },
+  flyTarget: null,
   hoverCity: null,
   toggleBrand: (b) =>
     set((s) => ({
