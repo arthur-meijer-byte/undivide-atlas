@@ -68,6 +68,6 @@ export const useMapState = create<MapState>((set) => ({
   setCompareA: (id) => set({ compareCityA: id }),
   setCompareB: (id) => set({ compareCityB: id }),
   setTransform: (t) => set({ mapTransform: t }),
-  flyTo: (lat, lng) => set({ mapTransform: { scale: 4, x: -lng * 8, y: lat * 8 } }),
+  flyTo: (lat, lng) => set({ flyTarget: { lat, lng, nonce: Date.now() } }),
   setHover: (h) => set({ hoverCity: h }),
 }));
